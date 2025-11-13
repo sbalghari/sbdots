@@ -12,7 +12,7 @@ class WallpapersInstaller:
         self.dry_run = dry_run
 
         self.logger = logger
-        
+
         self.console = get_console()
 
         self.repo_url = "https://github.com/sbalghari/Wallpapers.git"
@@ -67,7 +67,6 @@ class WallpapersInstaller:
         print_newline()
 
         with Spinner("Installing wallpapers...") as spinner:
-
             try:
                 USER_WALLPAPERS_DIR.mkdir(parents=True, exist_ok=True)
                 self.logger.info("Ensured wallpapers dir exists.")
@@ -77,7 +76,9 @@ class WallpapersInstaller:
                     sleep(1)
                     try:
                         shutil.copytree(
-                            SBDOTS_WALLPAPERS_DIR, USER_WALLPAPERS_DIR, dirs_exist_ok=True
+                            SBDOTS_WALLPAPERS_DIR,
+                            USER_WALLPAPERS_DIR,
+                            dirs_exist_ok=True,
                         )
                     except Exception as e:
                         self.logger.error(f"Failed to copy default wallpapers: {e}")
@@ -89,11 +90,13 @@ class WallpapersInstaller:
                 self.logger.error(f"Wallpaper installation failed: {e}")
                 spinner.error("Wallpaper installation failed.")
                 return False
-        
+
         sleep(0.5)
         with self.console.screen():
-            install_collection = confirm("Do you want to install my wallpapers collection?")
-            
+            install_collection = confirm(
+                "Do you want to install my wallpapers collection?"
+            )
+
         print_newline()
         if install_collection:
             self.logger.info("User chose to install wallpaper collection.")
@@ -107,5 +110,5 @@ class WallpapersInstaller:
                 spinner.success("Successfully installed wallpaper collection.")
         else:
             self.logger.info("User chose not to install wallpaper collection.")
-            
+
         return True

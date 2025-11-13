@@ -143,7 +143,7 @@ class PackagesInstaller:
                     sleep(0.5)
 
             return True
-        
+
         # Filter out already installed packages
         chosen = [pkg for pkg in chosen if not is_installed(pkg)]
 

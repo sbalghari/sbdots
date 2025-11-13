@@ -80,7 +80,9 @@ class OnGetWeather:
         data = {}
 
         if not self.user_credentials_file.exists():
-            self.logger.debug(f"User credentials file '{self.user_credentials_file}' not found!")
+            self.logger.debug(
+                f"User credentials file '{self.user_credentials_file}' not found!"
+            )
             self.logger.debug("Creating a template user credentials file")
             self.user_credentials_file.parent.mkdir(parents=True, exist_ok=True)
             self.user_credentials_file.touch(exist_ok=True)
@@ -105,14 +107,14 @@ class OnGetWeather:
     def get_weather(self) -> Any:
         """Fetch weather data from WeatherAPI.com"""
         self.logger.debug("Fetching weather data from WeatherAPI.com...")
-        
+
         key = self.user_credentials.get("api_key")
-        
+
         # Check for valid api_key
         if key == "your_api_key_here":
             self.logger.warning("API-Key not set, returning...")
             return None
-        
+
         latitude = self.user_credentials.get("latitude")
         longitude = self.user_credentials.get("longitude")
 
@@ -120,7 +122,7 @@ class OnGetWeather:
         try:
             response = requests.get(url, timeout=10)
             response.raise_for_status()  # Raise an error for bad status codes
-            
+
             self.logger.info("Successfully fetched weather data from WeatherAPI.com")
             return response.json()
         except requests.HTTPError as e:
@@ -164,7 +166,7 @@ class OnGetWeather:
 
     def format_weather_tooltip(self, data) -> str:
         """Format tooltip with more detailed information"""
-        
+
         if not data:
             return f"Invalid Credentials! \nPlease put correct credentials in: \n  {self.user_credentials_file}"
 

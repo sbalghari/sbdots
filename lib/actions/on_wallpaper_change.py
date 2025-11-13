@@ -204,7 +204,7 @@ class OnWallpaperChange:
                 )
                 blur_thread.start()
 
-                # Step 2: generate pywal colors 
+                # Step 2: generate pywal colors
                 current_progress += progress_step
                 n.update(
                     body_text="Generating pywal colors from the wallpaper...",

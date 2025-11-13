@@ -390,6 +390,7 @@ def choose(
     chosen_list = _RichChoose(list(options), prompt, no_limit=False).run()
     return chosen_list[0] if chosen_list else None
 
+
 def clear_console():
     """Reset console"""
     return CONSOLE.print("\033c", end="")
