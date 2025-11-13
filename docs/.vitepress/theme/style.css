@@ -1,0 +1,218 @@
+/*
+Imports: Font
+----------------------------------------------------------------*/
+@import url("https://fonts.googleapis.com/css2?family=Keania+One&display=swap");
+
+/* 
+Initialization: Colors
+----------------------------------------------------------------*/
+:root.dark {
+  --vp-c-brand-1-rgb: 203 166 247; /* mocha mauve */
+}
+:root {
+  --vp-c-brand-1-rgb: 136 57 239; /* latte mauve */
+}
+
+/* 
+Background: Gradient 
+----------------------------------------------------------------*/
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(
+    120deg,
+    var(--ctp-mocha-base) 0%,
+    var(--ctp-mocha-crust) 50%,
+    var(--ctp-mocha-mantle) 100%
+  );
+  background-attachment: fixed;
+}
+.VPFooter {
+  border-top: none !important;
+  background: transparent !important;
+}
+
+/* 
+Component: Home 
+----------------------------------------------------------------*/
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    var(--vp-c-brand-1) 30%,
+    var(--ctp-latte-maroon)
+  );
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    var(--vp-c-brand-1) 40%,
+    var(--ctp-latte-maroon) 80%
+  );
+  --vp-home-hero-image-filter: blur(44px);
+}
+
+:root.dark {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    var(--vp-c-brand-1) 30%,
+    var(--ctp-mocha-maroon)
+  );
+  --vp-home-hero-image-background-image: linear-gradient(
+    -45deg,
+    var(--vp-c-brand-1) 50%,
+    var(--ctp-mocha-maroon) 50%
+  );
+}
+
+/* 
+.VPHero .name {
+  font-family: 'Keania One';
+} */
+
+.VPHero .VPButton.brand:hover {
+  box-shadow: 0 6px 20px rgba(var(--vp-c-brand-1-rgb) / 0.25);
+  transition: box-shadow 0.1s ease;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(68px);
+  }
+}
+
+/* 
+Component: Navbar 
+----------------------------------------------------------------*/
+.VPNavBar .logo {
+  height: 28px;
+  width: auto;
+}
+
+.VPNavBar .title {
+  font-family: "Keania One";
+  font-size: 26px;
+}
+
+.DocSearch-Button {
+  height: 28px;
+  width: auto;
+  border: 1px solid;
+  border-color: rgb(var(--vp-c-brand-1-rgb) / 0.2);
+  border-radius: 0.5rem;
+  background: var(--vp-c-bg-alt);
+  transition: background 0.2s ease;
+}
+.DocSearch-Button:hover {
+  background: rgb(var(--vp-c-brand-1-rgb) / 0.2);
+}
+
+/* 
+Component: Features Cards 
+----------------------------------------------------------------*/
+.VPFeatures .VPFeature {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid;
+  border-color: rgb(var(--vp-c-brand-1-rgb) / 0.2);
+  transition: all 0.25s ease;
+  will-change: transform, box-shadow;
+}
+
+.VPFeatures .VPFeature:hover {
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 6px 20px rgba(var(--vp-c-brand-1-rgb) / 0.1);
+  transform: translateY(-4px);
+}
+
+.VPFeatures .VPFeature .icon {
+  background-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.VPFeatures .VPFeature .title {
+  position: relative;
+  display: inline-block;
+  color: var(--vp-c-brand-2);
+  font-size: 18px;
+  font-weight: 600;
+  padding-bottom: 5px;
+}
+
+.VPFeatures .VPFeature .title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--vp-c-brand-1-rgb) / 0.8) 0%,
+    rgba(var(--vp-c-brand-1-rgb) / 0.2) 100%
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.VPFeatures .VPFeature:hover .title::after {
+  transform: scaleX(0.5);
+}
+
+/* 
+Component: screenshots grid 
+----------------------------------------------------------------*/
+.screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.screenshot-grid img {
+  border-radius: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  border: 1px solid;
+  border-color: rgb(var(--vp-c-brand-1-rgb) / 0.2);
+  transition: all 0.25s ease;
+}
+
+.screenshot-grid img:hover {
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 6px 20px rgba(var(--vp-c-brand-1-rgb) / 0.1);
+  transform: translateY(-4px);
+}
+
+/* 
+Component: Footer 
+----------------------------------------------------------------*/
+.footer-message {
+  font-weight: 400;
+}
+
+.footer-copyright {
+  font-weight: 300;
+  font-size: 0.85rem;
+}
+
+
+/* 
+Component: Wiki
+----------------------------------------------------------------*/
+.overview-banner img {
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  border: 1px solid;
+  border-color: rgb(var(--vp-c-brand-1-rgb) / 0.25);
+  transition: all 0.25s ease;
+}
