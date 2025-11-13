@@ -33,7 +33,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [[ `git status --porcelain` ]]; then
             git add .
-            git commit -m "chore(Bot): auto-fix lint issues via Ruff"
+            git commit -m "chore: auto-fix lint issues via Ruff"
             git push
           else
             echo "No changes to commit"
