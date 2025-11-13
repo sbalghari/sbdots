@@ -53,22 +53,21 @@
 
   // Active media
   "custom/mediaplayer": {
-    "exec": "~/.config/waybar/scripts/mediaplayer.py",
+    "exec": "sbdots-actions on_mpd_change",
     "return-type": "json",
     "escape": true,
     "interval": 0,
     "format": "{0}",
-    "tooltip-format": "{1}",
+    "tooltip-format": "{0}",
     "max-length": 30,
     "on-click": "playerctl play-pause",
-    "on-click-right": "~/.config/rofi/applets/mpd.sh",
     "on-scroll-up": "playerctl next",
     "on-scroll-down": "playerctl previous"
   },
 
   // Weather
   "custom/weather": {
-    "exec": "~/.config/waybar/scripts/weather.py",
+    "exec": "sbdots-actions on_get_weather",
     "interval": 1800,
     "return-type": "json"
   },
@@ -104,8 +103,8 @@
     "return-type": "json",
     "escape": true,
     "exec-on-event": true,
-    "interval": 1,
-    "exec": "bash ~/.config/hypr/services/hypridle.sh status",
+    "interval": 3600,
+    "exec": "sbdots-actions get_hypridle_status",
     "on-click": "bash ~/.config/hypr/services/hypridle.sh toggle"
   },
 
@@ -114,7 +113,7 @@
     "format": "{}",
     "escape": true,
     "return-type": "json",
-    "exec": "~/.config/waybar/scripts/updates.sh",
+    "exec": "sbdots-actions on_check_updates",
     "interval": 360,
     "on-click": "kitty --class floating -e ~/.config/waybar/scripts/installupdates.sh"
   },
@@ -142,24 +141,26 @@
       "critical": 30
     },
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-    "on-click-right": "~/.config/rofi/applets/battery.sh"
   },
 
   // Bluetooth
   "bluetooth": {
-    "format": "󰂯",
-    "format-disabled": "󰂲",
-    "format-off": "󰂲",
+    "format": " {status}",
+    "format-connected": " Connected",
+    "format-alt": "",
+    "format-disabled": "󰂲 Disabled",
+    "format-on": " On",
+    // "format-connected-battery": " Connected-{device_battery_percentage}%", always shows 100%, idk why
+    "format-off": "󰂲 Off",
     "interval": 30,
-    "on-click": "blueman-manager",
-    "on-click-right": "sleep 0.1 && kill -9 $pgrep blueman-applet",
+    "on-click-right": "sleep 0.1 && blueman-manager",
     "format-no-controller": ""
   },
 
   // Audio
   "pulseaudio": {
     "scroll-step": 5,
-    "format": "{icon} {volume}%  {format_source}",
+    "format": "{icon} {volume}%",
     "format-alt": "{icon}",
     "format-bluetooth": "{volume}% {icon} {format_source}",
     "format-bluetooth-muted": " {icon} {format_source}",
@@ -191,15 +192,15 @@
     "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 20,
-    "on-scroll-down": "sleep 0.1 && kill -9 $pgrep nm-applet",
-    "on-click-right": "~/.config/waybar/scripts/nmtui.sh"
+    "on-click-right": "sleep 0.1 && kitty --class floating -e nmtui"
   },
 
   // System Tray
   "tray": {
-    "icon-size": 15,
+    "icon-size": 12,
     "spacing": 6,
-    "show-passive-items": true
+    "show-passive-items": true,
+    "tooltip": false
   },
 
   // Power Profiles Daemon
@@ -220,7 +221,6 @@
     "format": "<b>{:%I:%M %p | %a.%d-%b}</b>",
     // "format": "<b>{:%I:%M %p}</b>",
     "tooltip-format": "<tt><small>{calendar}</small></tt>"
-    // "on-click": "sleep 0.1 && swaync-client -t"
   },
 
   // Notifications

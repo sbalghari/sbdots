@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Prevents interactive terminal execution
+if [ -t 0 ] && [ -t 1 ]; then
+	echo "This command is used internally by SBDots."
+	exit 0
+fi
+
+exec python3 /usr/lib/sbdots/actionsc.py "$@"
+

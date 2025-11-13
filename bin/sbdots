@@ -1,2 +1,2 @@
 #!/bin/bash
-exec python3 /usr/lib/sbdots/main.py "$@"
+exec python3 /usr/lib/sbdots/sbdots.py "$@"

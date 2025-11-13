@@ -38,7 +38,7 @@
   background: transparent;
   padding: 0px;
   border-radius: 6px;
-  margin: 4;
+  margin: 4px;
   box-shadow: none;
   border: none;
 }
@@ -74,7 +74,6 @@
 }
 .notification-action:hover,
 .notification-default-action:hover {
-  -gtk-icon-effect: none;
   background: transparent;
 }
 .notification-default-action {
@@ -90,13 +89,10 @@
   padding: 4px;
 }
 .image {
-  -gtk-icon-effect: none;
   border-radius: 6px;
   margin: 4px;
 }
 .app-icon {
-  -gtk-icon-effect: none;
-  -gtk-icon-shadow: none;
   margin: 6px;
 }
 .summary {
@@ -128,40 +124,12 @@
   color: @accent;
 }
 
-.notification-action {
-  border-top: 1px solid @border;
-  border-radius: 0px;
-  border-right: 1px solid @border;
-}
-.notification-action:first-child {
-  border-bottom-left-radius: 6px;
-}
-.notification-action:last-child {
-  border-bottom-right-radius: 6px;
-  border-right: none;
-}
-.notification-group-buttons,
-.notification-group-headers {
-  margin: 0 16px;
-  color: @text;
-}
-.notification-row:not(:last-child) .notification-action,
-.notification-row:not(:last-child) .notification-default-action {
-  opacity: 1;
-}
-.notification-group.collapsed:hover
-  .notification-row:not(:only-child)
-  .notification {
-    background-color: alpha(@background, 0.7);
-}
-
 /* 
   ============================================================
   => Control Center
   ============================================================
 */
 .control-center {
-  padding: 6px;
   background: @background;
   border: 1px solid @border;
   color: @text;
@@ -179,90 +147,78 @@
 }
 
 /* Notification widget */
-.widget-title {
+.widget-title > label {
   color: @text;
-  margin: 6px 6px;
-  padding: 0px 4px;
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: bold;
 }
 .widget-title > button {
   font-size: 12px;
   color: @text;
-  text-shadow: none;
-  margin: 2px 4px;
-  padding: 0px 8px;
-  background: transparent;
-  border: 1px solid @border;
-  box-shadow: none;
-  border-radius: 6px;
+  padding: 0px 6px;
+  background: shade(alpha(@background, 0.9), 1.2);
+  border: 1px solid alpha(@border, 0.5);
+  border-radius: 4px;
 }
 .widget-title > button:hover {
   background: @hover;
 }
 
 /* DND widget */
-.widget-dnd {
+.widget-dnd > label {
   color: @text;
-  margin: 2px 6px;
-  padding: 0px 4px;
-  font-size: 15px;
+  font-size: 16px;
 }
 .widget-dnd > switch {
-  font-size: initial;
-  border-radius: 6px;
+  border-radius: 4px;
   background: alpha(@text, 0.5);
   border: 1px solid @border;
-  box-shadow: none;
 }
 .widget-dnd > switch:checked {
   background: @accent;
 }
-.widget-dnd > switch slider {
-  background: @background;
-  border-radius: 6px;
-}
-
-/* Control Buttons widget */
-.widget-buttons-grid {
-  padding: 0px;
-  margin: 4px;
-  border-radius: 0px;
-  font-size: 16px;
-  font-weight: bolder;
-  background-color: transparent;
-}
-.widget-buttons-grid > flowbox > flowboxchild > button {
-  background: @background;
-  color: @text;
-  border-radius: 6px;
-  border: 1px solid @border;
-}
-.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+.widget-dnd > switch:hover {
   background: @hover;
 }
-.widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
-  background: @accent;
-  color: @text-alt;
+.widget-dnd > switch slider {
+  background: @background;
+  border-radius: 4px;
 }
 
-/* Volume widget */
-.widget-volume {
-  background-color: @background;
-  padding: 4px 16px;
-  margin: 6px 8px;
+/* Notification list */
+.notification-group-headers > label {
+  color: @text;
+  background: shade(alpha(@background, 0.3), 1.12);
+  border: 1px solid alpha(@border, 0.1);
+  padding: 0px 8px;
   border-radius: 6px;
-  border: 1px solid @border;
+  font-size: 16px;
+  font-weight: bold;
 }
-.widget-volume > box > button {
+.notification-group.collapsed:hover
+  .notification-row:not(:only-child)
+  .notification {
+  box-shadow: 0 2px 3px 0 alpha(#000, 0.2);
+}
+.notification-group,
+.notification-group.collapsed {
   background: transparent;
-  border: none;
 }
-
-/* Backlight widget */
-.widget-backlight {
-  background-color: @background;
-  padding: 4px 16px;
-  margin: 6px 8px;
+.notification-group .notification:hover {
+  box-shadow: 0 2px 3px 0 alpha(#000, 0.2);
+}
+.notification-group .notification:hover {
+  box-shadow: 0 2px 3px 0 alpha(#000, 0.3);
+}
+.notification-group-buttons > button {
+  font-size: 12px;
+  margin-right: 6px;
+  color: @text;
+  padding: 0px 4px;
+  background: shade(alpha(@background, 0.5), 1.2);
+  border: 1px solid alpha(@border, 0.2);
   border-radius: 6px;
-  border: 1px solid @border;
+}
+.notification-group-buttons > button:hover {
+  background: alpha(@hover, 0.8);
 }

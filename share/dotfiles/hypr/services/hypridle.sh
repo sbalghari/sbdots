@@ -36,17 +36,6 @@ toggle_hypridle() {
     fi
 }
 
-reload_hypridle() {
-    HYPRIDLE_PID=$(get_hypridle_pid)
-    if [ -n "$HYPRIDLE_PID" ]; then
-        kill_hypridle
-        start_hypridle
-        echo "Hypridle reloaded."
-    else
-        echo "Hypridle is not running. Starting it now..."
-        start_hypridle
-    fi
-}
 
 case "$1" in
     kill)
@@ -58,19 +47,8 @@ case "$1" in
     toggle)
         toggle_hypridle
         ;;
-    reload)
-        reload_hypridle
-        ;;
-    status)
-        sleep 0.1
-        if get_hypridle_pid >/dev/null ;then
-            echo '{"text": "On", "class": "active", "tooltip": "Screen locking active\nLeft: Deactivate\nRight: Lock Screen"}'
-        else
-            echo '{"text": "Off", "class": "notactive", "tooltip": "Screen locking deactivated\nLeft: Activate\nRight: Lock Screen"}'
-        fi
-        ;;
     *)
-        echo "Usage: $0 {kill|start|toggle|reload|status}"
+        echo "Usage: $0 {kill|start|toggle}"
         exit 1
         ;;
 esac

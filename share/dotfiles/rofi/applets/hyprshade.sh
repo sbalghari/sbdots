@@ -1,7 +1,7 @@
 #!/bin/bash
 
 theme=~/.config/rofi/configs/dmenu.rasi
-filter=~/.user_settings/hyprshade_filter.sh
+filter=~/.config/sbdots/settings/hyprshade_filter.sh
 
 if [[ "$1" == "rofi" ]]; then
     # List options

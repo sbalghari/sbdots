@@ -10,15 +10,18 @@ gtk_theme_path = os.path.expanduser(f"~/.config/gtk-4.0/gtk.css")
 with open(gtk_theme_path, "r") as f:
     css_content = f.read()
 
+
 # function to extract colors using regex
 def extract_color(css_content, color_name):
     match = re.search(f"{color_name}: (#[0-9a-fA-F]+);", css_content)
     return match.group(1) if match else None
 
+
 # Extract colors for Rofi
 background_color = extract_color(css_content, "background-color") or "#1e1e2e"
 text_color = extract_color(css_content, "foreground-color") or "#cdd6f4"
-selected_color = extract_color(css_content, "selected-background-color") or "#ffffff"
+selected_color = extract_color(
+    css_content, "selected-background-color") or "#ffffff"
 active_color = extract_color(css_content, "accent-color") or "#64e675"
 urgent_color = extract_color(css_content, "error-color") or "#fa6e6e"
 

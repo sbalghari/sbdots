@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WAYBAR_STYLES_PATH="$HOME/.config/waybar/styles"
-CURRENT_STYLE="$HOME/.user_settings/waybar_style.sh"
+CURRENT_STYLE="$HOME/.config/sbdots/settings/waybar_style.sh"
 
 WAYBAR_STYLE="modern"
 
@@ -62,8 +62,7 @@ toggle_waybar() {
 reload_waybar() {
     WAYBAR_PID=$(get_waybar_pid)
     if [ -n "$WAYBAR_PID" ]; then
-        kill_waybar
-        start_waybar
+        pkill -SIGUSR2 waybar
         echo "Waybar reloaded."
     else
         echo "Waybar is not running. Starting it now..."

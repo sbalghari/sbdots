@@ -1,0 +1,15 @@
+[Unit]
+Description=SBDots Actions Daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /usr/lib/sbdots/actionsd.py
+Restart=on-failure
+RestartSec=2
+StandardOutput=journal
+StandardError=journal
+Environment=WAYLAND_DISPLAY=wayland-1
+
+[Install]
+WantedBy=default.target

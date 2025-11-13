@@ -57,7 +57,7 @@ _create_dir() {
 
 # Function to install required dependencies of the setup script
 _install_dependencies() {
-	local deps=(curl git base-devel gum python-pyfiglet python-rich jq)
+	local deps=(curl git base-devel jq gum python-pyfiglet python-rich python-psutil)
 
 	info "Installing required dependencies..."
 	for dep in "${deps[@]}"; do

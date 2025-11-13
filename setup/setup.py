@@ -22,7 +22,7 @@ logging.basicConfig(
     filename=LOG_FILE,
     level=logging.DEBUG,
     format="[%(asctime)s] - [%(levelname)s] - %(message)s",
-    filemode="w"
+    filemode="w",
 )
 log: Logger = logging.getLogger()
 
@@ -32,12 +32,15 @@ YELLOW = "\033[1;33m"
 RED = "\033[0;31m"
 RESET = "\033[0m"
 
+
 # Colorful message functions
 def info(msg: str) -> None:
     print(f"{YELLOW}> {msg}{RESET}")
 
+
 def success(msg: str) -> None:
     print(f"{GREEN}✔ {msg}{RESET}")
+
 
 def fail(msg: str) -> None:
     print(f"{RED}✘ {msg}{RESET}")
@@ -55,26 +58,29 @@ def generate_metadata() -> bool:
     def _run_git_command(*args):
         """Run a git command and return its output."""
         try:
-            return subprocess.check_output(
-                ["git"] + list(args),
-                stderr=subprocess.DEVNULL
-            ).decode().strip()
+            return (
+                subprocess.check_output(["git"] + list(args), stderr=subprocess.DEVNULL)
+                .decode()
+                .strip()
+            )
         except subprocess.CalledProcessError:
             return None
 
-    def _get_version() -> str:
-        return _run_git_command("-C", str(repo_dir), "describe", "--tags", "--always", "--dirty")
+    def _get_version():
+        return _run_git_command(
+            "-C", str(repo_dir), "describe", "--tags", "--always", "--dirty"
+        )
 
-    def _get_commit_hash() -> str:
+    def _get_commit_hash():
         return _run_git_command("-C", str(repo_dir), "rev-parse", "HEAD")
 
     def _get_release_type() -> str:
         try:
-            with open(release_type_marker, "r") as f:
+            with open(release_type_marker, "r", encoding="utf-8") as f:
                 return f.read().strip()
         except FileNotFoundError:
             log.error("release_type.txt not found.")
-            return None
+            return ""
 
     version = _get_version()
     commit_hash = _get_commit_hash()
@@ -87,26 +93,25 @@ def generate_metadata() -> bool:
     metadata = {
         "version": version,
         "commit_hash": commit_hash,
-        "release_type": release_type
+        "release_type": release_type,
     }
 
-    log.debug(f"Generated metadata: {metadata}")
+    log.debug("Generated metadata: %s", metadata)
 
     try:
         with open(metadata_file, "w") as f:
             json.dump(metadata, f, indent=4)
-        log.info(f"Metadata written to {metadata_file}")
+        log.info("Metadata written to %s", metadata_file)
         return True
     except PermissionError:
-        log.warning(
-            f"No permission to write {metadata_file}, retrying with sudo...")
+        log.warning("No permission to write %s, retrying with sudo...", metadata_file)
         try:
             json_str = json.dumps(metadata, indent=4)
             subprocess.run(
                 ["sudo", "tee", str(metadata_file)],
                 input=json_str.encode(),
                 check=True,
-                stdout=subprocess.DEVNULL
+                stdout=subprocess.DEVNULL,
             )
             log.info(f"Metadata written to {metadata_file} using sudo")
             return True
@@ -141,17 +146,10 @@ def copy(src: Path, dest: Path) -> bool:
         return True
 
     except PermissionError:
-        log.warning(
-            f"Permission denied copying {src} to {dest}, retrying with sudo...")
+        log.warning(f"Permission denied copying {src} to {dest}, retrying with sudo...")
         try:
-            subprocess.run(
-                ["sudo", "rm", "-rf", str(dest)],
-                check=False
-            )
-            subprocess.run(
-                ["sudo", "cp", "-r", str(src), str(dest)],
-                check=True
-            )
+            subprocess.run(["sudo", "rm", "-rf", str(dest)], check=False)
+            subprocess.run(["sudo", "cp", "-r", str(src), str(dest)], check=True)
             log.info(f"Copied {src} to {dest} using sudo")
             return True
         except subprocess.CalledProcessError as e:
@@ -164,15 +162,18 @@ def copy(src: Path, dest: Path) -> bool:
 
 
 def setup() -> bool:
-    """ Main function to setup SBDots on the system. """
+    """Main function to setup SBDots on the system."""
     if not SBDOTS_DOWNLOADED_DIR.exists():
         fail(f"Source directory {SBDOTS_DOWNLOADED_DIR} does not exist.")
         return False
 
     info("Copying files to system directories...")
     sleep(1)  # Small delay for better UX
-    src = [SBDOTS_DOWNLOADED_DIR / "lib", SBDOTS_DOWNLOADED_DIR /
-           "bin", SBDOTS_DOWNLOADED_DIR / "share"]
+    src = [
+        SBDOTS_DOWNLOADED_DIR / "lib",
+        SBDOTS_DOWNLOADED_DIR / "bin",
+        SBDOTS_DOWNLOADED_DIR / "share",
+    ]
     dest = [LIB_DIR, BIN_DIR, SHARE_DIR]
 
     for s, d in zip(src, dest):
@@ -182,7 +183,7 @@ def setup() -> bool:
     success("All files copied successfully.")
     print()
 
-    info("Genarating metadata...")
+    info("generating metadata...")
     sleep(1)  # Small delay for better UX
     if not generate_metadata():
         fail("Failed to generate metadata. Aborting setup.")
@@ -204,7 +205,7 @@ def main() -> None:
 
     print()
     log.info("Launching SBDots...")
-    os.system("gum spin --title \"Launching SBDots Installer...\" -- sleep 2")
+    os.system('gum spin --title "Launching SBDots Installer..." -- sleep 2')
     os.system("sbdots --install")
 
 

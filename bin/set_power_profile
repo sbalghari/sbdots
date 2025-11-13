@@ -1,82 +1,100 @@
 #!/bin/bash
 
 check_dependencies() {
-    if ! command -v brightnessctl &> /dev/null; then
-        echo "Error: brightnessctl is not installed. Please install it to use this command."
-        exit 1
-    fi
+	if ! command -v brightnessctl &>/dev/null; then
+		echo "Error: brightnessctl is not installed. Please install it to use this command."
+		exit 1
+	fi
 
-    if ! command -v powerprofilesctl &> /dev/null; then
-        echo "Error: Please install 'power-profiles-daemon' to use the command 'powerprofilesctl'."
-        exit 1
-    fi
+	if ! command -v powerprofilesctl &>/dev/null; then
+		echo "Error: Please install 'power-profiles-daemon' to use the command 'powerprofilesctl'."
+		exit 1
+	fi
 
-    if ! command -v notify-send &> /dev/null; then
-        echo "Warning: notify-send is not installed. Notifications will not be sent."
-    fi
+	if ! command -v notify-send &>/dev/null; then
+		echo "Warning: notify-send is not installed. Notifications will not be sent."
+	fi
 }
 
 power_saver() {
-    check_dependencies
+	check_dependencies
 
-    echo "Setting power-saver profile"
-    brightnessctl set 50% || { echo "Error: Failed to set brightness"; exit 1; }
-    powerprofilesctl set power-saver || { echo "Error: Failed to set power profile"; exit 1; }
+	echo "Setting power-saver profile"
+	brightnessctl set 50% || {
+		echo "Error: Failed to set brightness"
+		exit 1
+	}
+	powerprofilesctl set power-saver || {
+		echo "Error: Failed to set power profile"
+		exit 1
+	}
 
-    if command -v notify-send &> /dev/null; then
-        notify-send "Power Profile" "Power-saver profile set"
-    fi
+	if command -v notify-send &>/dev/null; then
+		notify-send "Power Profile" "Power-saver profile set"
+	fi
 }
 
 balanced() {
-    check_dependencies
+	check_dependencies
 
-    echo "Setting balanced profile"
-    brightnessctl set 100% || { echo "Error: Failed to set brightness"; exit 1; }
-    powerprofilesctl set balanced || { echo "Error: Failed to set power profile"; exit 1; }
+	echo "Setting balanced profile"
+	brightnessctl set 100% || {
+		echo "Error: Failed to set brightness"
+		exit 1
+	}
+	powerprofilesctl set balanced || {
+		echo "Error: Failed to set power profile"
+		exit 1
+	}
 
-    if command -v notify-send &> /dev/null; then
-        notify-send "Power Profile" "Balanced profile set"
-    fi
+	if command -v notify-send &>/dev/null; then
+		notify-send "Power Profile" "Balanced profile set"
+	fi
 }
 
 performance() {
-    check_dependencies
+	check_dependencies
 
-    echo "Setting performance profile"
-    brightnessctl set 100% || { echo "Error: Failed to set brightness"; exit 1; }
-    powerprofilesctl set performance || { echo "Error: Failed to set power profile"; exit 1; }
+	echo "Setting performance profile"
+	brightnessctl set 100% || {
+		echo "Error: Failed to set brightness"
+		exit 1
+	}
+	powerprofilesctl set performance || {
+		echo "Error: Failed to set power profile"
+		exit 1
+	}
 
-    if command -v notify-send &> /dev/null; then
-        notify-send "Power Profile" "Performance profile set"
-    fi
+	if command -v notify-send &>/dev/null; then
+		notify-send "Power Profile" "Performance profile set"
+	fi
 }
 
 case "$1" in
-    -s | --power-saver)
-        power_saver
-        ;;
-    -b | --balanced)
-        balanced
-        ;;
-    -p | --performance)
-        performance
-        ;;
-    -h | --help)
-        echo "Usage: set_power_profile [OPTION]"
-        echo "Set power profile"
-        echo
-        echo "Options:"
-        echo "  -s, --power-saver    Set power-saver profile"
-        echo "  -b, --balanced       Set balanced profile"
-        echo "  -p, --performance    Set performance profile"
-        echo "  -h, --help           Display this help and exit"
-        exit 0
-        ;;
-    *)
-        echo "Error: Invalid option '$1'"
-        echo "Usage: set_power_profile [OPTION]"
-        echo "Try 'set_power_profile --help' for more information."
-        exit 1
-        ;;
+-s | --power-saver)
+	power_saver
+	;;
+-b | --balanced)
+	balanced
+	;;
+-p | --performance)
+	performance
+	;;
+-h | --help)
+	echo "Usage: set_power_profile [OPTION]"
+	echo "Set power profile"
+	echo
+	echo "Options:"
+	echo "  -s, --power-saver    Set power-saver profile"
+	echo "  -b, --balanced       Set balanced profile"
+	echo "  -p, --performance    Set performance profile"
+	echo "  -h, --help           Display this help and exit"
+	exit 0
+	;;
+*)
+	echo "Error: Invalid option '$1'"
+	echo "Usage: set_power_profile [OPTION]"
+	echo "Try 'set_power_profile --help' for more information."
+	exit 1
+	;;
 esac

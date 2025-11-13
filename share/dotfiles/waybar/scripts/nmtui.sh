@@ -1,1 +1,0 @@
-kitty --class floating -e nmtui

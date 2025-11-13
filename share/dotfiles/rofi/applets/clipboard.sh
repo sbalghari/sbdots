@@ -11,10 +11,10 @@ title="Clipboard History"
 # Rofi command
 rofi_cmd() {
     rofi -theme-str 'textbox-prompt-colon {str: "";}' \
-        -theme-str 'window {width: 720px;}' \
+        -theme-str 'window {width: 50%;}' \
         -theme "${theme}" \
         -p "$title" \
-        -l 8 \
+        -l 12 \
         -dmenu \
         -markup-rows
 }
