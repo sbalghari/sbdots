@@ -133,11 +133,10 @@ class Notification:
         self._context_active = False
 
 
-def notiy_send(message: str, title: str = "SBDots", urgency: str = "normal", time: int = 3) -> None:
+def notiy_send(
+    message: str, title: str = "SBDots", urgency: str = "normal", time: int = 3
+) -> None:
     instance: Notification = Notification(
-        title=title,
-        body_text=message,
-        urgency_level=urgency,
-        expire_time=time
+        title=title, body_text=message, urgency_level=urgency, expire_time=time
     )
     return instance.notify()
