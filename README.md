@@ -1,42 +1,67 @@
+<div align="center">
+  <img src="assets/logo_light.svg" alt="SBDots Logo" width="200"/>
+  <h1>SBDots</h1>
+  <p>A Modern, Feature-Rich, and Polished Hyprland Setup</p>
+</div>
+
+<div align="center">
+  <a href="https://github.com/sbalghari/sbdots/issues">
+    <img src="https://img.shields.io/github/issues/sbalghari/sbdots?style=for-the-badge&labelColor=313244&color=eba0ac" alt="Issues">
+  </a>
+   <a href="https://github.com/sbalghari/sbdots/stargazers">
+    <img src="https://img.shields.io/github/stars/sbalghari/sbdots?style=for-the-badge&labelColor=313244&color=f9e2af" alt="Stars">
+  </a>
+  <a href="https://github.com/sbalghari/sbdots/blob/main">
+    <img src="https://img.shields.io/github/repo-size/sbalghari/sbdots?style=for-the-badge&labelColor=313244&color=cba6f7" alt="Repo-Size">
+  </a>
+  <a href="https://github.com/sbalghari/sbdots/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/sbalghari/sbdots?style=for-the-badge&labelColor=313244&color=74c7ec" alt="License">
+  </a>
+</div>
+
 > [!NOTE]
 > SBDots is in alpha - expect some rough edges! Bug reports are appreciated.
 
-![screenshot1](https://github.com/sbalghari/sbdots/blob/main/assets/s1.png)
-
-# SBDots – A Modern Hyprland Experience
-
-Welcome to SBDots – a polished, feature-rich dotfiles for Arch Linux and Hyprland. Designed for aesthetics, efficiency, and full functionality, it delivers a refined, seamless, and modern desktop experience.
+Welcome to SBDots – a polished, feature-rich and automated dotfiles setup for Arch Linux and Hyprland. Designed for aesthetics, efficiency, and full functionality, it delivers a refined, seamless, and modern desktop experience.
 
 ## Features
+Here are some of the main features of sbdots.
 
-- A clean, efficient, and fully optimized configuration for [Hyprland](https://github.com/vaxerski/hyprland), providing a smooth tiling window management experience.
-
-- A stylish and functional status bar using [Waybar](https://github.com/Alexays/Waybar), featuring tray icons, weather updates, music controls, system monitoring, and more, with extensive customization options.
-
-- A sleek and dynamic application launcher powered by [Rofi](https://github.com/davatorium/rofi), featuring pywal integration for automatic color adaptation based on the current wallpaper.
-
-- A modern notification system powered by [SwayNC](https://github.com/ErikReider/SwayNotificationCenter), offering a centralized control center for managing notifications efficiently.
-
-- A user-friendly and interactive shell experience with auto-suggestions and syntax highlighting, combining the power of [fish](https://fishshell.com/) and [Starship](https://github.com/starship/starship) for a visually appealing command-line interface.
-
-- A unified and consistent visual theme across Hyprland, Waybar, SwayNC, and Flatpak applications, automatically syncing with the system-wide GTK theme for seamless aesthetics.
-
-- A collection of custom utility scripts written in shell and Python, designed for system management, wallpaper automation, and workflow enhancements.
-
-- Regular updates and ongoing refinements to continuously enhance functionality, stability, and the overall user experience.
+| Feature                            | Included | Notes                                                                                      |
+| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
+| Automated Installer                | ✅       | A python based automated installer for minimal setup hassle                                |
+| Hyprland Config                    | ✅       | Pre-tuned configs for appearances, env vars, window rules and more                         |
+| Status Bar (Waybar)                | ✅       | Modern, clean bar with music controls, tools-bar, weather module and etc                   |
+| Launcher (Rofi)                    | ✅       | Application launcher + dmenus for clipboard-history, screenshot, shaders and others        |
+| Theming & Appearance               | ✅       | GTK-3/4 themes, icon packs, cursors, and fonts pre-applied (QT not supported right now)    |
+| Terminal (Kitty + Fish + starship) | ✅       | A beautiful terminal with shell enhancements, aliases and etc                              |
+| Updates or automatic uninstall     | ❌       | Currently not available, planed for future versions.                                       |
+| Up-coming features                 | ❌       | Theme switchers, Settings app, GUI installer, other distro support, and much more          |
 
 ## Installation
 
-> Note: SBDots is designed for Arch Linux. While Arch-based distributions may work, they are not tested.
-
-1. **Run install.sh**:
+> Note: As of now, **SBDots** is supported and tested for **Arch Linux** only, while arch based distributions may work, they are not tested.
 
 ```bash
 bash <(wget -qO- https://raw.githubusercontent.com/sbalghari/sbdots/main/install.sh)
 ```
+Run the above command in your terminal and follow the on screen instructions.
 
-2. **Follow the installer's instructions**:
-3. **Enjoy...**
+## Keybindings
+
+Here are some basic keybindings to get you started.
+
+| Key-bind                | Action                   |
+| ----------------------- | ------------------------ |
+| **Super + Space**       | Application launcher     |
+| **Super + E**           | File manager             |
+| **Super + Return**      | Open terminal            |
+| **Super + SHIFT** + Q   | Open power menu          |
+| **Super + Q**           | Close current window/app |
+| **Super + Mouse Left**  | Move window              |
+| **Super + Mouse Right** | Resize window            |
+| **Super + Shift + C**   | Change wallpaper         |
+| **Super + Shift + B**   | Show keybinds            |
 
 ## Contributing
 
