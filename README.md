@@ -40,12 +40,16 @@ Here are some of the main features of sbdots.
 
 ## Installation
 
-> Note: As of now, **SBDots** is supported and tested for **Arch Linux** only, while arch based distributions may work, they are not tested.
+> [!NOTE]
+>  As of now, **SBDots** is supported and tested for **Arch Linux** only, while arch based distributions may work, they are not tested.
 
 ```bash
-bash <(wget -qO- https://raw.githubusercontent.com/sbalghari/sbdots/main/install.sh)
+curl -fsSL https://raw.githubusercontent.com/sbalghari/sbdots/main/install.sh | bash
 ```
 Run the above command in your terminal and follow the on screen instructions.
+
+> [!WARNING]
+> Use rolling release only, for now!
 
 ## Keybindings
 
