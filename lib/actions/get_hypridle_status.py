@@ -1,14 +1,11 @@
 import json
-from library import find_procs_by_name
+from library import is_running
 
 
 class GetHypridleStatus:
     def __init__(self, conn, *args):
         self.conn = conn
         self.procs_name = "hypridle"
-
-    def _is_running(self) -> bool:
-        return bool(find_procs_by_name(self.procs_name))
 
     def send(self, data: dict) -> None:
         try:
@@ -19,7 +16,7 @@ class GetHypridleStatus:
             pass
 
     def main(self) -> None:
-        if self._is_running():
+        if is_running(self.procs_name):
             self.send(
                 {
                     "text": "On",

@@ -32,7 +32,7 @@ with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
     buffer = ""
     while True:
         try:
-            chunk = s.recv(4096).decode("utf-8")  # Receive larger chunks
+            chunk = s.recv(4096).decode("utf-8")
             if not chunk:  # Connection closed by server
                 break
             buffer += chunk

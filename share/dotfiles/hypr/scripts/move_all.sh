@@ -4,14 +4,14 @@ target_workspace=$1
 
 # Check if a target workspace was provided
 if [ -z "$target_workspace" ]; then
-    log_message "Error: No target workspace provided"
+    echo "Error: No target workspace provided"
     exit 1
 fi
 
 current_workspace=$(hyprctl activewindow -j | jq '.workspace.id')
 
 if [ -z "$current_workspace" ]; then
-    log_message "Error: Couldn't determine current workspace"
+    echo "Error: Couldn't determine current workspace"
     exit 1
 fi
 

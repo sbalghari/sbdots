@@ -7,6 +7,7 @@ USER_CONFIGS_DIR = HOME / ".config"
 USER_DOTFILES_DIR = HOME / "Dotfiles"
 USER_WALLPAPERS_DIR = HOME / "Wallpapers"
 SBDOTS_CONFIG_DIR = HOME / ".config" / "sbdots"
+USER_SBDOTS_SETTINGS_DIR = SBDOTS_CONFIG_DIR / "settings"
 
 # SBDots data dirs/files
 SBDOTS_SHARE_DIR = Path("/usr/share/sbdots")

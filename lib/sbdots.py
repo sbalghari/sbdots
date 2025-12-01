@@ -1,98 +1,53 @@
-import sys
-import argparse
+import click
 
 from lifecycle.installer import SBDotsInstaller
 from lifecycle.uninstaller import SBDotsUninstaller
 from lifecycle.updater import SBDotsUpdater
 from library import get_sbdots_version
 
-
-DRY_RUN = False
-
-
-def create_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="sbdots",
-        description="SBDots, a polished, feature-rich ArchLinux + Hyprland Setup.",
-        formatter_class=argparse.RawTextHelpFormatter,
-    )
-
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument(
-        "-i",
-        "--install",
-        action="store_true",
-        help="Installs SBDots on your system",
-    )
-    group.add_argument(
-        "-r",
-        "--remove",
-        action="store_true",
-        help="Uninstalls SBDots from your system",
-    )
-    group.add_argument(
-        "-u",
-        "--update",
-        action="store_true",
-        help="Updates SBDots to the latest version",
-    )
-    group.add_argument(
-        "-cu",
-        "--check-update",
-        action="store_true",
-        help="Checks if a new version of SBDots is available",
-    )
-    group.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        version=get_sbdots_version(),
-        help="Show program version and exit",
-    )
-
-    return parser
+__version__ = get_sbdots_version()
 
 
-def handle_install() -> None:
-    installer = SBDotsInstaller(dry_run=DRY_RUN)
-    installer.install()
+def common_options(func):
+    options = [
+        click.option("--dry-run/--no-dry-run", default=False),
+        click.option("--verbose/--no-verbose", default=False),
+    ]
+    for opt in reversed(options):
+        func = opt(func)
+    return func
 
 
-def handle_uninstall() -> None:
-    uninstaller = SBDotsUninstaller(dry_run=DRY_RUN)
-    uninstaller.uninstall()
+def _run(lifecycle_cls, verbose, dry_run, action):
+    obj = lifecycle_cls(dry_run=dry_run, verbose=verbose)
+    return getattr(obj, action)()
 
 
-def handle_update() -> None:
-    updater = SBDotsUpdater(dry_run=DRY_RUN)
-    updater.update()
+@click.group()
+@click.version_option(version=__version__, message="%(version)s")
+def cli():
+    pass
 
 
-def handle_check_update() -> None:
-    updater = SBDotsUpdater(dry_run=DRY_RUN)
-    updater.check_update()
+@cli.command()
+@common_options
+def install(verbose, dry_run):
+    _run(SBDotsInstaller, verbose, dry_run, "install")
 
 
-def handle_no_command(parser) -> None:
-    parser.print_help()
-    sys.exit(0)
+@cli.command()
+@common_options
+def uninstall(verbose, dry_run):
+    _run(SBDotsUninstaller, verbose, dry_run, "uninstall")
 
 
-def main():
-    parser = create_parser()
-    args = parser.parse_args()
-
-    if args.install:
-        handle_install()
-    elif args.remove:
-        handle_uninstall()
-    elif args.update:
-        handle_update()
-    elif args.check_update:
-        handle_check_update()
-    else:
-        handle_no_command(parser)
+@cli.command()
+@common_options
+def update(verbose, dry_run):
+    _run(SBDotsUpdater, verbose, dry_run, "update")
 
 
-if __name__ == "__main__":
-    main()
+@cli.command()
+@common_options
+def check_update(verbose, dry_run):
+    _run(SBDotsUpdater, verbose, dry_run, "check_update")

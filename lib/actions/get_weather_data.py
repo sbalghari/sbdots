@@ -125,8 +125,11 @@ class OnGetWeather:
 
             self.logger.info("Successfully fetched weather data from WeatherAPI.com")
             return response.json()
+        except requests.ConnectionError as e:
+            self.logger.error(f"Connection error: {e}")
+            return None
         except requests.HTTPError as e:
-            self.logger.error(f"Bad status code. {e}")
+            self.logger.error(f"Bad status code: {e}")
             return None
         except requests.Timeout as e:
             self.logger.error(f"Request timeout: {e}, retry later!")

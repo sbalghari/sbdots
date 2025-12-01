@@ -30,7 +30,7 @@ from .postinstall import (
     apply_gtk_theme,
     apply_wallpaper,
     reload_hyprland,
-    start_actionsd,
+    start_services,
 )
 
 from utils.paths import (
@@ -41,7 +41,9 @@ from utils.paths import (
 
 
 class SBDotsInstaller:
-    def __init__(self, dry_run: bool = False) -> None:
+    def __init__(self, dry_run: bool = False, verbose: bool = False) -> None:
+        self.dry_run = dry_run
+        self.verbose = verbose
         self.dry_run = dry_run
         self.failed_components: List[str] = []
 
@@ -157,11 +159,12 @@ class SBDotsInstaller:
             if reboot:
                 print_warning("Rebooting...")
                 sleep(1)
-                try:
-                    run_command(["reboot"])
-                except Exception as e:
-                    print_error(f"Failed to reboot automatically: {e}")
-                    print_subtext("Please reboot manually.")
+                if not self.dry_run:
+                    try:
+                        run_command(["reboot"])
+                    except Exception as e:
+                        print_error(f"Failed to reboot automatically: {e}")
+                        print_subtext("Please reboot manually.")
             sys.exit(0)
         else:
             if self.failed_components:
@@ -258,8 +261,8 @@ class SBDotsInstaller:
         with Spinner("Finalizing SBDots installation...") as spinner:
             finalization_steps = [
                 (
-                    "Starting SBDots Actions...",
-                    lambda: start_actionsd(logger=self.logger, dry_run=self.dry_run),
+                    "Starting SBDots Services...",
+                    lambda: start_services(logger=self.logger, dry_run=self.dry_run),
                     True,
                 ),  # critical
                 (

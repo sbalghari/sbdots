@@ -93,8 +93,8 @@
     "exec-on-event": true,
     "interval": 10,
     "tooltip-format": "Toggle Screen Shader\nleft-click: Toggle screen shader\nright-click: Open screen shader menu",
-    "on-click": "sleep 0.2; ~/.config/rofi/applets/hyprshade.sh",
-    "on-click-right": "sleep 0.2; ~/.config/rofi/applets/hyprshade.sh rofi"
+    "on-click": "~/.config/rofi/applets/hyprshade.sh",
+    "on-click-right": "~/.config/rofi/applets/hyprshade.sh rofi"
   },
 
   // Locking system (hypridle)
@@ -105,7 +105,7 @@
     "exec-on-event": true,
     "interval": 3600,
     "exec": "sbdots-actions get_hypridle_status",
-    "on-click": "bash ~/.config/hypr/services/hypridle.sh toggle"
+    "on-click": "~/.config/hypr/services/hypridle.sh toggle"
   },
 
   // Updates
@@ -153,14 +153,14 @@
     // "format-connected-battery": " Connected-{device_battery_percentage}%", always shows 100%, idk why
     "format-off": "󰂲 Off",
     "interval": 30,
-    "on-click-right": "sleep 0.1 && blueman-manager",
+    "on-click-right": "blueman-manager",
     "format-no-controller": ""
   },
 
   // Audio
   "pulseaudio": {
     "scroll-step": 5,
-    "format": "{icon} {volume}%",
+    "format": "{icon} {volume}% {format_source}",
     "format-alt": "{icon}",
     "format-bluetooth": "{volume}% {icon} {format_source}",
     "format-bluetooth-muted": " {icon} {format_source}",
@@ -176,7 +176,7 @@
       "car": "",
       "default": ["", "", ""]
     },
-    "on-click-right": "sleep 0.1 && pavucontrol",
+    "on-click-right": "pavucontrol",
     "tooltip-format": "{volume}% {format_source}"
   },
 
@@ -192,7 +192,7 @@
     "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 20,
-    "on-click-right": "sleep 0.1 && kitty --class floating -e nmtui"
+    "on-click-right": "kitty --class floating -e nmtui"
   },
 
   // System Tray

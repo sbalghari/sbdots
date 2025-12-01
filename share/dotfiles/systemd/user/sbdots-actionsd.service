@@ -4,12 +4,13 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /usr/lib/sbdots/actionsd.py
+Environment=PYTHONPATH=/usr/lib/sbdots
+ExecStart=/usr/bin/python3 -m daemons.actions_daemon
+WorkingDirectory=/usr/lib/sbdots
 Restart=on-failure
 RestartSec=2
 StandardOutput=journal
 StandardError=journal
-Environment=WAYLAND_DISPLAY=wayland-1
 
 [Install]
 WantedBy=default.target

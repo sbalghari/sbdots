@@ -9,7 +9,18 @@ from .pkg_ops import (
     install_package_group,
     remove_package,
 )
-from .procs_ops import send_signal, find_pid_by_name, find_procs_by_name, kill_proc_tree
+from .procs_ops import (
+    send_signal,
+    kill_proc_tree,
+    is_running,
+    get_pid,
+    get_proc,
+    get_procs,
+    kill_proc,
+    term_proc,
+    start_proc,
+    Process,
+)
 from .notification_utils import Notification, notiy_send
 from .sudo_keep_alive import SudoKeepAlive
 from utils.paths import SBDOTS_METADATA_FILE
@@ -28,9 +39,15 @@ __all__ = [
     "create_symlink",
     # Processes related operations
     "send_signal",
-    "find_pid_by_name",
-    "find_procs_by_name",
     "kill_proc_tree",
+    "is_running",
+    "get_pid",
+    "get_proc",
+    "get_procs",
+    "kill_proc",
+    "term_proc",
+    "start_proc",
+    "Process",
     # Package related operations
     "is_installed",
     "install_package",

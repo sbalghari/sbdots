@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # File containing clipboard history
-history_file="$HOME/.cache/wl-clipboard-history"
+history_file="$HOME/.cache/clipboard-history"
 
 # Theme
 theme="$HOME/.config/rofi/configs/dmenu.rasi"
@@ -11,10 +11,10 @@ title="Clipboard History"
 # Rofi command
 rofi_cmd() {
     rofi -theme-str 'textbox-prompt-colon {str: "";}' \
-        -theme-str 'window {width: 50%;}' \
+        -theme-str 'window {width: 35%;}' \
         -theme "${theme}" \
         -p "$title" \
-        -l 12 \
+        -l 8 \
         -dmenu \
         -markup-rows
 }

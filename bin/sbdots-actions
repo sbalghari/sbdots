@@ -1,10 +1,23 @@
 #!/bin/sh
 
-# Prevents interactive terminal execution
+# Prevent interactive terminal execution
 if [ -t 0 ] && [ -t 1 ]; then
-	echo "This command is used internally by SBDots."
-	exit 0
+    # Read the parent process name from /proc or fallback to ps
+    if [ -r "/proc/$PPID/comm" ]; then
+        parent=$(tr -d '\n' < "/proc/$PPID/comm")
+    else
+        parent=$(ps -o comm= "$PPID" 2>/dev/null || true)
+        parent=$(printf '%s' "$parent" | tr -d '\n')
+    fi
+
+    case "$parent" in
+        waybar|waypaper)
+            ;; # allowed parents, continue
+        *)
+            printf '%s\n' "This command is intended to be run by 'waybar' or 'waypaper'." >&2
+            exit 1
+            ;;
+    esac
 fi
 
-exec python3 /usr/lib/sbdots/actionsc.py "$@"
-
+exec python3 /usr/lib/sbdots/actions_dispatcher.py "$@"

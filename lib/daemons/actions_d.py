@@ -1,5 +1,3 @@
-# actions daemon/local-server
-
 import os
 import socket
 import sys
@@ -8,12 +6,14 @@ import threading
 import logging
 import io
 import signal
+import setproctitle
 import concurrent.futures
 from contextlib import redirect_stdout
 from typing import Dict, List
 
 import actions  # noqa: F401
 
+setproctitle.setproctitle("sbdots-actions")
 
 SOCKET_PATH = "/tmp/sbdots_actions.sock"
 LONG_RUNNING_ACTIONS: List[Dict] = []
@@ -27,7 +27,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger("SBDotsActionsDaemon")
 
-# --- Global State ---
 # For tracking connections and running actions
 state_lock = threading.Lock()
 active_connections = 0
@@ -296,7 +295,7 @@ def start_daemon():
 
         for thread in current_threads:
             if thread.is_alive():
-                thread.join(timeout=5.0)
+                thread.join(timeout=3)
                 if thread.is_alive():
                     logger.warning("Thread failed to terminate within timeout")
 

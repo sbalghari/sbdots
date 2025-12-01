@@ -1,0 +1,14 @@
+[Unit]
+Description=SBDots Clipboard Listener(wl-based) Daemon
+After=graphical.target
+
+[Service]
+Type=simple
+Environment=PYTHONPATH=/usr/lib/sbdots
+ExecStart=/usr/bin/python3 -m daemons.clipboard_listener
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

@@ -63,7 +63,7 @@ def remove_package(logger: logging.Logger, package: str) -> bool:
         return True
 
     try:
-        result = run_command(["yay", "-R", package, "--noconfirm", "--quiet"])
+        result = run_command(["yay", "-R", package])
         return result.returncode == 0
     except subprocess.CalledProcessError as e:
         logger.error(
