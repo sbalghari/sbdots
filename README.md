@@ -19,6 +19,9 @@
   </a>
 </div>
 
+> [!WARNING]
+> The project is being redesigned, so this is not maintained at the moment and is not compatible with Hyprland above 0.52.2.
+
 > [!NOTE]
 > SBDots is in alpha - expect some rough edges! Bug reports are appreciated.
 
