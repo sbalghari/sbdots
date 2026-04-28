@@ -20,4 +20,4 @@ if [ -t 0 ] && [ -t 1 ]; then
     esac
 fi
 
-exec python3 /usr/lib/sbdots/actions_dispatcher.py "$@"
+exec python3 /usr/lib/sbdots/sbdots_actions.py "$@"

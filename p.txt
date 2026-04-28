@@ -1,0 +1,241 @@
+
+Hey, i need help design a clear and approachable goal for sbdots, here are the details.
+
+Current state:
+    dir structure:
+        ├──  bin
+        │   ├── 󰡯 catppuccin_theme_installer
+        │   ├── 󰡯 generate_rofi_colors
+        │   ├── 󰡯 gtk_theme_manager
+        │   ├── 󰡯 sbdots
+        │   ├── 󰡯 sbdots-actions
+        │   └── 󰡯 set_power_profile
+        ├──  CHANGELOG.md
+        ├──  CODE_OF_CONDUCT.md
+        ├──  CONTRIBUTING.md
+        ├──  install.sh
+        ├──  lib
+        │   ├──  __init__.py
+        │   ├──  actions
+        │   │   ├──  __init__.py
+        │   │   ├──  get_hypridle_status.py
+        │   │   ├──  on_check_updates.py
+        │   │   ├──  on_get_weather.py
+        │   │   ├──  on_mpd_change.py
+        │   │   └──  on_wallpaper_change.py
+        │   ├──  actionsc.py
+        │   ├──  actionsd.py
+        │   ├──  library
+        │   │   ├──  __init__.py
+        │   │   ├──  fs_ops.py
+        │   │   ├──  notification_utils.py
+        │   │   ├──  pkg_ops.py
+        │   │   ├──  procs_ops.py
+        │   │   ├──  run_cmd.py
+        │   │   ├──  sudo_keep_alive.py
+        │   │   ├──  sys_ops.py
+        │   │   └──  tui.py
+        │   ├──  lifecycle
+        │   │   ├──  __init__.py
+        │   │   ├──  components
+        │   │   │   ├──  __init__.py
+        │   │   │   ├──  auto_power_saver.py
+        │   │   │   ├──  dotfiles.py
+        │   │   │   ├──  packages.py
+        │   │   │   └──  wallpapers.py
+        │   │   ├──  installer.py
+        │   │   ├──  postinstall
+        │   │   │   ├──  __init__.py
+        │   │   │   ├──  apply_gtk_theme.py
+        │   │   │   ├──  apply_wallpaper.py
+        │   │   │   ├──  reload_hyprctl.py
+        │   │   │   └──  start_actionsd.py
+        │   │   ├──  uninstaller.py
+        │   │   └──  updater.py
+        │   ├──  sbdots.py
+        │   └──  utils
+        │       ├──  __init__.py
+        │       ├──  logger.py
+        │       └──  paths.py
+        ├──  LICENSE.md
+        ├──  pyproject.toml
+        ├── 󰂺 README.md
+        ├──  setup
+        │   └──  setup.py # not pythons setuptools one, but a script that copies src files to system dirs, like a poor PKGBUILD
+        ├──  share
+        │   ├──  dotfiles
+        │   │   ├──  atuin
+        │   │   │   └──  config.toml
+        │   │   ├──  btop
+        │   │   │   ├── 󱁻 btop.conf
+        │   │   │   └──  themes
+        │   │   │       ├──  catppuccin_latte.theme
+        │   │   │       └──  catppuccin_mocha.theme
+        │   │   ├──  cava
+        │   │   │   └── 󱁻 config
+        │   │   ├──  fastfetch
+        │   │   │   ├──  arch.png
+        │   │   │   └──  config.jsonc
+        │   │   ├──  fish
+        │   │   │   └──  config.fish
+        │   │   ├──  hypr
+        │   │   │   ├──  configs
+        │   │   │   │   ├── 󱁻 animation.conf
+        │   │   │   │   ├── 󱁻 decoration.conf
+        │   │   │   │   ├── 󱁻 enviromentvars.conf
+        │   │   │   │   ├── 󱁻 general.conf
+        │   │   │   │   ├── 󱁻 input.conf
+        │   │   │   │   ├── 󱁻 keybindings.conf
+        │   │   │   │   ├── 󱁻 misc.conf
+        │   │   │   │   ├── 󱁻 monitor.conf
+        │   │   │   │   └── 󱁻 windowrules.conf
+        │   │   │   ├──  hypridle.conf
+        │   │   │   ├──  hyprland.conf
+        │   │   │   ├──  hyprlock.conf
+        │   │   │   ├──  scripts
+        │   │   │   │   ├──  app_launcher.sh
+        │   │   │   │   ├──  color_picker.sh
+        │   │   │   │   ├──  launch_app.sh
+        │   │   │   │   ├──  move_all.sh
+        │   │   │   │   └──  toggle_floating.sh
+        │   │   ├──  kitty
+        │   │   │   ├── 󱁻 kitty.conf
+        │   │   │   └──  themes
+        │   │   │       ├── 󱁻 catppuccin-latte.conf
+        │   │   │       └── 󱁻 catppuccin-mocha.conf
+        │   │   ├──  neofetch
+        │   │   │   └── 󱁻 config.conf
+        │   │   ├──  rofi
+        │   │   │   ├──  applets
+        │   │   │   │   ├──  clipboard.sh
+        │   │   │   │   ├──  hyprshade.sh
+        │   │   │   │   ├──  keybindings.sh
+        │   │   │   │   └──  screenshot.sh
+        │   │   │   └──  configs
+        │   │   │       ├──  dmenu.rasi
+        │   │   │       └──  launcher.rasi
+        │   │   ├──  starship.toml
+        │   │   ├──  swaync
+        │   │   │   ├──  config.json
+        │   │   │   └──  style.css
+        │   │   ├──  systemd
+        │   │   │   └──  user
+        │   │   │       └──  sbdots-actionsd.service
+        │   │   ├──  waybar
+        │   │   │   ├── 󰡯 modules
+        │   │   │   └──  styles
+        │   │   │       ├──  minimal
+        │   │   │       │   ├── 󱁻 config
+        │   │   │       │   └──  style.css
+        │   │   │       └──  modern
+        │   │   │           ├── 󱁻 config
+        │   │   │           └──  style.css
+        │   │   ├──  waypaper
+        │   │   │   └── 󱁻 config.ini
+        │   │   └──  wlogout
+        │   │       ├── 󰡯 layout
+        │   │       └──  style.css
+        │   ├──  packages # json files with list of pkgs, used by lib/lifcyle/components/packages.installer
+        │   │   ├──  applications.json
+        │   │   ├──  core.json
+        │   │   ├──  fonts.json
+        │   │   ├──  hyprland.json
+        │   │   ├──  optional.json
+        │   │   └──  theming.json
+        │   └──  wallpapers
+        └──  uv.lock
+
+        summary:
+            a hyprland setup or a evolved or advanced dotfiles for hyprland + archlinux only.
+            dotfiles for few system tools and apps, the python library which does these things:
+                lifecycle -> curently, only installs the dotfiles, wallpapers and etc to the system, update or uninstall features not available rn. installation mostly hardcoded for the dotfiles specifically.
+                actions -> small event triggerd scripts ran by a socket ipc mainly called by waybar's custom modules and waypaper's post wallpaper change script.
+                and few extra things
+
+above is lived git version, so doesn't contain some works that aren't pushed yet and that you and i know like sbdotsctl, etc
+
+So, as you can see, sbdots is in a situation where i am stuck on what to do with it, make it just a dotfile, or a dotfile manager, or a base archlinux+hyprland setup or anything else,.
+
+it is surely grown from just a dotfiles with automatic installer script.
+
+here is what i am thinking to do:
+    archive the current repo as it is.
+    move the main python logic into a dotfile independent hyprland setup repo named sbdots or hyprforge, which will be my main project and its main objective of it make hyprland ricing easy and falback-able., which does these:
+        sbdots-actions -> event triggerd scripts, used by waybar, waypaper, sbdots itself, and etc.
+        sbdotsctl -> main ctl command with subcommands for managing themes\icons\fonts, managing or updating pkgs, widgets for system managements like a control panel, mpd, and etc build with 'fabric', etc
+        sbdots -> main lifecyle to manage the user dotfiles, the installer will ask the user weather they want a fully configured setup (in which case it will just my clone and dotfiles repo and install that) or they can chose to install a minimal setup which will install a base config for all the tools the user choses like(waybar or ashell or etc for status bar, kitty or alacrity or etc for terminal, rofi or walker or etc for app launcher and dmenus, and etc).
+                then the user can start ricing on their own, they can use sbdots-action or sbdotsctl command in thier rice, if anything breaks, they can just fallback to the default config, or if they give up their still will be option to install the preconfigured dotfiles of mine. and etc
+                they could save their dotfiles or push to github as sbdots compatible dotfiles(the installer will  ask to install a custom dotfile and they can just paste their dotfiles repo url)
+                they could work on multiple rices and safely switch bw them by a command, 
+                and etc
+
+    move the dotfiles to seperate repo with just named something like my hyprland dotfiles,
+
+this is my idea, as you might notice, i have not a clear goal and its a wide ideo or if even i have one i dont exactly know how to implement.
+i know this will take time for a junior like me. So i need help design a clear and approachable goal
+
+
+
+
+
+
+
+I need help designing a clear and achievable goal for my project SBDots. Here’s the current context and my thinking:
+
+Current state:
+
+SBDots is a Hyprland-focused setup evolved from simple dotfiles for Arch Linux.
+
+It includes:
+
+lib/lifecycle → installs dotfiles, wallpapers, manages base setup. Currently mostly hardcoded, minimal update/uninstall support.
+
+lib/actions → event-triggered scripts called via IPC (Waybar, Waypaper, SBDots itself).
+
+Extra utilities and scripts (bin/) for theme management, rofi colors, power profiles, etc.
+
+The repo also contains system-specific dotfiles for various tools (kitty, fish, Waybar, Rofi, etc.).
+
+Current installer is a simple script copying files to system dirs, like a basic PKGBUILD.
+
+Challenges:
+
+Unsure if SBDots should remain just a dotfiles collection, become a dotfile manager, or evolve into a base Hyprland + Arch setup tool.
+
+Current logic is tightly coupled to my own dotfiles; hard to extend or generalize.
+
+I want a clear goal that’s achievable for a junior developer.
+
+Vision:
+
+Archive the current repo as-is.
+
+Move main Python logic into a new repo (SBDots or HyprForge) with the objective of:
+
+Making Hyprland ricing easy, flexible, and fallback-able.
+
+Key components:
+
+sbdots-actions → event-triggered scripts for Waybar, Waypaper, SBDots.
+
+sbdotsctl → main CLI for managing themes, fonts, icons, packages, system widgets, etc.
+
+sbdots → lifecycle manager:
+
+Option to install fully configured dotfiles (my prebuilt setup) or minimal base configs.
+
+Supports user customization and fallback to defaults if needed.
+
+Supports managing multiple rices and switching between them.
+
+Option for users to install their own SBDots-compatible dotfiles via URL.
+
+Move personal dotfiles to a separate repo, independent from SBDots core logic.
+
+Request:
+
+Help me design a clear, approachable, and concrete goal for SBDots.
+
+The goal should balance ambition (full-featured Hyprland ricing tool) with feasibility (manageable for a junior developer).
+
+Suggest a roadmap or structure that makes the vision achievable without overwhelming complexity.

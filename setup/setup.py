@@ -205,7 +205,6 @@ def main() -> None:
 
     print()
     log.info("Launching SBDots...")
-    os.system('gum spin --title "Launching SBDots Installer..." -- sleep 2')
     os.system("sbdots --install")
 
 

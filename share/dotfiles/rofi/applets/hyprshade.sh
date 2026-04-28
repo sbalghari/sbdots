@@ -2,7 +2,7 @@
 
 # Configuration
 THEME="$HOME/.config/rofi/configs/dmenu.rasi"
-FILTER_CONFIG="$HOME/.config/sbdots/settings/hyprshade_filter.sh"
+FILTER_CONFIG="$HOME/.sbdots/settings/hyprshade_filter.sh"
 
 # Check dependencies
 if ! command -v hyprshade &>/dev/null; then

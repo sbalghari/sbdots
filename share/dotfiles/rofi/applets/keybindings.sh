@@ -25,5 +25,4 @@ while IFS= read -r line; do
     fi
 done < "$config_file"
 
-sleep 0.2
 echo "$keybinds" | rofi -dmenu -i -theme-str 'textbox-prompt-colon {str: "󰘳 ";}'  -markup -p "Keybinds" -theme ${theme}

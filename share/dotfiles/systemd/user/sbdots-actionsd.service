@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 Environment=PYTHONPATH=/usr/lib/sbdots
-ExecStart=/usr/bin/python3 -m daemons.actions_daemon
+ExecStart=/usr/bin/python3 -m daemons.actions_d
 WorkingDirectory=/usr/lib/sbdots
 Restart=on-failure
 RestartSec=2
@@ -14,3 +14,4 @@ StandardError=journal
 
 [Install]
 WantedBy=default.target
+
