@@ -2,7 +2,7 @@ from pathlib import Path
 from time import sleep
 
 from utils.paths import SBDOTS_UDEV_RULES_DIR
-from library import path_lexists, SudoKeepAlive, is_laptop, is_vm, run_command
+from lib import path_lexists, SudoKeepAlive, is_laptop, is_vm, run_command
 from library.tui import print_header, Spinner
 
 

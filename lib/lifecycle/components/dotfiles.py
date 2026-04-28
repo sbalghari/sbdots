@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List, Tuple
 from time import sleep
 
-from library import remove, create_symlink, path_lexists, copy
+from lib import remove, create_symlink, path_lexists, copy
 from utils.paths import USER_CONFIGS_DIR, USER_DOTFILES_DIR, SBDOTS_DOTFILES_DIR
 from library.tui import print_header, Spinner
 

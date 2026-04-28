@@ -7,7 +7,7 @@ from pathlib import Path
 
 from utils.logger import Logger
 from utils.paths import SBDOTS_LOG_DIR, SBDOTS_CONFIG_DIR
-from library import path_lexists, Notification
+from lib import path_lexists, Notification
 
 
 class OnWallpaperChange:

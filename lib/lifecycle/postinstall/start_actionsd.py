@@ -1,4 +1,4 @@
-from library import run_command
+from lib import run_command
 from utils.logger import Logger
 from typing import List
 from subprocess import CompletedProcess

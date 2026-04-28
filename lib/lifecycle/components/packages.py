@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import json
 
-from library import is_installed, install_package, remove_package, SudoKeepAlive
+from lib import is_installed, install_package, remove_package, SudoKeepAlive
 from utils.paths import (
     HYPRLAND_PKGS,
     CORE_PKGS,

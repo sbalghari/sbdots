@@ -1,5 +1,5 @@
 import json
-from library import find_procs_by_name
+from lib import find_procs_by_name
 
 
 class GetHypridleStatus:

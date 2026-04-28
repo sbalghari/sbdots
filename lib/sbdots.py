@@ -4,7 +4,7 @@ import argparse
 from lifecycle.installer import SBDotsInstaller
 from lifecycle.uninstaller import SBDotsUninstaller
 from lifecycle.updater import SBDotsUpdater
-from library import get_sbdots_version
+from lib import get_sbdots_version
 
 
 DRY_RUN = False
