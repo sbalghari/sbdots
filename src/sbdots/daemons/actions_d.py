@@ -10,7 +10,6 @@ import concurrent.futures
 from contextlib import redirect_stdout
 from typing import Dict, List
 
-from sbdots import actions  # noqa: F401
 from sbdots.utils.logger import setup_daemon_logging
 
 
@@ -90,7 +89,7 @@ def handle_action(conn):
         args4action = parts[1:]
 
         try:
-            module = importlib.import_module(f"actions.{action2exec}")
+            module = importlib.import_module(f"sbdots.actions.{action2exec}")
         except Exception as e:
             msg = f"Failed to import action '{action2exec}': {e}"
             logger.error(msg)
@@ -313,7 +312,7 @@ def start_daemon():
         os.unlink(SOCKET_PATH)
 
 
-if __name__ == "__main__":
+def main():
     try:
         start_daemon()
     except Exception as e:

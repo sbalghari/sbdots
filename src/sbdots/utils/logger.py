@@ -6,10 +6,16 @@ from pathlib import Path
 from typing import Optional, Union
 from enum import Enum
 import sys
+import os
 
 from rich.logging import RichHandler
 
-from .paths import SBDOTS_LOG_DIR, SBDOTS_STATE_DIR
+
+SBDOTS_STATE_DIR = Path(
+    os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")
+) / "sbdots"
+
+SBDOTS_LOG_DIR = SBDOTS_STATE_DIR / "logs"
 
 
 class LogLevel(Enum):

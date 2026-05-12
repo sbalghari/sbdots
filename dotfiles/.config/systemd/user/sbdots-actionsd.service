@@ -7,19 +7,11 @@ Type=simple
 
 ExecStart=/usr/bin/python -m sbdots.daemons.actions_d
 
-Environment=PYTHONUNBUFFERED=1
-Environment=PYTHONPATH=/usr/lib/sbdots
-
 Restart=on-failure
 RestartSec=2
 
 StandardOutput=journal
 StandardError=journal
-
-NoNewPrivileges=true
-PrivateTmp=true
-ProtectSystem=full
-ProtectHome=true
 
 [Install]
 WantedBy=multi-user.target

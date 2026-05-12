@@ -8,9 +8,6 @@ Type=simple
 
 ExecStart=/usr/bin/python -m sbdots.daemons.cliplistener_d
 
-Environment=PYTHONUNBUFFERED=1
-Environment=PYTHONPATH=/usr/lib/sbdots
-
 Restart=always
 RestartSec=1
 

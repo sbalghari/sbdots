@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 import logging
 import json
 
@@ -8,7 +8,6 @@ import gi
 
 gi.require_version("Playerctl", "2.0")
 
-from gi.repository.Playerctl import Player  # type: ignore # noqa
 from gi.repository import Playerctl, GLib  # type: ignore # noqa
 
 
@@ -24,7 +23,7 @@ class OnMediaChange:
         # Socket connection
         self.conn = conn
 
-        # Mpd stuff
+        # Playerctl stuff
         self.manager = Playerctl.PlayerManager()
         self.loop = GLib.MainLoop()
         self.manager.connect(
@@ -59,13 +58,13 @@ class OnMediaChange:
 
     def init_player(self, player):
         self.logger.info(f"Initialize new player: {player.name}")
-        player = Playerctl.Player.new_from_name(player)
-        player.connect("playback-status", self.on_playback_status_changed, None)
-        player.connect("metadata", self.on_metadata_changed, None)
-        self.manager.manage_player(player)
-        self.on_metadata_changed(player, player.props.metadata)
+        player_obj = Playerctl.Player.new_from_name(player.name)
+        player_obj.connect("playback-status", self.on_playback_status_changed, None)
+        player_obj.connect("metadata", self.on_metadata_changed, None)
+        self.manager.manage_player(player_obj)
+        self.on_metadata_changed(player_obj, player_obj.props.metadata)
 
-    def get_players(self) -> List[Player]:
+    def get_players(self) -> List[Playerctl.Player]:
         return self.manager.props.players
 
     def write_output(self, text, title, player):
@@ -107,13 +106,13 @@ class OnMediaChange:
         )
         self.on_metadata_changed(player, player.props.metadata)
 
-    def get_first_playing_player(self):
+    def get_first_playing_player(self) -> Optional[Playerctl.Player]:
         players = self.get_players()
         self.logger.debug(f"Getting first playing player from {len(players)} players")
         if len(players) > 0:
             # if any are playing, show the first one that is playing
             # reverse order, so that the most recently added ones are preferred
-            for player in players[::-1]:
+            for player in reversed(players):
                 if player.props.status == "Playing":
                     return player
             # if none are playing, show the first one
@@ -149,27 +148,27 @@ class OnMediaChange:
             artist = "Unknown Artist"
 
         track_info = ""
-        if (
-            player_name == "spotify"
-            and "mpris:trackid" in metadata.keys()
-            and ":ad:" in player.props.metadata["mpris:trackid"]
-        ):
+        
+        # Check for Spotify ad
+        if (player_name == "spotify" 
+            and "mpris:trackid" in metadata.keys() 
+            and metadata["mpris:trackid"] 
+            and ":ad:" in str(metadata["mpris:trackid"])):
             track_info = "Advertisement"
         elif artist is not None and title is not None:
             track_info = " " + artist + " - " + title
         else:
             track_info = " " + player_name
 
-        if track_info:
+        # Update icon based on playback status
+        if track_info and track_info != "Advertisement":
             if player.props.status != "Playing":
                 track_info = " " + artist + " - " + title  # Use a paused icon
 
         # Only print output if no other player is playing
         current_playing = self.get_first_playing_player()
-        if (
-            current_playing is None
-            or current_playing.props.player_name == player.props.player_name
-        ):
+        if (current_playing is None 
+            or current_playing.props.player_name == player.props.player_name):
             self.write_output(track_info, title, player)
         else:
             self.logger.debug(

@@ -43,6 +43,7 @@ dev = [
 sbdots = "sbdots.sbdots:cli"
 sbdotsctl = "sbdots.sbdotsctl:cli"
 sbdots-actions = "sbdots.sbdots_actions:main"
+td = "sbdots.daemons.actions_d:main" 
 
 [tool.uv]
 package = true
