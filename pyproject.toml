@@ -40,9 +40,9 @@ dev = [
 ]
 
 [project.scripts]
-sbdots = "sbdots:cli"
-sbdotsctl = "sbdotsctl:cli"
-sbdots-actions = "sbdots_actions:main"
+sbdots = "sbdots.sbdots:cli"
+sbdotsctl = "sbdots.sbdotsctl:cli"
+sbdots-actions = "sbdots.sbdots_actions:main"
 
 [tool.uv]
 package = true
