@@ -1,2 +1,0 @@
-#!/bin/bash
-exec python3 /home/sbalghari/Projects/sbdots/sbdotsctl/lib/sbdotsctl.py "$@"

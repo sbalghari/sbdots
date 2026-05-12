@@ -215,4 +215,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-dependencies
+
+# temp
+dotfiles/.config/atuin/history.db
+dotfiles/.config/atuin/history.db-shm
+dotfiles/.config/atuin/history.db-wal

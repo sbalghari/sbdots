@@ -10,9 +10,9 @@ from sbdots.utils.logger import setup_logging
 def get_sbdots_version() -> str:
     """Get the current version of SBDots from metadata file."""
     try:
-        return version("treeva")
+        return version("sbdots")
     except PackageNotFoundError:
-        typer.echo("Warning: treeva package metadata not found.")
+        typer.echo("Warning: sbdots package metadata not found.")
         return "unknown"
 
 
