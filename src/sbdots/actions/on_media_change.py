@@ -15,7 +15,7 @@ from gi.repository import Playerctl, GLib  # type: ignore # noqa
 class OnMediaChange:
     is_long_running = True
 
-    def __init__(self, conn, selected_player=None, excluded_player=[], *args):
+    def __init__(self, conn, selected_player=None, *args):
         # Setup logging
         self.logger_name = self.__class__.__name__
         setup_actions_state(self.logger_name)
@@ -34,7 +34,7 @@ class OnMediaChange:
             "player-vanished", lambda *args: self.on_player_vanished(*args)
         )
         self.selected_player = selected_player
-        self.excluded_player = excluded_player.split(",") if excluded_player else []
+        self.excluded_player = []
 
         self.init_players()
 

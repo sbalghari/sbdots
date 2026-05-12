@@ -10,7 +10,7 @@ import concurrent.futures
 from contextlib import redirect_stdout
 from typing import Dict, List
 
-import sbdots.actions as actions  # noqa: F401
+from sbdots import actions  # noqa: F401
 from sbdots.utils.logger import setup_daemon_logging
 
 

@@ -4,7 +4,7 @@ import socket
 import sys
 import pkgutil
 
-import sbdots.actions as actions
+from sbdots import actions # noqa: F401
 
 
 def main() -> None:
@@ -13,12 +13,14 @@ def main() -> None:
 
     # Check args
     if len(sys.argv) < 2:
+        print("Too few args")
         sys.exit(1)
 
     action2exec: str = sys.argv[1]
 
     # Validate action name
     if action2exec not in available_actions:
+        print("Action not found")
         sys.exit(1)
 
     args4action: str = " ".join(map(str, sys.argv[2:]))
