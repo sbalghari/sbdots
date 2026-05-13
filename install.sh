@@ -137,8 +137,8 @@ _download_rolling_release() {
 	fi
 }
 
-# Function to run the actual setup
-_run_setup() {
+# Function to setup sbdots on the system
+_setup() {
 	if command -v python3 >/dev/null 2>&1; then
 		python3 "$SETUP"
 	elif command -v python >/dev/null 2>&1; then
@@ -188,14 +188,7 @@ main() {
 		;;
 	esac
 
-	# Check if setup script exists
-	if [[ ! -f "$SETUP" ]]; then
-		echo
-		fail "Setup script not found at $SETUP, something went wrong!"
-		exit 1
-	fi
-
-	if ! _run_setup; then
+	if ! _setup; then
 		fail "Main setup failed to run, manually run $SETUP"
 		exit 1
 	fi

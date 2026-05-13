@@ -1,26 +1,60 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["*"]
+namespaces = false
+
 [project]
 name = "SBDots"
 version = "0.0.3-alpha"
 description = "A Modern, Feature-Rich, and Polished Hyprland Setup"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 authors = [
     { name = "Saifullah Balghari", email = "balgharisaifullah@gmail.com" },
 ]
-
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE.md"]
 
 dependencies = [
-    "partial>=1.0",
+    "inquirerpy>=0.3.4",
+    "keyboard>=0.13.5",
+    "pexpect>=4.9.0",
     "psutil>=7.1.3",
     "pyfiglet>=1.0.4",
     "pygobject>=3.54.5",
     "requests>=2.32.5",
     "rich>=14.2.0",
+    "setproctitle>=1.3.7",
+    "typer>=0.20.0",
 ]
 
 [dependency-groups]
 dev = [
+    "mypy>=1.19.1",
+    "pytest>=9.0.2",
     "ruff>=0.14.3",
 ]
+
+[project.scripts]
+sbdots = "sbdots.sbdots:cli"
+sbdotsctl = "sbdots.sbdotsctl:cli"
+sbdots-actions = "sbdots.sbdots_actions:main"
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+src = ["src"]
+line-length = 88
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "src"
+strict = true
+warn_unused_configs = true
+

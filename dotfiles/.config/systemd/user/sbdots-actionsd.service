@@ -1,0 +1,17 @@
+[Unit]
+Description=SBDots Actions Daemon
+After=network.target
+
+[Service]
+Type=simple
+
+ExecStart=/usr/bin/python -m sbdots.daemons.actions_d
+
+Restart=on-failure
+RestartSec=2
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

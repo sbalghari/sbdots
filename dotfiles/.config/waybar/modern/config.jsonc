@@ -1,0 +1,43 @@
+{
+  "layer": "top",
+  "position": "top",
+  "margin-top": 5,
+  "margin-left": 5,
+  "margin-bottom": 0,
+  "margin-right": 5,
+  "height": 30,
+  "gtk-layer-shell": true,
+  "reload_style_on_change": true,
+
+  "include": ["~/.config/waybar/modules.jsonc"],
+  "modules-left": [
+    "custom/menu",
+    "hyprland/workspaces",
+
+    // ToolBox
+    "group/sysinfo",
+    "power-profiles-daemon",
+    "custom/hyprshade",
+    "custom/hypridle",
+
+    // "wlr/taskbar",
+    "custom/mediaplayer"
+  ],
+  "modules-center": ["hyprland/window"],
+  "modules-right": [
+    "custom/updates",
+    "custom/weather",
+
+    // Tray
+    "pulseaudio",
+    "backlight",
+    "bluetooth",
+    "battery",
+    "network",
+    "tray",
+
+    "clock",
+    "custom/notifications",
+    "custom/power"
+  ]
+}
