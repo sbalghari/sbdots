@@ -312,7 +312,7 @@ def start_daemon():
         os.unlink(SOCKET_PATH)
 
 
-def main():
+if __name__ == "__main__":
     try:
         start_daemon()
     except Exception as e:
