@@ -11,7 +11,7 @@ class GetHypridleStatus:
         self.logger_name = self.__class__.__name__
         setup_actions_state(self.logger_name)
         self.logger = logging.getLogger(self.logger_name)
-        
+
         self.conn = conn
         self.procs_name = "hypridle"
 

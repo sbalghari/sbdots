@@ -11,9 +11,9 @@ import os
 from rich.logging import RichHandler
 
 
-SBDOTS_STATE_DIR = Path(
-    os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")
-) / "sbdots"
+SBDOTS_STATE_DIR = (
+    Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "sbdots"
+)
 
 SBDOTS_LOG_DIR = SBDOTS_STATE_DIR / "logs"
 
@@ -194,7 +194,7 @@ def setup_daemon_logging(
     }
 
 
-def setup_actions_state(name: str, log_level=LogLevel.DEBUG.value) ->None:
+def setup_actions_state(name: str, log_level=LogLevel.DEBUG.value) -> None:
     """
     Configure logging for SBDots-Actions to save as states.
     """
@@ -223,6 +223,7 @@ def setup_actions_state(name: str, log_level=LogLevel.DEBUG.value) ->None:
         "log_file": str(state_dir / log_file),
         "handlers": handlers,
     }
+
 
 def get_caller_logger(default: str = "sbdots") -> logging.Logger:
     """

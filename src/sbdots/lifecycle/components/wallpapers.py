@@ -4,7 +4,13 @@ import shutil
 from pathlib import Path
 
 from sbdots.utils.paths import USER_WALLPAPERS_DIR, SBDOTS_WALLPAPERS_DIR
-from sbdots.cli.ui.cli_utils import print_header, Spinner, confirm, get_console, print_newline
+from sbdots.cli.ui.cli_utils import (
+    print_header,
+    Spinner,
+    confirm,
+    get_console,
+    print_newline,
+)
 
 
 class WallpapersInstaller:
@@ -99,7 +105,9 @@ class WallpapersInstaller:
         print_newline()
         if install_collection:
             self.logger.info("User chose to install wallpaper collection.")
-            with Spinner("Installing wallpaper collection...", verbose=self.verbose) as spinner:
+            with Spinner(
+                "Installing wallpaper collection...", verbose=self.verbose
+            ) as spinner:
                 if self.dry_run:
                     sleep(1)
                 if not self.dry_run:

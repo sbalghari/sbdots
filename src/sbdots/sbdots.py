@@ -54,10 +54,11 @@ def main(
         "--version",
         help="Show the SBDots version",
         is_eager=True,
-        callback=lambda v: (typer.echo(__version__) if v else None),
+        callback=lambda v: typer.echo(__version__) if v else None,
     ),
 ):
     pass
+
 
 @cli.command()
 def install(

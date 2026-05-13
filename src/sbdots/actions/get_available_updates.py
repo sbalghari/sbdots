@@ -5,13 +5,14 @@ import json
 
 from sbdots.utils.logger import setup_actions_state
 
+
 class GetAvailableUpdates:
     def __init__(self, conn, *args):
         # Setup logging
         self.logger_name = self.__class__.__name__
         setup_actions_state(self.logger_name)
         self.logger = logging.getLogger(self.logger_name)
-        
+
         self.conn = conn
 
     def main(self):

@@ -206,7 +206,7 @@ def run_sudo_cmd(
                     continue
                 else:
                     break
-        
+
     except KeyboardInterrupt:
         print_error(text="Error!", details="Process cancelled by the user.")
         return 1
@@ -225,7 +225,7 @@ def run_sudo_cmd(
                 child.close(force=True)
             except Exception:
                 pass
-            
+
     rc = child.exitstatus
     if logger:
         logger.info(

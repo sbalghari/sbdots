@@ -4,7 +4,7 @@
 # import subprocess
 # import json
 
-# from sbdots.core.pkg_utils import is_installed, install_package, remove_package 
+# from sbdots.core.pkg_utils import is_installed, install_package, remove_package
 # from sbdots.core.security.sudo_keep_alive import SudoKeepAlive
 # from sbdots.utils.paths import (
 #     HYPRLAND_PKGS,

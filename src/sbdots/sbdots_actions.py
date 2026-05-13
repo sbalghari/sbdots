@@ -4,7 +4,7 @@ import socket
 import sys
 import pkgutil
 
-from sbdots import actions # noqa: F401
+from sbdots import actions  # noqa: F401
 
 
 def main() -> None:

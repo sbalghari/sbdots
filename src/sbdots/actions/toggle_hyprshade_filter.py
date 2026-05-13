@@ -45,7 +45,7 @@ class ToggleHyprshadeFilter:
         try:
             with open(self.filter_config_file, "r", encoding="utf-8") as f:
                 data = f.read()
-            return data.split("=")[1].strip("\"").strip()
+            return data.split("=")[1].strip('"').strip()
         except FileNotFoundError:
             self.logger.warning(
                 f"'{self.filter_config_file}' not found, creating it..."
@@ -54,7 +54,7 @@ class ToggleHyprshadeFilter:
             if not self.filter_config_file.parent.exists():
                 parent.mkdir(parents=True, exist_ok=True)
             with open(self.filter_config_file, "w", encoding="utf-8") as f:
-                f.write(f"HYPRSHADE_FILTER=\"{self.default_filter}\"")
+                f.write(f'HYPRSHADE_FILTER="{self.default_filter}"')
             return self.default_filter
         except Exception as e:
             self.logger.exception("Unexpected error reading filter config", exc_info=e)

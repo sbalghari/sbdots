@@ -148,12 +148,14 @@ class OnMediaChange:
             artist = "Unknown Artist"
 
         track_info = ""
-        
+
         # Check for Spotify ad
-        if (player_name == "spotify" 
-            and "mpris:trackid" in metadata.keys() 
-            and metadata["mpris:trackid"] 
-            and ":ad:" in str(metadata["mpris:trackid"])):
+        if (
+            player_name == "spotify"
+            and "mpris:trackid" in metadata.keys()
+            and metadata["mpris:trackid"]
+            and ":ad:" in str(metadata["mpris:trackid"])
+        ):
             track_info = "Advertisement"
         elif artist is not None and title is not None:
             track_info = " " + artist + " - " + title
@@ -167,8 +169,10 @@ class OnMediaChange:
 
         # Only print output if no other player is playing
         current_playing = self.get_first_playing_player()
-        if (current_playing is None 
-            or current_playing.props.player_name == player.props.player_name):
+        if (
+            current_playing is None
+            or current_playing.props.player_name == player.props.player_name
+        ):
             self.write_output(track_info, title, player)
         else:
             self.logger.debug(
