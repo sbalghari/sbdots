@@ -2,7 +2,7 @@ import logging
 
 from sbdots.core.process import is_running, get_pid, term_proc, start_proc
 from sbdots.utils.logger import setup_actions_state
-from sbdots.utils.exceptions import ProcessNotKilled
+from sbdots.utils.exceptions import ProcessError
 
 
 class ToggleHypridleProc:
@@ -30,10 +30,10 @@ class ToggleHypridleProc:
             if pid := get_pid(self.procs_name):
                 try:
                     term_proc(pid, 0.5)
-                except ProcessNotKilled as e:
+                except ProcessError as e:
                     self.logger.exception(f"Failed to kill {self.procs_name}: {e}")
                     return
-                self.conn("hypridle: off.")
+                self.conn.sendall("hypridle: off.")
                 self.logger.info("Hypridle toggled off successfully.")
         else:
             self.logger.debug("Hypridle is not running, toggling it on...")
@@ -45,4 +45,4 @@ class ToggleHypridleProc:
                     f"{self.procs_name} failed to start: ", exc_info=e
                 )
                 return
-            self.conn("hypridle: on.")
+            self.conn.sendall("hypridle: on.")

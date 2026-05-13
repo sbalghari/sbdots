@@ -9,7 +9,6 @@ def reload_hyprland(dry_run) -> bool:
 
     result = subprocess.run(
         ["hyprctl", "reload"],
-        check=True,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
