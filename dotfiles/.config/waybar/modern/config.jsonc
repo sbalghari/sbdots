@@ -20,7 +20,7 @@
     "custom/hyprshade",
     "custom/hypridle",
 
-    // "wlr/taskbar",
+    "wlr/taskbar",
     "custom/mediaplayer"
   ],
   "modules-center": ["hyprland/window"],

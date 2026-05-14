@@ -2,68 +2,43 @@
 
 // General Configurations
 configuration {
-	modi: "drun,run,filebrowser,window";
+    modi: "drun";
     display-drun: "APPS";
-    display-run: "RUN";
-    display-filebrowser: "FILES";
-    display-window: "WINDOW";
-	drun-display-format: "{name}";
-	window-format: "{w} · {c} · {t}";
-	case-sensitive: false;
-	normalize-match: true;
-	icon-theme: "Tela-circle";    
+    drun-display-format: "{name}";
+    case-sensitive: false;
+    normalize-match: true;
+    icon-theme: "Tela-circle";
     show-icons: true;
 
-	// Matching setting
-	matching: "normal";
-	tokenize: true;
+    // Matching setting
+    matching: "normal";
+    tokenize: true;
 
-	// Drun settings
-	drun-categories: "";
-	drun-match-fields: "name,generic,exec,categories,keywords";
-	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
-	drun-show-actions: false;
-	drun-url-launcher: "xdg-open";
-	drun-use-desktop-cache: false;
-	drun-reload-desktop-cache: false;
-	drun {
-		parse-user:   true;
-		parse-system: true;
+    // Drun settings
+    drun-categories: "";
+    drun-match-fields: "name,generic,exec,categories,keywords";
+    drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
+    drun-show-actions: false;
+    drun-url-launcher: "xdg-open";
+    drun-use-desktop-cache: false;
+    drun-reload-desktop-cache: false;
+
+    drun {
+        parse-user:   true;
+        parse-system: true;
     }
 
-	// Run settings
-	run-command: "{cmd}";
-	run-list-command: "";
-	run-shell-command: "{terminal} -e {cmd}";
-
-	// Fallback Icon
-	run,drun {
-		fallback-icon: "application-x-addon";
-	}
-
-	// Window switcher settings
-	window-match-fields: "title,class,role,name,desktop";
-	window-command: "wmctrl -i -R {window}";
-	window-format: "{w} - {c} - {t:0}";
-	window-thumbnail: false;
-
-	// History and Sorting 
-	disable-history: false;
-	sorting-method: "normal";
-	max-history-size: 25;
-
-	// File browser settings
-    filebrowser {
-	  directory: "$HOME";
-      directories-first: true; 
-      sorting-method: "name";
-    }
+    // History and Sorting
+    disable-history: false;
+    sorting-method: "normal";
+    max-history-size: 25;
 }
 
 // Main window
 window {
     transparency:                "real";
     location:                    center;
+    width: 			             25%;
     anchor:                      center;
     fullscreen:                  false;
     x-offset:                    0px;
@@ -83,33 +58,21 @@ mainbox {
     spacing:                     0px;
     background-color:            transparent;
     border-radius:               12px;
-    orientation:                 horizontal;
-    children:                    [ "imagebox", "listview" ];
-}
-
-imagebox {
-    padding:                     10px;
-    background-color:            transparent;
-    background-image:            url("~/.config/sbdots/wallpaper_variants/blurred.jpg", height);
     orientation:                 vertical;
-    children:                    [ "inputbar", "dummy", "mode-switcher" ];
-}
-
-dummy {
-    background-color:            transparent;
+    children:                    [ "inputbar", "listview" ];
 }
 
 // Search bar
 inputbar {
     enabled:                     true;
     spacing:                     10px;
-    padding:                     8px;
-    border-radius:               12px;
-    border:                      0px 0px 2px 0px;
+    padding:                     12px;
+    border:                      0px 0px 1px 0px;
     border-color:                @border-color;
-    background-color:            @background-color-elements;
+    background-color:            transparent;
     children:                    [ "textbox-prompt-colon", "entry" ];
 }
+
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
@@ -117,6 +80,7 @@ textbox-prompt-colon {
     background-color:            transparent;
     text-color:                  inherit;
 }
+
 entry {
     enabled:                     true;
     background-color:            transparent;
@@ -126,35 +90,15 @@ entry {
     placeholder-color:           inherit;
 }
 
-// Mode-switcher
-mode-switcher{
-    enabled:                     true;
-    spacing:                     10px;
-    background-color:            transparent;
-    text-color:                  @text-color;
-}
-button {
-    padding:                     8px;
-    border-radius:               30px;
-    background-color:            @background-color-elements;
-    text-color:                  inherit;
-    cursor:                      pointer;
-}
-button selected {
-    background-color:            @active;
-    text-color:                  inherit;
-}
-
 // List-view
 listview {
     enabled:                     true;
-    lines:                       8;
+    lines:                       6;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
     reverse:                     false;
     fixed-height:                true;
-    border:                      0px solid;
     fixed-columns:               true;
     padding:                     10px;
     spacing:                     5px;
@@ -172,54 +116,63 @@ element {
     text-color:                  @text-color;
     cursor:                      pointer;
 }
+
 element.normal.normal {
     background-color: transparent;
     text-color: @text-color;
 }
+
 element.alternate.normal {
     background-color: transparent;
     text-color: @text-color;
 }
+
 element normal.active {
-    background-color:            @active;
-    text-color:                  inherit;
+    background-color: @active;
+    text-color: inherit;
 }
+
 element selected.normal {
-    background-color:            @background-color-elements;
-    text-color:                  @text-color;
+    background-color: @background-color-elements;
+    text-color: @text-color;
 }
+
 element selected.active {
-    background-color:            @active;
-    text-color:                  inherit;
+    background-color: @active;
+    text-color: inherit;
 }
+
 element-icon {
-    background-color:            transparent;
-    size:                        32px;
-    cursor:                      inherit;
+    background-color: transparent;
+    size: 32px;
+    cursor: inherit;
 }
+
 element-text {
-    background-color:            transparent;
-    text-color:                  inherit;
-    cursor:                      inherit;
-    vertical-align:              0.5;
-    horizontal-align:            0.0;
+    background-color: transparent;
+    text-color: inherit;
+    cursor: inherit;
+    vertical-align: 0.5;
+    horizontal-align: 0.0;
 }
 
 // Message
 message {
-    background-color:            transparent;
-    border:                      0px solid;
+    background-color: transparent;
+    border: 0px solid;
 }
+
 textbox {
-    padding:                     10px;
-    border-radius:               12px;
-    background-color:            @background-color-elements;
-    text-color:                  @text-color;
-    vertical-align:              0.5;
-    horizontal-align:            0.0;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: @background-color-elements;
+    text-color: @text-color;
+    vertical-align: 0.5;
+    horizontal-align: 0.0;
 }
+
 error-message {
-    padding:                     10px;
-    background-color:            transparent;
-    text-color:                  @text-color;
+    padding: 10px;
+    background-color: transparent;
+    text-color: @text-color;
 }

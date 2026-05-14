@@ -1,18 +1,16 @@
-/* Importing wal colors */
-@import "../../.cache/wal/colors-waybar.css";
 
 window {
   font-family: JetBrainMono;
   font-size: 14px;
-  color: alpha(@color15, 0.7);
-  background-color: alpha(@color0, 0.9);
+  color: alpha(#cdd6f4, 0.7);
+  background-color: alpha(#313244, 0.9);
 }
 
 button {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20%;
-  border: 1px solid alpha(@color11, 0.63);
+  border: 1px solid alpha(#cba6f7, 0.63);
   border-radius: 6px;
   margin: 5px;
 }
@@ -22,7 +20,7 @@ button:focus {
 }
 
 button:hover {
-  background-color: @color11;
+  background-color: #cba6f7;
   color: #1e1e2e;
   background-size: 30%;
   transition: all 0.3s cubic-bezier(0.55, 0, 0.28, 1.682),

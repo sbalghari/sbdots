@@ -3,12 +3,10 @@
   => Colors
   ============================================================
 */
-@import "../../.cache/wal/colors-waybar.css";
-
 @define-color accent shade(alpha(@accent_color, 0.9), 1.25);
 @define-color background alpha(@theme_bg_color, 0.98);
-@define-color border alpha(@color11, 0.3);
-@define-color border-alt alpha(@color11, 0.9);
+@define-color border alpha(#cba6f7, 0.63);
+@define-color border-alt alpha(#cba6f7, 0.63);
 @define-color text @theme_fg_color;
 @define-color text-alt @theme_selected_fg_color;
 @define-color hover alpha(@accent_bg_color, 0.5);
@@ -216,7 +214,7 @@
   color: @text;
   padding: 0px 4px;
   background: shade(alpha(@background, 0.5), 1.2);
-  border: 1px solid alpha(@border, 0.2);
+  border: 1px solid alpha(@border, 0.4);
   border-radius: 6px;
 }
 .notification-group-buttons > button:hover {
