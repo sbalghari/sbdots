@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/logo_light.svg" alt="SBDots Logo" width="200"/>
+  <img src="assets/logo.png" alt="SBDots Logo" width="200"/>
   <h1>SBDots</h1>
   <p>A Modern, Feature-Rich, and Polished Hyprland Setup</p>
 </div>
