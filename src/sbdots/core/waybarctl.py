@@ -1,3 +1,4 @@
+from typing import Annotated
 import logging
 import typer
 import signal
@@ -125,54 +126,50 @@ class Waybar(Process):
 
 def cli_api() -> typer.Typer:
     """Control waybar: reload, kill, start, etc."""
-    cli = typer.Typer()
+    cli = typer.Typer(
+        invoke_without_command=True,
+        no_args_is_help=True,
+    )
     waybar_inst = Waybar()
 
-    common_option = typer.Option(False, "--verbose/--no-verbose", help="Verbose output")
-
-    logger_initialized = False
-
-    def _setup_logger(verbose: bool):
-        nonlocal logger_initialized
-        if logger_initialized:
-            return
-
+    @cli.callback()
+    def waybar(
+        start: Annotated[
+            bool, typer.Option("--start", "-s", help="Start waybar service")
+        ] = False,
+        reload: Annotated[
+            bool, typer.Option("--reload", "-r", help="Reload waybar service")
+        ] = False,
+        reload_config: Annotated[
+            bool,
+            typer.Option("--reload-config", "-rc", help="Reload waybar's config files"),
+        ] = False,
+        toggle: Annotated[
+            bool, typer.Option("--toggle", "-t", help="Toggle waybar's visibility")
+        ] = False,
+        kill: Annotated[
+            bool, typer.Option("--kill", "-k", help="Kill waybar service")
+        ] = False,
+        verbose: Annotated[
+            bool, typer.Option("--verbose/--no-verbose", help="Verbose output")
+        ] = False,
+    ):
         setup_logging(
             __name__,
             verbose=verbose,
             use_rotating_file=False,
             file_handling_mode="w",
         )
-        logger_initialized = True
 
-    @cli.command()
-    def start(verbose: bool = common_option):
-        """Start waybar with custom config_file and css_file."""
-        _setup_logger(verbose)
-        waybar_inst.start()
-
-    @cli.command()
-    def kill(verbose: bool = common_option):
-        "Kill waybar"
-        _setup_logger(verbose)
-        waybar_inst.kill()
-
-    @cli.command()
-    def toggle(verbose: bool = common_option):
-        "Tell waybar to toggle it's visibility"
-        _setup_logger(verbose)
-        waybar_inst.toggle()
-
-    @cli.command()
-    def reload(verbose: bool = common_option):
-        "Reload waybar by killing and restarting"
-        _setup_logger(verbose)
-        waybar_inst.reload()
-
-    @cli.command()
-    def reload_config(verbose: bool = common_option):
-        "Tell waybar to reload it's config and style files"
-        _setup_logger(verbose)
-        waybar_inst.reload_config()
+        if start:
+            waybar_inst.start()
+        if reload:
+            waybar_inst.reload()
+        if reload_config:
+            waybar_inst.reload_config()
+        if toggle:
+            waybar_inst.toggle()
+        if kill:
+            waybar_inst.kill()
 
     return cli
