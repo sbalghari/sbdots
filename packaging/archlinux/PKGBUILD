@@ -1,0 +1,123 @@
+# Maintainer: Saifullah Balghari
+
+pkgname=sbdots-git
+pkgver=r276.e0beb67
+pkgrel=1
+pkgdesc="A Modern, Feature-Rich, and Polished Hyprland Setup"
+arch=('x86_64')
+url="https://github.com/sbalghari/sbdots"
+license=('GPL-3.0')
+
+
+depends=(
+  kitty
+  ark
+  nautilus
+  atuin
+  blueman
+  bluez-utils
+  brightnessctl
+  btop
+  cava
+  pacman-contrib
+  eza
+  fastfetch
+  figlet
+  python
+  python-requests
+  python-rich
+  python-typer
+  python-psutil
+  python-pexpect
+  python-pyfiglet
+  python-gobject
+  python-setproctitle
+  fish
+  htop
+  neovim
+  network-manager-applet
+  pavucontrol
+  power-profiles-daemon
+  rofi
+  udiskie
+  waybar
+  starship
+  swaync
+  swww
+  noto-fonts
+  ttf-dejavu
+  ttf-firacode-nerd
+  ttf-font-awesome
+  ttf-intone-nerd
+  ttf-jetbrains-mono
+  ttf-jetbrains-mono-nerd
+  ttf-liberation
+  ttf-nerd-fonts-symbols
+  ttf-nerd-fonts-symbols-mono
+  ttf-roboto
+  hypridle
+  hyprland
+  hyprland-protocols
+  hyprlock
+  hyprpicker
+  hyprpolkitagent
+  hyprshot
+  xdg-desktop-portal-hyprland
+  python-pywal
+  tela-circle-icon-theme-standard
+  qt5-wayland
+  qt5ct
+  qt6-wayland
+  qt6ct
+)
+
+makedepends=(
+  git
+  python-build
+  python-installer
+  python-wheel
+  python-setuptools
+)
+
+source=(
+  "git+https://github.com/sbalghari/sbdots.git"
+)
+
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/sbdots"
+
+  printf "r%s.%s" \
+    "$(git rev-list --count HEAD)" \
+    "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd "$srcdir/sbdots"
+
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd "$srcdir/sbdots"
+
+  # install python wheel
+  python -m installer \
+    --destdir="$pkgdir" \
+    dist/*.whl
+
+  # dotfiles
+  install -dm755 "$pkgdir/usr/share/sbdots"
+
+  cp -r dotfiles/. \
+    "$pkgdir/usr/share/sbdots/"
+
+  # bin scripts
+  install -Dm755 bin/* "$pkgdir/usr/bin/"
+  
+  # install app icon
+  install -Dm644 \
+    "assets/sbdots.svg" \
+    "$pkgdir/usr/share/icons/hicolor/scalable/apps/sbdots.svg"
+}
