@@ -5,21 +5,11 @@ from sbdots.library.config_utils import (
     read_rich_theme,
 )
 
-from sbdots.utils.exceptions import ConfigNotFound
-
-
-# ---------------------------------------------------------------------
-# HELPERS
-# ---------------------------------------------------------------------
+from sbdots.library.exceptions import ConfigNotFound
 
 
 def write_toml(path: Path, content: str):
     path.write_text(content, encoding="utf-8")
-
-
-# ---------------------------------------------------------------------
-# read_config
-# ---------------------------------------------------------------------
 
 
 def test_read_config_success(tmp_path: Path):
@@ -67,11 +57,6 @@ def test_read_config_file_not_found(tmp_path: Path):
 
     with pytest.raises(ConfigNotFound, match="Config file"):
         read_rich_theme(missing)
-
-
-# ---------------------------------------------------------------------
-# read_rich_theme
-# ---------------------------------------------------------------------
 
 
 def test_read_rich_theme_flattens(tmp_path: Path):

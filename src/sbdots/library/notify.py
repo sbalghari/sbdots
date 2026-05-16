@@ -53,8 +53,7 @@ class Notification:
 
         # Check for valid urgency levels
         if self.urgency_level not in self.valid_urgency_levels:
-            # Invalid urgency level, fall back to normal
-            self.urgency_level = self.valid_urgency_levels[0]
+            raise ValueError
 
     def notify(self) -> None:
         self.notify_cmd = self._build_cmd()

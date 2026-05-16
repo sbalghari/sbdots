@@ -66,11 +66,6 @@ SUCCESS_CONFIG = {
 }
 
 
-# ---------------------------------------------------------------------
-# SUCCESS CASES
-# ---------------------------------------------------------------------
-
-
 def test_resolves_successfully():
     cfg = ConfigResolvedDict(SUCCESS_CONFIG)
     assert isinstance(cfg, dict)
@@ -119,11 +114,6 @@ def test_list_of_dicts_resolution():
     assert servers[0]["port"] == 5432
 
 
-# ---------------------------------------------------------------------
-# PLACEHOLDER DETECTION SANITY
-# ---------------------------------------------------------------------
-
-
 def test_no_placeholder_returns_original_string():
     cfg = ConfigResolvedDict({"env": {}, "value": "plain"})
     assert cfg["value"] == "plain"
@@ -132,11 +122,6 @@ def test_no_placeholder_returns_original_string():
 def test_placeholder_regex_matches_expected():
     assert _PLACEHOLDER_RE.search("{env.name}")
     assert _PLACEHOLDER_RE.fullmatch("{env.name}")
-
-
-# ---------------------------------------------------------------------
-# FAILURE CASES
-# ---------------------------------------------------------------------
 
 
 def test_unknown_mapping_dict_raises_key_error():
