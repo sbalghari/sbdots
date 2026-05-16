@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch, MagicMock
 
 from sbdots.library.pkg_utils import is_installed, install_package

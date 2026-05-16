@@ -14,9 +14,7 @@ class TestNotification:
 
     def test_notification_with_custom_urgency(self):
         """Test Notification with custom urgency level"""
-        notif = Notification(
-            title="Test", body_text="Test", urgency_level="critical"
-        )
+        notif = Notification(title="Test", body_text="Test", urgency_level="critical")
         assert notif.urgency_level == "critical"
 
     def test_notification_with_expiry_time(self):
@@ -32,9 +30,7 @@ class TestNotification:
     def test_notification_invalid_urgency_level(self):
         """Test Notification raises error for invalid urgency level"""
         with pytest.raises(ValueError):
-            Notification(
-                title="Test", body_text="Test", urgency_level="invalid_level"
-            )
+            Notification(title="Test", body_text="Test", urgency_level="invalid_level")
 
     def test_notification_build_cmd(self):
         """Test _build_cmd creates proper notify-send command"""

@@ -36,7 +36,8 @@ class Notification:
             self.urgency_level,
             "-t",
             str(self.expiry_time),
-            "-i", "sbdots",
+            "-i",
+            "sbdots",
         ]
         if self.progression:
             cmd += ["-h", f"int:value:{self.progress_value}"]

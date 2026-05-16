@@ -17,6 +17,7 @@ def clear_console() -> None:
     """Clear visible console"""
     CONSOLE.clear()
 
+
 def get_console() -> Console:
     """Return the CONSOLE"""
     return CONSOLE

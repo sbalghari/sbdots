@@ -75,26 +75,37 @@ class GetWeatherData:
     def _ensure_default_credentials(self) -> None:
         """Ensure default weather credentials exist in settings"""
         self.logger.debug("Creating default weather credentials in settings...")
-        set_config("api_key", "your_api_key_here", section=self.config_section, logger=self.logger)
+        set_config(
+            "api_key",
+            "your_api_key_here",
+            section=self.config_section,
+            logger=self.logger,
+        )
         set_config("latitude", "0.0", section=self.config_section, logger=self.logger)
         set_config("longitude", "0.0", section=self.config_section, logger=self.logger)
 
     def get_user_credentials(self) -> Any:
         """Load weather credentials from settings"""
         self.logger.debug("Loading weather credentials from settings...")
-        
+
         api_key = get_config("api_key", section=self.config_section, logger=self.logger)
-        latitude = get_config("latitude", section=self.config_section, logger=self.logger)
-        longitude = get_config("longitude", section=self.config_section, logger=self.logger)
+        latitude = get_config(
+            "latitude", section=self.config_section, logger=self.logger
+        )
+        longitude = get_config(
+            "longitude", section=self.config_section, logger=self.logger
+        )
 
         # If credentials don't exist, create defaults
         if not api_key or not latitude or not longitude:
-            self.logger.debug("Weather credentials not found in settings, creating defaults...")
+            self.logger.debug(
+                "Weather credentials not found in settings, creating defaults..."
+            )
             self._ensure_default_credentials()
             api_key = "your_api_key_here"
             latitude = "0.0"
             longitude = "0.0"
-        
+
         self.logger.info("User credentials loaded successfully")
         return {
             "api_key": api_key,

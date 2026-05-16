@@ -74,4 +74,3 @@ def init(
     Initialize sbdots for the current user
     """
     _run(SBDotsInstaller, verbose, dry_run, "install")
-

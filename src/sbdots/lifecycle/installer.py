@@ -39,6 +39,7 @@ USER_DOTFILES_DIR = HOME / "Dotfiles"
 USER_WALLPAPERS_DIR = HOME / "Wallpapers"
 SBDOTS_CONFIG_DIR = HOME / ".sbdots"
 
+
 class SBDotsInstaller:
     def __init__(
         self, logger_name, dry_run: bool = False, verbose: bool = False
@@ -117,7 +118,9 @@ class SBDotsInstaller:
     def _title(self) -> None:
         print_ascii_art("SBDots Installer")
         print_subtext("Welcome to SBDots installer!")
-        print_subtext("This setup will copy sbdots files to the repective user dirs and apply settings.")
+        print_subtext(
+            "This setup will copy sbdots files to the repective user dirs and apply settings."
+        )
         print_newline()
 
         if self.dry_run:

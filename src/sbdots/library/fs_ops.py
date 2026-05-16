@@ -21,7 +21,7 @@ def copy(logger: logging.Logger, src: Path, dest: Path) -> bool:
 
         # Ensure parent dir exists
         dest.parent.mkdir(parents=True, exist_ok=True)
-        
+
         # Remove dest if exists
         if dest.exists():
             logger.info(f"Destination already exists, removing: {dest}")

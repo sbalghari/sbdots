@@ -11,6 +11,7 @@ USER_CONFIGS_DIR = HOME / ".config"
 USER_DOTFILES_DIR = HOME / "Dotfiles"
 SBDOTS_DOTFILES_DIR = HOME / ".local" / "share" / "sbdots" / ".config"
 
+
 class DotfilesInstaller:
     def __init__(self, logger, dry_run, verbose):
         self.logger = logger

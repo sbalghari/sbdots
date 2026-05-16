@@ -2,7 +2,12 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from sbdots.library.config_utils import get_config, set_config, _ensure_paths, _load_config
+from sbdots.library.config_utils import (
+    get_config,
+    set_config,
+    _ensure_paths,
+    _load_config,
+)
 
 
 class TestConfigUtils:
@@ -10,7 +15,9 @@ class TestConfigUtils:
 
     @patch("sbdots.library.config_utils.SBDOTS_CONFIG_DIR")
     @patch("sbdots.library.config_utils.SETTINGS_FILE")
-    def test_ensure_paths_creates_directories(self, mock_settings_file, mock_config_dir):
+    def test_ensure_paths_creates_directories(
+        self, mock_settings_file, mock_config_dir
+    ):
         """Test that _ensure_paths creates necessary directories and files"""
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_path = Path(tmpdir)
@@ -23,7 +30,9 @@ class TestConfigUtils:
 
     @patch("sbdots.library.config_utils.SBDOTS_CONFIG_DIR")
     @patch("sbdots.library.config_utils.SETTINGS_FILE")
-    def test_load_config_returns_configparser(self, mock_settings_file, mock_config_dir):
+    def test_load_config_returns_configparser(
+        self, mock_settings_file, mock_config_dir
+    ):
         """Test that _load_config returns a ConfigParser instance"""
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_path = Path(tmpdir)
@@ -60,7 +69,9 @@ class TestConfigUtils:
         mock_load_config.return_value = cfg
         logger = MagicMock()
 
-        result = set_config("test_key", "test_value", section="TestSection", logger=logger)
+        result = set_config(
+            "test_key", "test_value", section="TestSection", logger=logger
+        )
 
         assert result or True
         assert mock_atomic_write.called or True
