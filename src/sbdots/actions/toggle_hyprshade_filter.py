@@ -1,10 +1,10 @@
 import logging
 from subprocess import CompletedProcess
 
-from sbdots.core.command import run_command
-from sbdots.core.notify import notiy_send
-from sbdots.utils.paths import SBDOTS_SETTINGS_DIR
-from sbdots.utils.logger import setup_actions_state
+from sbdots.library.commands import run_command
+from sbdots.library.notify import notiy_send
+from sbdots.library.logger import setup_actions_state
+from sbdots.library.config_utils import get_config, set_config
 
 
 class ToggleHyprshadeFilter:
@@ -18,7 +18,7 @@ class ToggleHyprshadeFilter:
         self.conn = conn
 
         self.default_filter = "blue-light-filter"
-        self.filter_config_file = SBDOTS_SETTINGS_DIR / "hyprshade_filter.sh"
+        self.config_section = "Hyprshade"
 
     def _run_hyprshade_cmd(self, *args) -> CompletedProcess | None:
         """Runs a hyprshade command and return the CompletedProcess if success, else None"""
@@ -40,25 +40,33 @@ class ToggleHyprshadeFilter:
         return out or None
 
     def _get_saved_filter(self) -> str | None:
-        """Get the saved hyprshade filter from the config file
-        if config file doesn't exists, create with the default filter"""
-        try:
-            with open(self.filter_config_file, "r", encoding="utf-8") as f:
-                data = f.read()
-            return data.split("=")[1].strip('"').strip()
-        except FileNotFoundError:
-            self.logger.warning(
-                f"'{self.filter_config_file}' not found, creating it..."
+        """Get the saved hyprshade filter from settings.
+        If not found, save and return the default filter"""
+        self.logger.debug("Loading hyprshade filter from settings...")
+        _filter = get_config("filter", section=self.config_section, logger=self.logger)
+
+        if not _filter:
+            self.logger.debug(
+                "Hyprshade filter not found in settings, saving with the default filter"
             )
-            parent = self.filter_config_file.parent
-            if not self.filter_config_file.parent.exists():
-                parent.mkdir(parents=True, exist_ok=True)
-            with open(self.filter_config_file, "w", encoding="utf-8") as f:
-                f.write(f'HYPRSHADE_FILTER="{self.default_filter}"')
+            self._set_saved_filter(self.default_filter)
             return self.default_filter
-        except Exception as e:
-            self.logger.exception("Unexpected error reading filter config", exc_info=e)
-            return None
+
+        self.logger.info(
+            "Hyprshade filter parsed from settings", extra={"filter": _filter}
+        )
+        return _filter
+
+    def _set_saved_filter(self, filter_name: str) -> None:
+        """Save the hyprshade filter to settings"""
+        self.logger.debug(
+            "Saving hyprshade filter to settings...", extra={"filter": filter_name}
+        )
+        if not set_config("filter", filter_name, section=self.config_section, logger=self.logger):
+            self.logger.error("Unable to save hyprshade filter!")
+            return
+
+        self.logger.info("Successfully saved hyprshade filter setting.")
 
     def send(self, msg: str) -> None:
         try:

@@ -1,11 +1,12 @@
 from time import sleep
 from typing import Dict, Callable, List
+from pathlib import Path
 import logging
 import sys
 
-from sbdots.cli.ui.cli_utils import (
+from sbdots.library.cli_utils import (
     Spinner,
-    print_ascii_title,
+    print_ascii_art,
     print_subtext,
     print_success,
     print_warning,
@@ -20,7 +21,7 @@ from sbdots.cli.ui.cli_utils import (
 from .components import (
     DotfilesInstaller,
     WallpapersInstaller,
-    # PackagesInstaller,
+    OptPackagesInstaller,
     AutoPowerSaverInstaller,
 )
 
@@ -31,12 +32,12 @@ from .postinstall import (
     start_services,
 )
 
-from sbdots.utils.paths import (
-    USER_DOTFILES_DIR,
-    USER_WALLPAPERS_DIR,
-    SBDOTS_CONFIG_DIR,
-)
 
+HOME = Path.home()
+USER_CONFIGS_DIR = HOME / ".config"
+USER_DOTFILES_DIR = HOME / "Dotfiles"
+USER_WALLPAPERS_DIR = HOME / "Wallpapers"
+SBDOTS_CONFIG_DIR = HOME / ".sbdots"
 
 class SBDotsInstaller:
     def __init__(
@@ -114,9 +115,9 @@ class SBDotsInstaller:
         return False
 
     def _title(self) -> None:
-        print_ascii_title("SBDots Installer")
+        print_ascii_art("SBDots Installer")
         print_subtext("Welcome to SBDots installer!")
-        print_subtext("A Modern, Feature-Rich, and Polished Hyprland Setup")
+        print_subtext("This setup will copy sbdots files to the repective user dirs and apply settings.")
         print_newline()
 
         if self.dry_run:
@@ -157,7 +158,7 @@ class SBDotsInstaller:
                 for component in self.failed_components:
                     fails += f"  - {component} \n"
                 print_error(
-                    "The following components failed to install:", details=fails
+                    "The following components failed to install:", details="\n" + fails
                 )
                 print_newline()
 
@@ -171,9 +172,9 @@ class SBDotsInstaller:
             "Dotfiles": lambda: DotfilesInstaller(
                 dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
             ).install(),
-            # "Packages": lambda: PackagesInstaller(
-            #     dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
-            # ).install(),
+            "Recommended Packages": lambda: OptPackagesInstaller(
+                dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
+            ).install(),
             "Wallpapers": lambda: WallpapersInstaller(
                 dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
             ).install(),
@@ -203,21 +204,6 @@ class SBDotsInstaller:
         self.logger.info("Installing optional components...")
 
         optional_success = True
-
-        # Install optional applications (non-critical)
-        # try:
-        #     if not self.sep_console_screen(
-        #         lambda: PackagesInstaller(
-        #             dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
-        #         ).install_optional_applications()
-        #     ):
-        #         self.logger.warning(
-        #             "Couldn't install some optional applications, continuing..."
-        #         )
-        #         self.failed_components.append("Some optional applications")
-        # except Exception as e:
-        #     self.logger.error(f"Error installing optional applications: {e}")
-        #     optional_success = False
 
         # Install auto power saver (non-critical), only for laptops
         try:
@@ -256,15 +242,15 @@ class SBDotsInstaller:
                 (
                     "Reloading Hyprland...",
                     lambda: reload_hyprland(dry_run=self.dry_run),
-                    True,
-                ),  # Critical
+                    False,
+                ),  # Non-critical
                 (
                     "Installing GTK Catppuccin theme...",
                     lambda: apply_gtk_theme(
                         spinner=spinner, logger=self.logger, dry_run=self.dry_run
                     ),
-                    False,
-                ),  # Non-critical
+                    True,
+                ),  # Critical
                 (
                     "Applying wallpaper...",
                     lambda: apply_wallpaper(logger=self.logger, dry_run=self.dry_run),
@@ -325,7 +311,7 @@ class SBDotsInstaller:
         ):
             print_warning(
                 "SBDots installation cancelled!",
-                details="If you want to install SBDots, please run 'sbdots --install'.",
+                details="If you want to install SBDots, please run 'sbdots init'.",
             )
             sleep(1)
             sys.exit(1)

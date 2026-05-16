@@ -58,3 +58,11 @@ class PackageError(Exception):
 
 class Deprecated(Exception):
     pass
+
+
+class ConfigNotFound(FileNotFoundError):
+    pass
+
+
+class ThemeConfigError(Exception):
+    pass

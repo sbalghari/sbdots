@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 from subprocess import CompletedProcess
-from typing import List
 
-from sbdots.core.command import run_command
+from sbdots.library.commands import run_command
 
 
 def start_services(logger, dry_run) -> bool:
@@ -25,7 +24,7 @@ def start_services(logger, dry_run) -> bool:
     )
 
     for svc in available_services:
-        start_command: List[str] = ["systemctl", "--user", "start", "--now", svc]
+        start_command: list[str] = ["systemctl", "--user", "start", "--now", svc]
         logger.debug(f"Starting service {svc}")
         if not dry_run:
             try:
@@ -49,7 +48,7 @@ def _reload_systemd_daemon(logger, dry_run) -> bool:
     logger.debug("Reloading systemd user daemon")
 
     if not dry_run:
-        reload_command: List[str] = ["systemctl", "--user", "daemon-reload"]
+        reload_command: list[str] = ["systemctl", "--user", "daemon-reload"]
         result: CompletedProcess = run_command(command=reload_command)
 
         if result.returncode != 0:

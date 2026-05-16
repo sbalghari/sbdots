@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 import logging
+import tomllib
 from configparser import ConfigParser
 from typing import Optional
+from pathlib import Path
 
-from sbdots.utils.logger import get_caller_logger
-from sbdots.utils.paths import SBDOTS_CONFIG_DIR
+from sbdots.library.configDicts import ConfigResolvedDict, OneLevelFlatDict
+from sbdots.library.exceptions import ConfigNotFound
+from sbdots.library.logger import get_caller_logger
 
 
+SBDOTS_CONFIG_DIR = Path().home() / ".sbdots"
 SETTINGS_FILE = SBDOTS_CONFIG_DIR / "setting.ini"
 
 DEFAULT_SECTION = "core"
@@ -133,3 +137,21 @@ def remove_setting(
         extra={"section": section, "key": key},
     )
     return True
+
+
+def read_rich_theme(theme_path: Path) -> OneLevelFlatDict:
+    """
+    Read a theme configuration file and return a one-level flattened dictionary.
+
+    The theme file is read and resolved using read_config, then flattened so each
+    top-level key maps to a single-level dictionary with dot-separated keys.
+    """
+    try:
+        with open(theme_path, "rb") as f:
+            data = tomllib.load(f)
+    except FileNotFoundError as e:
+        raise ConfigNotFound(
+            f"Config file '{theme_path}' not found, Error: {e.strerror}"
+        ) from e
+
+    return OneLevelFlatDict(ConfigResolvedDict(data))

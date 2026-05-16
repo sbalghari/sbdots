@@ -40,7 +40,7 @@ dev = [
 ]
 
 [project.scripts]
-sbdots = "sbdots.sbdots:cli"
+sbdots = "sbdots.sbdots:main"
 sbdotsctl = "sbdots.sbdotsctl:cli"
 sbdots-actions = "sbdots.sbdots_actions:main"
 

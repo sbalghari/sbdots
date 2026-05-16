@@ -1,10 +1,9 @@
+from typing import Optional, Annotated
 from importlib.metadata import PackageNotFoundError, version
 import typer
 
 from sbdots.lifecycle.installer import SBDotsInstaller
-from sbdots.lifecycle.uninstaller import SBDotsUninstaller
-from sbdots.lifecycle.updater import SBDotsUpdater
-from sbdots.utils.logger import setup_logging
+from sbdots.library.logger import setup_logging
 
 
 def get_sbdots_version() -> str:
@@ -16,9 +15,14 @@ def get_sbdots_version() -> str:
         return "unknown"
 
 
-__version__ = get_sbdots_version()
+def version_callback(version: bool):
+    if version:
+        typer.echo(get_sbdots_version())
+        raise typer.Exit(0)
 
-cli = typer.Typer()
+
+cli = typer.Typer(add_completion=False)
+
 common_options = [
     typer.Option(False, "--dry-run/--no-dry-run", help="Run without making changes"),
     typer.Option(False, "--verbose/--no-verbose", help="Verbose output"),
@@ -47,50 +51,27 @@ def _run(lifecycle_cls, verbose: bool, dry_run: bool, action: str):
     return getattr(obj, action)()
 
 
-@cli.callback()
-def main(
-    version: bool = typer.Option(
-        False,
-        "--version",
-        help="Show the SBDots version",
-        is_eager=True,
-        callback=lambda v: typer.echo(__version__) if v else None,
-    ),
-):
-    pass
+@cli.callback(invoke_without_command=True, no_args_is_help=True)
+def _(
+    version: Annotated[
+        Optional[bool],
+        typer.Option(
+            "--version",
+            help="show version and exit",
+            callback=version_callback,
+            is_eager=True,
+        ),
+    ] = None,
+): ...
 
 
 @cli.command()
-def install(
+def init(
     dry_run: bool = common_options[0],
     verbose: bool = common_options[1],
 ):
+    """
+    Initialize sbdots for the current user
+    """
     _run(SBDotsInstaller, verbose, dry_run, "install")
 
-
-@cli.command()
-def uninstall(
-    dry_run: bool = common_options[0],
-    verbose: bool = common_options[1],
-):
-    _run(SBDotsUninstaller, verbose, dry_run, "uninstall")
-
-
-@cli.command()
-def update(
-    dry_run: bool = common_options[0],
-    verbose: bool = common_options[1],
-):
-    _run(SBDotsUpdater, verbose, dry_run, "update")
-
-
-@cli.command("check-update")
-def check_update(
-    dry_run: bool = common_options[0],
-    verbose: bool = common_options[1],
-):
-    _run(SBDotsUpdater, verbose, dry_run, "check_update")
-
-
-if __name__ == "__main__":
-    cli()

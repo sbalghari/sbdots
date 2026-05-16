@@ -10,7 +10,7 @@ import concurrent.futures
 from contextlib import redirect_stdout
 from typing import Dict, List
 
-from sbdots.utils.logger import setup_daemon_logging
+from sbdots.library.logger import setup_daemon_logging
 
 
 setup_daemon_logging("SBDotsActionsDaemon")

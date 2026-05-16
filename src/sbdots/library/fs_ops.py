@@ -1,8 +1,6 @@
 from pathlib import Path
 import shutil
-import subprocess
 import logging
-from .command import run_command
 
 
 def path_lexists(path: Path) -> bool:
@@ -22,10 +20,8 @@ def copy(logger: logging.Logger, src: Path, dest: Path) -> bool:
             return False
 
         # Ensure parent dir exists
-        if not _create_parent_dir(logger=logger, path=dest):
-            logger.error(f"Failed to create parent directory: {dest.parent}")
-            return False
-
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        
         # Remove dest if exists
         if dest.exists():
             logger.info(f"Destination already exists, removing: {dest}")
@@ -35,30 +31,12 @@ def copy(logger: logging.Logger, src: Path, dest: Path) -> bool:
 
         if _copy_without_sudo(logger=logger, src=src, dest=dest):
             return True
-        if _copy_with_sudo(logger=logger, src=src, dest=dest):
-            return True
 
         logger.error(f"All copy attempts failed: {src} -> {dest}")
         return False
 
     except Exception as e:
         logger.error(f"Unexpected error during copy: {src} -> {dest}: {e}")
-        return False
-
-
-def _create_parent_dir(logger: logging.Logger, path: Path) -> bool:
-    parent_dir = path.parent
-    if parent_dir.exists():
-        return True
-
-    result = run_command(["sudo", "mkdir", "-p", parent_dir])
-    if result.returncode == 0:
-        logger.info(f"Created parent directory: {parent_dir}")
-        return True
-    else:
-        logger.error(
-            f"Failed to create parent directory: {parent_dir}: {result.stderr}"
-        )
         return False
 
 
@@ -77,29 +55,6 @@ def _copy_without_sudo(logger: logging.Logger, src: Path, dest: Path) -> bool:
         return False
     except Exception as e:
         logger.error(f"Error copying without sudo: {src} -> {dest}: {e}")
-        return False
-
-
-def _copy_with_sudo(logger: logging.Logger, src: Path, dest: Path) -> bool:
-    try:
-        if src.is_dir():
-            cp_cmd = ["sudo", "cp", "-r", src, dest]
-        else:
-            cp_cmd = ["sudo", "cp", "--preserve=all", src, dest]
-
-        result = run_command(cp_cmd)
-        if result.returncode == 0:
-            logger.info(f"Copied successfully with sudo: {src} -> {dest}")
-            return True
-        else:
-            logger.error(f"Failed to copy with sudo: {src} -> {dest}: {result.stderr}")
-            return False
-
-    except subprocess.CalledProcessError as e:
-        logger.error(f"Command failed during sudo copy: {src} -> {dest}: {e}")
-        return False
-    except Exception as e:
-        logger.error(f"Unexpected error during sudo copy: {src} -> {dest}: {e}")
         return False
 
 
@@ -122,25 +77,9 @@ def remove(logger: logging.Logger, filepath: Path) -> bool:
         logger.info(f"Removed successfully: {filepath}")
         return True
 
-    # If any error occurs, try with sudo
     except (PermissionError, OSError, Exception) as e:
-        logger.warning(f"Error removing path: {filepath}: {e}. Retrying with sudo...")
-
-        try:
-            result = run_command(["sudo", "rm", "-rf", filepath])
-            if result.returncode == 0:
-                logger.info(f"Removed successfully with sudo: {filepath}")
-                return True
-            else:
-                logger.error(f"Failed to remove with sudo: {filepath}: {result.stderr}")
-                return False
-
-        except subprocess.CalledProcessError as e:
-            logger.error(f"Command failed during sudo removal: {filepath}: {e}")
-            return False
-        except Exception as e:
-            logger.error(f"Unexpected error during sudo removal: {filepath}: {e}")
-            return False
+        logger.warning(f"Error removing path: {filepath}: {e}.")
+        return False
 
 
 def create_symlink(logger: logging.Logger, source: Path, target: Path) -> bool:

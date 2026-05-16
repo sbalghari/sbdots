@@ -10,11 +10,14 @@ import pexpect
 import logging
 import re
 import sys
-from typing import Callable, Dict, Any, Optional
+from typing import Callable, Any, Optional, TypeAlias, Union
 
-from sbdots.utils.exceptions import CommandNotFound
-from sbdots.utils.types import COMMAND
-from sbdots.cli.ui.cli_utils import rinput, Spinner, print_error
+
+from sbdots.library.exceptions import CommandNotFound
+from sbdots.library.cli_utils import prompt, Spinner, print_error
+
+
+COMMAND: TypeAlias = Union[list[Any], str]
 
 
 def _sig_handler(signum, frame):
@@ -61,7 +64,7 @@ def _pre_run(command: COMMAND, shell: bool) -> COMMAND:
     return command
 
 
-def _run(command: COMMAND, run_func: Callable[..., Any], kwargs: Dict[str, Any]) -> Any:
+def _run(command: COMMAND, run_func: Callable[..., Any], kwargs: dict[str, Any]) -> Any:
     """Base function to run commands"""
     command = _pre_run(command, kwargs.get("shell", False))
 
@@ -125,7 +128,7 @@ def _handle_input(child, spinner, timeout: int = 300):
         if spinner:
             pw = spinner.get_password()
         else:
-            pw = rinput("[SUDO] Enter your password: ", password=True)
+            pw = prompt("[SUDO] Enter your password: ", password=True)
 
         if pw:
             child.sendline(pw)
@@ -208,13 +211,12 @@ def run_sudo_cmd(
                     break
 
     except KeyboardInterrupt:
-        print_error(text="Error!", details="Process cancelled by the user.")
+        print_error("Process cancelled by the user.")
         return 1
 
     except TimeoutError:
         print_error(
-            text="Error!",
-            details="SUDO, timeout reading password, Please enter the password within 3 minutes next time.",
+            "SUDO, timeout reading password, Please enter the password within 3 minutes next time.",
         )
         return 1
 

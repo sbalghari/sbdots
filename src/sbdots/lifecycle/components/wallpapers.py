@@ -1,16 +1,19 @@
-from time import sleep
 import subprocess
 import shutil
 from pathlib import Path
 
-from sbdots.utils.paths import USER_WALLPAPERS_DIR, SBDOTS_WALLPAPERS_DIR
-from sbdots.cli.ui.cli_utils import (
+from sbdots.library.cli_utils import (
     print_header,
     Spinner,
     confirm,
     get_console,
     print_newline,
 )
+
+HOME = Path().home()
+SBDOTS_DATA_DIR = HOME / ".local" / "share" / "sbdots"
+SBDOTS_WALLPAPERS_DIR = SBDOTS_DATA_DIR / "wallpapers"
+USER_WALLPAPERS_DIR = HOME / "Wallpapers"
 
 
 class WallpapersInstaller:
@@ -44,7 +47,6 @@ class WallpapersInstaller:
         if self.clone_dir.exists():
             shutil.rmtree(self.clone_dir)
 
-        sleep(1)  # delay for better UX
         spinner.update_text("Cloning wallpaper repository...")
         if not self._clone_repo(self.repo_url, self.clone_dir):
             return False
@@ -79,13 +81,16 @@ class WallpapersInstaller:
 
                 spinner.update_text("Copying default wallpapers...")
                 if not self.dry_run:
-                    sleep(1)
                     try:
+                        # Copy base wallpapers
                         shutil.copytree(
                             SBDOTS_WALLPAPERS_DIR,
                             USER_WALLPAPERS_DIR,
                             dirs_exist_ok=True,
                         )
+                        # Copy avatar to home dir
+                        avatar = SBDOTS_DATA_DIR / "avatar.png"
+                        shutil.copy2(avatar, Path().home())
                     except Exception as e:
                         self.logger.error(f"Failed to copy default wallpapers: {e}")
                         return False
@@ -97,7 +102,6 @@ class WallpapersInstaller:
                 spinner.error("Wallpaper installation failed.")
                 return False
 
-        sleep(0.5)
         install_collection = confirm(
             message="Do you want to install my wallpapers collection?", default_yes=True
         )
@@ -108,8 +112,6 @@ class WallpapersInstaller:
             with Spinner(
                 "Installing wallpaper collection...", verbose=self.verbose
             ) as spinner:
-                if self.dry_run:
-                    sleep(1)
                 if not self.dry_run:
                     if not self._install_wallpaper_collection(spinner):
                         spinner.error("Failed to install wallpaper collection.")

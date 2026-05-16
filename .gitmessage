@@ -12,9 +12,25 @@
 #         style → formatting, missing semi-colons, etc (no code change)
 #         refactor → code change that neither fixes a bug nor adds a feature
 #         perf → performance improvement
-#         test → adding/missing tests
+#         test → adding/missing tests 
 #         chore → maintenance (build scripts, CI, etc)
 # scope → what part of the project is affected? (optional, e.g. ui, auth, db)
 # summary → 50 chars max, no period at the end. (required)
 # body → explain why not what, wrap at 72 chars. (optional)
 # footer → issues or breaking changes. (optional)
+
+refactor: reorganize module structure and consolidate utilities
+
+Migrate codebase from scattered cli/, core/, and utils/ modules to a unified
+library/ module with improved organization. This refactoring includes:
+
+- Update all imports from sbdots.core/* and sbdots.utils/* to sbdots.library/*
+- Centralize config management using config_utils (INI-based settings)
+- Simplify CLI: rename 'install' to 'init', remove uninstall/update commands
+- Change main entry point from 'cli' to 'main' function
+- Improve version callback and option handling
+- Remove 'smile' dependency
+- Clean up installer temporary directory path
+
+This reorganization improves maintainability and provides a clearer separation
+of concerns within the library.

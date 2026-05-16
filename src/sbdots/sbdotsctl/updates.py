@@ -1,19 +1,16 @@
-from sbdots.core.notify import notiy_send
-from sbdots.core.command import check_output, run_sudo_cmd
-from sbdots.cli.ui.cli_utils import (
+from sbdots.library.notify import notiy_send
+from sbdots.library.commands import check_output, run_sudo_cmd
+from sbdots.library.cli_utils import (
     print_error,
     print_info,
     print_success,
     print_warning,
     print_subtext,
     print_newline,
-    print_banner,
     confirm,
     Spinner,
-    print_ascii_title,
+    print_ascii_art,
 )
-
-from sbdots.utils.types import COMMAND
 
 from typing import Optional
 from logging import Logger
@@ -23,7 +20,7 @@ class InstallUpdates:
     def __init__(self, logger: Logger, verbose: bool = False) -> None:
         self.aur_helper = self._get_aur_helper()
         self.logger = logger
-        self.verbose = False
+        self.verbose = verbose
 
     def _get_aur_helper(self) -> str | None:
         """Detect available AUR helper (yay or paru)."""
@@ -34,7 +31,7 @@ class InstallUpdates:
         else:
             return None
 
-    def _run_command(self, cmd: COMMAND, spinner: Optional[Spinner] = None) -> bool:
+    def _run_command(self, cmd, spinner: Optional[Spinner] = None) -> bool:
         rc = run_sudo_cmd(
             command=cmd, spinner=spinner, logger=self.logger, verbose=self.verbose
         )
@@ -47,8 +44,7 @@ class InstallUpdates:
 
     def main(self) -> None:
         # Header
-        print_banner("SBDots")
-        print_ascii_title("System Updates")
+        print_ascii_art("System Updates")
         print_subtext("It is recommended to install updates 3-4 times a week.")
         print_newline(2)
 
@@ -73,16 +69,14 @@ class InstallUpdates:
             if not self._run_command(
                 cmd="sudo pacman -Syu --noconfirm", spinner=spinner
             ):
-                print_error(
-                    text="Error!", details="System update installation has failed"
-                )
+                print_error("System update installation has failed")
                 return
 
             # AUR updates
             if not self._run_command(
                 cmd=f"{self.aur_helper} -Syu --noconfirm", spinner=spinner
             ):
-                print_error(text="Error!", details="Aur update installation has failed")
+                print_error("Aur update installation has failed")
                 return
 
         # Cleanup orphaned packages

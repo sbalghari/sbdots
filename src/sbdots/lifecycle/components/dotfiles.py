@@ -2,10 +2,14 @@ from pathlib import Path
 from typing import List, Tuple
 from time import sleep
 
-from sbdots.core.fs_ops import remove, create_symlink, path_lexists, copy
-from sbdots.utils.paths import USER_CONFIGS_DIR, USER_DOTFILES_DIR, SBDOTS_DOTFILES_DIR
-from sbdots.cli.ui.cli_utils import print_header, Spinner
+from sbdots.library.fs_ops import remove, create_symlink, path_lexists, copy
+from sbdots.library.cli_utils import print_header, Spinner
 
+
+HOME = Path.home()
+USER_CONFIGS_DIR = HOME / ".config"
+USER_DOTFILES_DIR = HOME / "Dotfiles"
+SBDOTS_DOTFILES_DIR = HOME / ".local" / "share" / "sbdots" / ".config"
 
 class DotfilesInstaller:
     def __init__(self, logger, dry_run, verbose):
@@ -27,7 +31,6 @@ class DotfilesInstaller:
             "systemd",
             "wlogout",
             "atuin",
-            "chrome-flags.conf",
             "code-flags.conf",
             "starship.toml",
         ]

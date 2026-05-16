@@ -1,16 +1,19 @@
+from pathlib import Path
 from typing import Annotated
 import logging
 import typer
 import signal
 
-from sbdots.core.process import Process, start_proc
-from sbdots.cli.ui.cli_utils import print_error, print_warning
-from sbdots.utils.config_utils import get_config, set_config
-from sbdots.utils.logger import setup_logging
-from sbdots.utils.paths import USER_CONFIGS_DIR
+from ._base import Process # base process class 
+from sbdots.library.procs_utils import start_proc
+from sbdots.library.cli_utils import print_error, print_warning
+from sbdots.library.config_utils import get_config, set_config
+from sbdots.library.logger import setup_logging
 
+USER_CONFIGS_DIR = Path().home() / ".config"
 
 class Waybar(Process):
+    # TODO: implement style selector flag
     def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
 

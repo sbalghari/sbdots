@@ -1,11 +1,11 @@
 from pathlib import Path
 from time import sleep
 
-from sbdots.core.fs_ops import path_lexists
-from sbdots.core.security.sudo_keep_alive import SudoKeepAlive
-from sbdots.core.system.sys_info import is_laptop, is_vm
-from sbdots.core.command import run_sudo_cmd
-from sbdots.cli.ui.cli_utils import print_header, Spinner
+from sbdots.library.fs_ops import path_lexists
+from sbdots.library.sudo_keep_alive import SudoKeepAlive
+from sbdots.library.sys_info import is_laptop, is_vm
+from sbdots.library.commands import run_sudo_cmd
+from sbdots.library.cli_utils import print_header, Spinner
 
 
 UDEV_RULES_DIR = Path("/etc/udev/rules.d")

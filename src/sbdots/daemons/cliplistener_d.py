@@ -4,11 +4,13 @@ import subprocess
 import time
 import signal
 from fcntl import flock, LOCK_EX, LOCK_UN
+from pathlib import Path
 import logging
 
-from sbdots.utils.logger import setup_daemon_logging
-from sbdots.utils.paths import SBDOTS_CONFIG_DIR
+from sbdots.library.logger import setup_daemon_logging
 
+
+SBDOTS_CONFIG_DIR = Path().home() / ".sbdots"
 
 setup_daemon_logging("SBDotsClipboardListener")
 logger = logging.getLogger("SBDotsClipboardListener")

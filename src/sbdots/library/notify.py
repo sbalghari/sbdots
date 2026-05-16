@@ -1,8 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
-from sbdots.utils.paths import SBDOTS_NOTIFICATION_ICON
-from .command import run_command
+from .commands import run_command
 
 
 class Notification:
@@ -12,25 +11,18 @@ class Notification:
         body_text: str,
         urgency_level: str = "normal",
         expire_time: int = 5,
-        icon_path: Path | str = SBDOTS_NOTIFICATION_ICON,
         progression: bool = False,
     ) -> None:
         self.title = title
         self.body_text = body_text
         self.urgency_level = urgency_level
         self.expiry_time = expire_time * 1000  # Convert to ms
-        self.icon_path = icon_path
         self.progression = progression
         self.progress_value: int = 0
         self._notification_id: int = 0
         self._context_active: bool = False
         self.notify_cmd: list[str] = []
 
-        if isinstance(self.icon_path, Path):
-            self._validate_icon()
-        else:
-            if self.is_file_path(self.icon_path):
-                self._validate_icon()
         self._validate_urgency_level()
 
     def _build_cmd(self) -> list[str]:
@@ -44,8 +36,7 @@ class Notification:
             self.urgency_level,
             "-t",
             str(self.expiry_time),
-            "-i",
-            str(self.icon_path),
+            "-i", "sbdots",
         ]
         if self.progression:
             cmd += ["-h", f"int:value:{self.progress_value}"]
@@ -56,24 +47,6 @@ class Notification:
         if any(x in s for x in ("/", "\\")) or "." in Path(s).name:
             return True
         return False
-
-    def _validate_icon(self) -> None:
-        # Check for valid path type
-        if not isinstance(self.icon_path, Path):
-            self.icon_path = Path(self.icon_path)
-
-        valid_path_extensions: tuple[str, ...] = (".png", ".svg", ".jpg")
-
-        # Check for valid icon/image type
-        if self.icon_path.suffix.lower() not in valid_path_extensions:
-            # self.icon_path is not a valid icon/image path, fall back to default sbdots icon.
-            self.icon_path = SBDOTS_NOTIFICATION_ICON
-            return
-
-        # Check if given icon exists
-        if not self.icon_path.exists():
-            # self.icon_path does not exists, fall back to default sbdots icon...
-            self.icon_path = SBDOTS_NOTIFICATION_ICON
 
     def _validate_urgency_level(self) -> None:
         self.valid_urgency_levels: list[str] = ["normal", "low", "critical"]
