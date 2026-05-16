@@ -1,8 +1,8 @@
 import logging
 import json
 
-from sbdots.utils.logger import setup_actions_state
-from sbdots.core.process import is_running
+from sbdots.library.logger import setup_actions_state
+from sbdots.library.procs_utils import is_running
 
 
 class GetHypridleStatus:

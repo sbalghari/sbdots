@@ -3,7 +3,7 @@ import subprocess
 import logging
 import json
 
-from sbdots.utils.logger import setup_actions_state
+from sbdots.library.logger import setup_actions_state
 
 
 class GetAvailableUpdates:

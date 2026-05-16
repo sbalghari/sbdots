@@ -6,10 +6,9 @@ import subprocess
 import concurrent.futures
 from pathlib import Path
 
-from sbdots.utils.logger import setup_actions_state
-from sbdots.utils.paths import SBDOTS_CONFIG_DIR
-from sbdots.core.fs_ops import path_lexists
-from sbdots.core.notify import Notification
+from sbdots.library.logger import setup_actions_state
+from sbdots.library.fs_ops import path_lexists
+from sbdots.library.notify import Notification
 
 
 class OnWallpaperChange:
@@ -21,7 +20,7 @@ class OnWallpaperChange:
 
         # Paths
         self.home = Path.home()
-        self.config_dir = SBDOTS_CONFIG_DIR
+        self.config_dir = self.home / ".sbdots"
 
         # Validate args
         if not args:
@@ -161,7 +160,7 @@ class OnWallpaperChange:
 
         cmds = [
             "swaync-client -rs",
-            "bash $HOME/.config/hypr/services/waybar.sh -r",
+            "sbdotsctl waybar --reload-config",
             "hyprctl reload",
         ]
         all_success = True

@@ -1,12 +1,10 @@
 import requests
 import json
 import logging
-from pathlib import Path
 from typing import Dict, Any
 
-from sbdots.utils.logger import setup_actions_state
-from sbdots.utils.paths import SBDOTS_CONFIG_DIR
-
+from sbdots.library.logger import setup_actions_state
+from sbdots.library.config_utils import get_config, set_config
 
 # Map: WeatherAPI.com condition codes > Nerd Fonts icons
 ICONS: Dict[int, str] = {
@@ -69,40 +67,40 @@ class GetWeatherData:
         self.logger = logging.getLogger(self.logger_name)
 
         self.conn = conn
+        self.config_section = "Weather"
 
         self.logger.debug("Parsing user credentials...")
         self.user_credentials: Any = self.get_user_credentials()
 
+    def _ensure_default_credentials(self) -> None:
+        """Ensure default weather credentials exist in settings"""
+        self.logger.debug("Creating default weather credentials in settings...")
+        set_config("api_key", "your_api_key_here", section=self.config_section, logger=self.logger)
+        set_config("latitude", "0.0", section=self.config_section, logger=self.logger)
+        set_config("longitude", "0.0", section=self.config_section, logger=self.logger)
+
     def get_user_credentials(self) -> Any:
-        self.user_credentials_file: Path = (
-            SBDOTS_CONFIG_DIR / "settings" / "weather_api.json"
-        )
-        data = {}
+        """Load weather credentials from settings"""
+        self.logger.debug("Loading weather credentials from settings...")
+        
+        api_key = get_config("api_key", section=self.config_section, logger=self.logger)
+        latitude = get_config("latitude", section=self.config_section, logger=self.logger)
+        longitude = get_config("longitude", section=self.config_section, logger=self.logger)
 
-        if not self.user_credentials_file.exists():
-            self.logger.debug(
-                f"User credentials file '{self.user_credentials_file}' not found!"
-            )
-            self.logger.debug("Creating a template user credentials file")
-            self.user_credentials_file.parent.mkdir(parents=True, exist_ok=True)
-            self.user_credentials_file.touch(exist_ok=True)
-            text: str = """
-{
-    "api_key": "your_api_key_here",
-    "latitude": 0.0,
-    "longitude": 0.0
-}"""
-            self.user_credentials_file.write_text(text, encoding="utf-8")
-
-        try:
-            with self.user_credentials_file.open("r", encoding="utf-8") as f:
-                data = json.load(f)
-        except json.JSONDecodeError as e:
-            self.logger.error(f"Invalid JSON in {self.user_credentials_file}: {e}")
-        else:
-            self.logger.info("User Credentials loaded successfully")
-
-        return data
+        # If credentials don't exist, create defaults
+        if not api_key or not latitude or not longitude:
+            self.logger.debug("Weather credentials not found in settings, creating defaults...")
+            self._ensure_default_credentials()
+            api_key = "your_api_key_here"
+            latitude = "0.0"
+            longitude = "0.0"
+        
+        self.logger.info("User credentials loaded successfully")
+        return {
+            "api_key": api_key,
+            "latitude": float(latitude) if latitude else 0.0,
+            "longitude": float(longitude) if longitude else 0.0,
+        }
 
     def get_weather(self) -> Any:
         """Fetch weather data from WeatherAPI.com"""
@@ -171,7 +169,7 @@ class GetWeatherData:
         """Format tooltip with more detailed information"""
 
         if not data:
-            return f"Invalid Credentials! \nPlease put correct credentials in: \n  {self.user_credentials_file}"
+            return "Invalid Credentials! \nPlease update your API key and location in ~/.sbdots/setting.ini [Weather] section"
 
         self.logger.debug("Formating weather output for Waybar-module-tooltip")
         tooltip = "Weather information"

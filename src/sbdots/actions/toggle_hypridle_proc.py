@@ -1,8 +1,8 @@
 import logging
 
-from sbdots.core.process import is_running, get_pid, term_proc, start_proc
-from sbdots.utils.logger import setup_actions_state
-from sbdots.utils.exceptions import ProcessError
+from sbdots.library.procs_utils import is_running, get_pid, term_proc, start_proc
+from sbdots.library.logger import setup_actions_state
+from sbdots.library.exceptions import ProcessError
 
 
 class ToggleHypridleProc:
