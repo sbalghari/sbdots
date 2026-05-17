@@ -4,6 +4,7 @@ import time
 from sbdots.library.exceptions import ProcessNotKilled
 from sbdots.library.procs_utils import get_pid, is_running, kill_proc, send_signal
 
+
 class Process:
     """Base class for a named process."""
 

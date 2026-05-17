@@ -7,7 +7,6 @@ from sbdots.library.sys_info import is_laptop, is_vm
 from sbdots.library.commands import run_sudo_cmd
 from sbdots.library.cli_utils import print_header, Spinner
 
-
 UDEV_RULES_DIR = Path("/etc/udev/rules.d")
 UDEV_RULE_FILE = UDEV_RULES_DIR / "99-power-state.rules"
 UDEV_RULE_FILE_CONTENT = '''SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/local/bin/set_power_profile -b" \n

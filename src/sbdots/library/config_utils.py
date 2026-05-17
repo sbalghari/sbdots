@@ -10,7 +10,6 @@ from sbdots.library.configDicts import ConfigResolvedDict, OneLevelFlatDict
 from sbdots.library.exceptions import ConfigNotFound
 from sbdots.library.logger import get_caller_logger
 
-
 SBDOTS_CONFIG_DIR = Path().home() / ".sbdots"
 SETTINGS_FILE = SBDOTS_CONFIG_DIR / "setting.ini"
 

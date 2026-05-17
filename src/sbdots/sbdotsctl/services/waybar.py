@@ -4,13 +4,14 @@ import logging
 import typer
 import signal
 
-from ._base import Process # base process class 
+from ._base import Process  # base process class
 from sbdots.library.procs_utils import start_proc
 from sbdots.library.cli_utils import print_error, print_warning
 from sbdots.library.config_utils import get_config, set_config
 from sbdots.library.logger import setup_logging
 
 USER_CONFIGS_DIR = Path().home() / ".config"
+
 
 class Waybar(Process):
     # TODO: implement style selector flag

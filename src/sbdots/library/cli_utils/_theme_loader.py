@@ -4,7 +4,6 @@ from pathlib import Path
 from sbdots.library.exceptions import ThemeConfigError
 from sbdots.library.config_utils import read_rich_theme
 
-
 DEFAULT_THEME_PATH = Path("/etc") / "sbdots" / "rich_theme.toml"
 USER_THEME_PATH = Path().home() / ".config" / "rich" / "theme.toml"
 

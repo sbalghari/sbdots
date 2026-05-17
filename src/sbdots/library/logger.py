@@ -10,7 +10,6 @@ import os
 
 from rich.logging import RichHandler
 
-
 SBDOTS_STATE_DIR = (
     Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "sbdots"
 )

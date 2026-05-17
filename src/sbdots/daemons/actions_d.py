@@ -12,7 +12,6 @@ from typing import Dict, List
 
 from sbdots.library.logger import setup_daemon_logging
 
-
 setup_daemon_logging("SBDotsActionsDaemon")
 logger = logging.getLogger("SBDotsActionsDaemon")
 

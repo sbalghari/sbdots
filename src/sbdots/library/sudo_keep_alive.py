@@ -18,7 +18,7 @@ class SudoKeepAlive:
         self.max_duration = max_duration
         self._stop = threading.Event()
         self._thread: Optional[threading.Thread] = None
-        self._lock = threading.Lock()        
+        self._lock = threading.Lock()
         self._is_running = False
         self._start_time: Optional[float] = None
 

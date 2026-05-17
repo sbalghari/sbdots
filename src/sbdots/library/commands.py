@@ -16,7 +16,6 @@ from typing import Callable, Any, Optional, TypeAlias, Union
 from sbdots.library.exceptions import CommandNotFound
 from sbdots.library.cli_utils import prompt, Spinner, print_error
 
-
 COMMAND: TypeAlias = Union[list[Any], str]
 
 
@@ -39,8 +38,6 @@ PATTERNS = [
     re.compile(
         r"sudo: timed out reading password"
     ),  # sudo password query timeout prompt
-    pexpect.EOF,
-    pexpect.TIMEOUT,
 ]
 
 
@@ -186,7 +183,9 @@ def run_sudo_cmd(
 
             # check for any of the prompt patterns with a short timeout
             try:
-                index = child.expect(pattern=PATTERNS, timeout=0.5)
+                index = child.expect(
+                    pattern=[*PATTERNS, pexpect.EOF, pexpect.TIMEOUT], timeout=0.5
+                )
             except pexpect.ExceptionPexpect:
                 break
 

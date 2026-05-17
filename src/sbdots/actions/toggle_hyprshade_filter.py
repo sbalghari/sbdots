@@ -62,7 +62,9 @@ class ToggleHyprshadeFilter:
         self.logger.debug(
             "Saving hyprshade filter to settings...", extra={"filter": filter_name}
         )
-        if not set_config("filter", filter_name, section=self.config_section, logger=self.logger):
+        if not set_config(
+            "filter", filter_name, section=self.config_section, logger=self.logger
+        ):
             self.logger.error("Unable to save hyprshade filter!")
             return
 

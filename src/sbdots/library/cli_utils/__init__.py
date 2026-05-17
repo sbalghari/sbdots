@@ -31,7 +31,7 @@ __all__ = [
     "print_info",
     "print_error",
     "print_warning",
-    "chose", 
-    "confirm", 
-    "prompt"
+    "chose",
+    "confirm",
+    "prompt",
 ]

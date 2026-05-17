@@ -34,9 +34,9 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "mypy>=1.19.1",
     "pytest>=9.0.2",
     "ruff>=0.14.3",
+    "ty>=0.0.37",
 ]
 
 [project.scripts]
@@ -51,10 +51,3 @@ package = true
 src = ["src"]
 line-length = 88
 target-version = "py311"
-
-[tool.mypy]
-python_version = "3.11"
-mypy_path = "src"
-strict = true
-warn_unused_configs = true
-

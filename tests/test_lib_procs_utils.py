@@ -1,6 +1,6 @@
 from unittest.mock import patch, MagicMock
 
-from sbdots.library.procs_utils import is_running, start_proc 
+from sbdots.library.procs_utils import is_running, start_proc
 
 
 class TestProcsUtils:

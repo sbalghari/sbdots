@@ -32,12 +32,12 @@ from .postinstall import (
     start_services,
 )
 
-
 HOME = Path.home()
 USER_CONFIGS_DIR = HOME / ".config"
 USER_DOTFILES_DIR = HOME / "Dotfiles"
 USER_WALLPAPERS_DIR = HOME / "Wallpapers"
 SBDOTS_CONFIG_DIR = HOME / ".sbdots"
+
 
 class SBDotsInstaller:
     def __init__(
@@ -117,7 +117,9 @@ class SBDotsInstaller:
     def _title(self) -> None:
         print_ascii_art("SBDots Installer")
         print_subtext("Welcome to SBDots installer!")
-        print_subtext("This setup will copy sbdots files to the repective user dirs and apply settings.")
+        print_subtext(
+            "This setup will copy sbdots files to the repective user dirs and apply settings."
+        )
         print_newline()
 
         if self.dry_run:
@@ -129,7 +131,7 @@ class SBDotsInstaller:
     def _clear(self) -> None:
         clear_console()
 
-    def sep_console_screen(self, function: Callable) -> bool:
+    def sep_console_screen(self, function: Callable):
         if not self.verbose:
             with self.console.screen():
                 self._clear()

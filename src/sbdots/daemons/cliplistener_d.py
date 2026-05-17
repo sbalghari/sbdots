@@ -9,7 +9,6 @@ import logging
 
 from sbdots.library.logger import setup_daemon_logging
 
-
 SBDOTS_CONFIG_DIR = Path().home() / ".sbdots"
 
 setup_daemon_logging("SBDotsClipboardListener")
