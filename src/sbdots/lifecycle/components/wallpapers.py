@@ -1,7 +1,8 @@
+from logging import Logger
 import subprocess
-import shutil
 from pathlib import Path
 
+from sbdots.library.fs_ops import copy, remove
 from sbdots.library.cli_utils import (
     print_header,
     Spinner,
@@ -9,11 +10,15 @@ from sbdots.library.cli_utils import (
     get_console,
     print_newline,
 )
-from sbdots.constants import  SBDOTS_WALLPAPERS_DIR, USER_WALLPAPERS_DIR, SBDOTS_DATA_DIR
+from sbdots.constants import (
+    SBDOTS_WALLPAPERS_DIR,
+    USER_WALLPAPERS_DIR,
+    SBDOTS_DATA_DIR,
+)
 
 
 class WallpapersInstaller:
-    def __init__(self, logger, dry_run, verbose):
+    def __init__(self, logger: Logger, dry_run: bool, verbose: bool):
         self.logger = logger
         self.verbose = verbose
         self.dry_run = dry_run
@@ -41,7 +46,7 @@ class WallpapersInstaller:
     def _install_wallpaper_collection(self, spinner: Spinner) -> bool:
         """Clone and install wallpaper collection."""
         if self.clone_dir.exists():
-            shutil.rmtree(self.clone_dir)
+            remove(self.clone_dir, logger=self.logger)
 
         spinner.update_text("Cloning wallpaper repository...")
         if not self._clone_repo(self.repo_url, self.clone_dir):
@@ -57,12 +62,18 @@ class WallpapersInstaller:
                     ".jpeg",
                     ".webp",
                 ]:
-                    shutil.copy2(file, USER_WALLPAPERS_DIR)
-            self.logger.info("Wallpaper collection copied successfully.")
-            return True
+                    if not copy(file, USER_WALLPAPERS_DIR, logger=self.logger):
+                        spinner.error("Failed to copy wallpapers, check logs")
+                        return False
+
         except Exception as e:
-            self.logger.error(f"Failed to copy wallpapers: {e}")
+            self.logger.exception(
+                "Unexpected error while copying wallpapers.", exc_info=e
+            )
             return False
+
+        self.logger.info("Wallpaper collection copied successfully.")
+        return True
 
     def install(self) -> bool:
         """Main installer function for wallpapers."""
@@ -80,15 +91,23 @@ class WallpapersInstaller:
                 spinner.update_text("Copying default wallpapers...")
                 if not self.dry_run:
                     try:
-                        # Copy base wallpapers
-                        shutil.copytree(
-                            SBDOTS_WALLPAPERS_DIR,
-                            USER_WALLPAPERS_DIR,
-                            dirs_exist_ok=True,
-                        )
-                        # Copy avatar to home dir
                         avatar = SBDOTS_DATA_DIR / "avatar.png"
-                        shutil.copy2(avatar, Path().home())
+                        avatar_dst = Path().home()
+                        copy_success = all(
+                            [
+                                copy(
+                                    SBDOTS_WALLPAPERS_DIR,
+                                    USER_WALLPAPERS_DIR,
+                                    logger=self.logger,
+                                ),
+                                copy(avatar, avatar_dst, logger=self.logger),
+                            ]
+                        )
+                        if not copy_success:
+                            spinner.error(
+                                "Failed to copy default wallpapers, check logs."
+                            )
+                            return False
                     except Exception as e:
                         self.logger.error(
                             f"Failed to copy default wallpapers: {e}"
@@ -98,13 +117,14 @@ class WallpapersInstaller:
                 spinner.success("Wallpapers installed successfully.")
 
             except Exception as e:
-                self.logger.error(f"Wallpaper installation failed: {e}")
-                spinner.error("Wallpaper installation failed.")
+                self.logger.exception(
+                    "Wallpaper installation failed", exc_info=e
+                )
                 return False
 
         install_collection = confirm(
             message="Do you want to install my wallpapers collection?",
-            default_yes=True,
+            default_yes=False,
         )
 
         print_newline()

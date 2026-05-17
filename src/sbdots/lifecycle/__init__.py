@@ -46,14 +46,17 @@ from ._finalization import FinalizationManager
 
 class SBDotsInstaller:
     def __init__(
-        self, logger_name, dry_run: bool = False, verbose: bool = False
+        self,
+        logger: logging.Logger,
+        dry_run: bool = False,
+        verbose: bool = False,
     ) -> None:
         self.dry_run = dry_run
         self.verbose = verbose
         self.failed_components: list[str] = []
 
         # Setup logger
-        self.logger = logging.getLogger(logger_name)
+        self.logger = logger
 
         # console
         self.console = get_console()

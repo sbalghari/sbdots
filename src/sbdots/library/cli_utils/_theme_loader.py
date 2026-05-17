@@ -2,15 +2,15 @@ from rich.theme import Theme
 
 from sbdots.library.exceptions import ThemeConfigError
 from sbdots.library.config_utils import read_rich_theme
-from sbdots.constants import DEFAULT_THEME_PATH, USER_THEME_PATH
+from sbdots.constants import DEFAULT_RICH_THEME_PATH, USER_RICH_THEME_PATH
 
 
 def load_theme() -> tuple[Theme, dict, dict]:
     # TODO: Implement fallback if user's theme file is invalid or incomplete
-    if USER_THEME_PATH.exists():
-        path = USER_THEME_PATH
+    if USER_RICH_THEME_PATH.exists():
+        path = USER_RICH_THEME_PATH
     else:
-        path = DEFAULT_THEME_PATH
+        path = DEFAULT_RICH_THEME_PATH
 
     config = read_rich_theme(path)
 

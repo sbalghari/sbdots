@@ -1,3 +1,4 @@
+from logging import Logger
 from pathlib import Path
 from time import sleep
 
@@ -12,7 +13,7 @@ from sbdots.constants import (
 
 
 class DotfilesInstaller:
-    def __init__(self, logger, dry_run, verbose):
+    def __init__(self, logger: Logger, dry_run: bool, verbose: bool):
         self.logger = logger
         self.verbose = verbose
         self.dry_run = dry_run
@@ -32,8 +33,6 @@ class DotfilesInstaller:
         with Spinner(
             "Installing dotfiles...", verbose=self.verbose
         ) as spinner:
-            sleep(1)  # delay for better UX
-
             # Step 1: Check if source files exists
             if not self._validate_sources(spinner):
                 return False
@@ -50,7 +49,6 @@ class DotfilesInstaller:
             if not self._create_links(spinner):
                 return False
 
-            sleep(1)
             spinner.success("Dotfiles installed successfully!")
 
         return True
@@ -83,14 +81,17 @@ class DotfilesInstaller:
 
         self.logger.info("Copying...")
         try:
-            copy(
+            if not copy(
+                SBDOTS_DOTFILES_DIR,
+                USER_DOTFILES_DIR,
                 logger=self.logger,
-                src=SBDOTS_DOTFILES_DIR,
-                dest=USER_DOTFILES_DIR,
-            )
+            ):
+                spinner.error("Failed to copy dotfiles, check logs")
+                return False
         except Exception as e:
-            self.logger.error(f"Failed to copy dotfiles: {e}")
-            spinner.error("Failed to copy dotfiles.")
+            self.logger.exception(
+                "Unexpected error while copying dotfiles.", exc_info=e
+            )
             return False
         return True
 
@@ -139,9 +140,7 @@ class DotfilesInstaller:
         for component in self.dotfiles_components:
             source: Path = USER_DOTFILES_DIR / component
             target: Path = USER_CONFIGS_DIR / component
-            if not create_symlink(
-                logger=self.logger, source=source, target=target
-            ):
+            if not create_symlink(source, target, logger=self.logger):
                 self.logger.error(f"Failed to link {source} to {target}.")
                 failed_links.append((source, target))
 

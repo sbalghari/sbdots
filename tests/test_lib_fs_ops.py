@@ -19,7 +19,7 @@ class TestFsOps:
         nonexistent = Path("/tmp/nonexistent_file_12345.txt")
         assert path_lexists(nonexistent) is False
 
-    @patch("sbdots.library.fs_ops._copy_without_sudo")
+    @patch("sbdots.library.fs_ops._copy")
     def test_copy_returns_true_on_success(self, mock_copy_no_sudo):
         """Test copy returns True on successful copy"""
         mock_copy_no_sudo.return_value = True
@@ -31,7 +31,7 @@ class TestFsOps:
                 dst_path = Path(dst.name)
                 dst_path.unlink()  # Remove destination to test copy
 
-                result = copy(logger, src_path, dst_path)
+                result = copy(src_path, dest=dst_path, logger=logger)
                 assert result is True or False  # Depends on mock
 
     def test_copy_returns_false_for_nonexistent_source(self):
@@ -40,10 +40,10 @@ class TestFsOps:
         nonexistent_src = Path("/tmp/nonexistent_src_12345.txt")
         dst = Path("/tmp/test_dst.txt")
 
-        result = copy(logger, nonexistent_src, dst)
+        result = copy(nonexistent_src, dest=dst, logger=logger)
         assert result is False
 
-    @patch("sbdots.library.fs_ops._copy_without_sudo")
+    @patch("sbdots.library.fs_ops._copy")
     def test_copy_creates_parent_directories(self, mock_copy_no_sudo):
         """Test copy creates parent directories if needed"""
         mock_copy_no_sudo.return_value = True
@@ -54,5 +54,5 @@ class TestFsOps:
             # Create a destination path with non-existent parent directories
             dst_path = Path("/tmp/test_copy_nested/subdir/file.txt")
 
-            result = copy(logger, src_path, dst_path)
+            result = copy(src_path, dest=dst_path, logger=logger)
             assert isinstance(result, bool)

@@ -1,6 +1,6 @@
+from logging import Logger
 from pathlib import Path
 import shutil
-import logging
 
 
 def path_lexists(path: Path) -> bool:
@@ -8,10 +8,10 @@ def path_lexists(path: Path) -> bool:
     return path.exists() or path.is_symlink()
 
 
-def copy(logger: logging.Logger, src: Path, dest: Path) -> bool:
+def copy(src: Path, dest: Path, *, logger: Logger) -> bool:
     """
-    Safely copy files or directories from src to dest.
-    Automatically overwrites if dest exists. Falls back to sudo when needed.
+    Safely copy files or directories to the destination.
+    Automatically overwrites if dest exists.
     """
     try:
         # Validate source exists
@@ -29,7 +29,7 @@ def copy(logger: logging.Logger, src: Path, dest: Path) -> bool:
                 logger.error(f"Failed to remove destination: {dest}")
                 return False
 
-        if _copy_without_sudo(logger=logger, src=src, dest=dest):
+        if _copy(logger=logger, src=src, dest=dest):
             return True
 
         logger.error(f"All copy attempts failed: {src} -> {dest}")
@@ -40,7 +40,7 @@ def copy(logger: logging.Logger, src: Path, dest: Path) -> bool:
         return False
 
 
-def _copy_without_sudo(logger: logging.Logger, src: Path, dest: Path) -> bool:
+def _copy(src: Path, dest: Path, *, logger: Logger) -> bool:
     try:
         if src.is_dir():
             shutil.copytree(src, dest, symlinks=True, dirs_exist_ok=True)
@@ -60,7 +60,7 @@ def _copy_without_sudo(logger: logging.Logger, src: Path, dest: Path) -> bool:
         return False
 
 
-def remove(logger: logging.Logger, filepath: Path) -> bool:
+def remove(filepath: Path, *, logger: Logger) -> bool:
     """
     Remove a file, directory, or symlink at the given path.
     Falls back to sudo when needed.
@@ -84,18 +84,18 @@ def remove(logger: logging.Logger, filepath: Path) -> bool:
         return False
 
 
-def create_symlink(logger: logging.Logger, source: Path, target: Path) -> bool:
+def create_symlink(src: Path, trgt: Path, *, logger: Logger) -> bool:
     """Create or replace a symlink from source → target."""
     try:
         # Remove target if exists
-        if not remove(logger=logger, filepath=target):
-            logger.error(f"Failed to remove target: {target}")
+        if not remove(logger=logger, filepath=trgt):
+            logger.error(f"Failed to remove target: {trgt}")
             return False
 
         # Create symlink
-        target.symlink_to(source, target_is_directory=source.is_dir())
-        logger.info(f"Symlink created: {source} -> {target}")
+        trgt.symlink_to(src, target_is_directory=src.is_dir())
+        logger.info(f"Symlink created: {src} -> {trgt}")
         return True
     except Exception as e:
-        logger.error(f"Error creating symlink: {source} -> {target}: {e}")
+        logger.error(f"Error creating symlink: {src} -> {trgt}: {e}")
         return False

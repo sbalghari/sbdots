@@ -1,3 +1,4 @@
+from logging import getLogger
 from typing import Optional, Annotated
 from importlib.metadata import PackageNotFoundError, version
 import typer
@@ -31,30 +32,6 @@ common_options = [
 ]
 
 
-def _run(lifecycle_cls, verbose: bool, dry_run: bool, action: str):
-    LOGGER_NAME = f"SBDots{action.capitalize()}er"
-    logger_initialized = False
-
-    def _setup_logger(verbose: bool):
-        nonlocal logger_initialized
-        if logger_initialized:
-            return
-        setup_logging(
-            LOGGER_NAME,
-            verbose=verbose,
-            use_rotating_file=True,
-            file_handling_mode="a",
-            log_file=f"{action}er.log",
-        )
-        logger_initialized = True
-
-    _setup_logger(verbose)
-    obj = lifecycle_cls(
-        dry_run=dry_run, logger_name=LOGGER_NAME, verbose=verbose
-    )
-    return getattr(obj, action)()
-
-
 @cli.callback(invoke_without_command=True, no_args_is_help=True)
 def _(
     version: Annotated[
@@ -77,4 +54,15 @@ def init(
     """
     Initialize sbdots for the current user
     """
-    _run(SBDotsInstaller, verbose, dry_run, "install")
+    LOGGER_NAME = "SBDotsInitializer"
+
+    setup_logging(
+        LOGGER_NAME,
+        verbose=verbose,
+        use_rotating_file=True,
+        file_handling_mode="a",
+        log_file="SBDotsInstaller.log",
+    )
+    logger = getLogger(LOGGER_NAME)
+
+    SBDotsInstaller(dry_run=dry_run, logger=logger, verbose=verbose).install()

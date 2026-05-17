@@ -7,6 +7,7 @@ from sbdots.library.sys_info import is_laptop, is_vm
 from sbdots.library.commands import run_sudo_cmd
 from sbdots.library.cli_utils import print_header, Spinner
 
+
 UDEV_RULES_DIR = Path("/etc/udev/rules.d")
 UDEV_RULE_FILE = UDEV_RULES_DIR / "99-power-state.rules"
 UDEV_RULE_FILE_CONTENT = (
@@ -54,7 +55,6 @@ class AutoPowerSaverInstaller:
             ) as spinner:
                 sleep(1)
                 spinner.success("Auto power saver installed successfully.")
-
             return True
 
         with SudoKeepAlive() as sudo:
@@ -65,18 +65,23 @@ class AutoPowerSaverInstaller:
             with Spinner(
                 "Installing auto power saver...", verbose=verbose
             ) as spinner:
-                sleep(1)  # delay for better UX
+                # Create temporary file first
+                tmp_file = Path("/tmp/99-power-state.rules")
 
-                spinner.update_text("Copying udev rule file...")
+                try:
+                    # Write content to temp file
+                    tmp_file.write_text(UDEV_RULE_FILE_CONTENT)
+                    # Set proper permissions on temp file
+                    tmp_file.chmod(0o644)
+                except Exception as e:
+                    logger.error(f"Failed to write temp rule file: {e}")
+                    spinner.error("Failed to prepare udev rule file.")
+                    return False
 
-                dest = Path("/etc/udev/rules.d")
-
-                # Create dest if does not exists
-                mkdir_cmd = ["sudo", "mkdir", "-p", dest]
-                if not path_lexists(dest):
-                    logger.debug(
-                        f"Destination dir: {dest} doesn't exists, creating it."
-                    )
+                # Create destination directory if it doesn't exist
+                if not path_lexists(UDEV_RULES_DIR):
+                    spinner.update_text("Creating udev rules directory...")
+                    mkdir_cmd = ["mkdir", "-p", str(UDEV_RULES_DIR)]
                     result = run_sudo_cmd(
                         mkdir_cmd,
                         logger=logger,
@@ -84,63 +89,55 @@ class AutoPowerSaverInstaller:
                         verbose=verbose,
                     )
 
-                if not result:
-                    spinner.fail("Failed to create udev rules directory.")
-                    return False
+                    if not result:
+                        spinner.error("Failed to create udev rules directory.")
+                        # Cleanup temp file
+                        try:
+                            tmp_file.unlink()
+                        except:  # noqa: E722
+                            pass
+                        return False
 
-                spinner.update_text("Preparing udev rule file...")
-
-                tmp_file = "/tmp/99-power-state.rules"
-
-                try:
-                    with open(tmp_file, "w") as f:
-                        f.write(UDEV_RULE_FILE_CONTENT)
-                except Exception as e:
-                    logger.error(f"Failed to write temp rule file: {e}")
-                    spinner.fail("Failed to prepare udev rule file.")
-                    return False
-
+                # Move temp file to destination
                 spinner.update_text("Installing udev rule...")
-
+                mv_cmd = ["mv", str(tmp_file), str(UDEV_RULE_FILE)]
                 result = run_sudo_cmd(
-                    ["sudo", "mv", tmp_file, str(UDEV_RULE_FILE)],
+                    mv_cmd,
                     logger=logger,
                     spinner=spinner,
                     verbose=verbose,
                 )
 
                 if not result:
-                    spinner.fail("Failed to install udev rule file.")
+                    spinner.error("Failed to install udev rule file.")
+                    # Cleanup temp file if still exists
+                    try:
+                        if tmp_file.exists():
+                            tmp_file.unlink()
+                    except:  # noqa: E722
+                        pass
                     return False
 
-                spinner.update_text("Setting permissions...")
-
-                chmod_cmd = ["sudo", "chmod", "644", str(UDEV_RULE_FILE)]
-                result = run_sudo_cmd(
-                    chmod_cmd, logger=logger, spinner=spinner, verbose=verbose
-                )
-
-                if not result:
-                    spinner.fail("Failed to set file permissions.")
-                    return False
-
-                spinner.update_text("Reloading udev rules...")
-
-                reload_cmds = [
-                    ["sudo", "udevadm", "control", "--reload-rules"],
-                    ["sudo", "udevadm", "trigger"],
-                ]
-
-                for cmd in reload_cmds:
-                    result = run_sudo_cmd(
-                        cmd, logger=logger, spinner=spinner, verbose=verbose
-                    )
-
-                    if not result:
-                        spinner.fail("Failed to reload udev rules.")
+                # Verify the rule was installed correctly
+                try:
+                    if not UDEV_RULE_FILE.exists():
+                        spinner.error(
+                            "Rule file not found after installation."
+                        )
                         return False
+
+                    installed_content = UDEV_RULE_FILE.read_text()
+                    if installed_content != UDEV_RULE_FILE_CONTENT:
+                        logger.error(
+                            "Installed rule content doesn't match expected content."
+                        )
+                        spinner.error("Rule file content verification failed.")
+                        return False
+                except Exception as e:
+                    logger.error(f"Failed to verify installation: {e}")
+                    spinner.error("Installation verification failed.")
+                    return False
 
                 spinner.success("Auto power saver installed successfully.")
                 logger.info("Auto power saver setup complete.")
-
                 return True

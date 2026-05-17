@@ -14,6 +14,7 @@ from sbdots.library.cli_utils import (
 )
 from sbdots.constants import OPTIONAL_PACKAGES
 
+
 class OptPackagesInstaller:
     def __init__(self, logger, dry_run, verbose):
         self.logger = logger
@@ -29,7 +30,9 @@ class OptPackagesInstaller:
         print_newline()
 
         chosen: list[str] | str | None = chose(
-            choices=self.optional_pkgs, message="Choose apps to install.", multiple=True
+            choices=self.optional_pkgs,
+            message="Choose apps to install.",
+            multiple=True,
         )
 
         if not chosen:

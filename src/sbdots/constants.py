@@ -11,6 +11,7 @@ from enum import Enum
 import re
 import os
 
+
 # =============================================================================
 # DIRECTORY PATHS
 # =============================================================================
@@ -18,16 +19,20 @@ HOME = Path.home()
 USER_CONFIGS_DIR = HOME / ".config"
 USER_DOTFILES_DIR = HOME / "Dotfiles"
 USER_WALLPAPERS_DIR = HOME / "Wallpapers"
-USER_THEME_PATH = USER_CONFIGS_DIR / "rich" / "theme.toml"
+
 SBDOTS_CONFIG_DIR = HOME / ".sbdots"
-SBDOTS_DATA_DIR = HOME / ".local" / "share" / "sbdots"
+SBDOTS_DATA_DIR = Path("/usr/share/sbdots")
 SBDOTS_STATE_DIR = (
-    Path(os.environ.get("XDG_STATE_HOME", HOME / ".local/state")) / "sbdots"
+    Path(os.environ.get("XDG_STATE_HOME", HOME / ".local" / "state"))
+    / "sbdots"
 )
-SBDOTS_DOTFILES_DIR = HOME / ".local" / "share" / "sbdots" / ".config"
+
+SBDOTS_DOTFILES_DIR = SBDOTS_DATA_DIR / "configs"
 SBDOTS_WALLPAPERS_DIR = SBDOTS_DATA_DIR / "wallpapers"
 SBDOTS_LOG_DIR = SBDOTS_STATE_DIR / "logs"
-DEFAULT_THEME_PATH = Path("/etc") / "sbdots" / "rich_theme.toml"
+
+DEFAULT_RICH_THEME_PATH = Path("/etc") / "sbdots" / "rich_theme.toml"
+USER_RICH_THEME_PATH = USER_CONFIGS_DIR / "rich" / "theme.toml"
 
 
 # =============================================================================
@@ -42,6 +47,7 @@ POLL_SEC = 0.2
 # Actions daemon configuration
 SOCKET_PATH = "/tmp/sbdots_actions.sock"
 ACTION_TIMEOUT = 30  # seconds
+
 
 # =============================================================================
 # LOGGING CONFIGURATION
