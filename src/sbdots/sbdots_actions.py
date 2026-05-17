@@ -7,9 +7,11 @@ import pkgutil
 from sbdots import actions  # noqa: F401
 
 
-def main() -> None:
+def main():
     # Collect available actions
-    available_actions = [name for _, name, _ in pkgutil.iter_modules(actions.__path__)]
+    available_actions = [
+        name for _, name, _ in pkgutil.iter_modules(actions.__path__)
+    ]
 
     # Check args
     if len(sys.argv) < 2:

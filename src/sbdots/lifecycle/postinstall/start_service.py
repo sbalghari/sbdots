@@ -24,7 +24,13 @@ def start_services(logger, dry_run) -> bool:
     )
 
     for svc in available_services:
-        start_command: list[str] = ["systemctl", "--user", "start", "--now", svc]
+        start_command: list[str] = [
+            "systemctl",
+            "--user",
+            "start",
+            "--now",
+            svc,
+        ]
         logger.debug(f"Starting service {svc}")
         if not dry_run:
             try:

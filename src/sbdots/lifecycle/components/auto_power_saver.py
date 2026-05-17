@@ -6,11 +6,7 @@ from sbdots.library.sudo_keep_alive import SudoKeepAlive
 from sbdots.library.sys_info import is_laptop, is_vm
 from sbdots.library.commands import run_sudo_cmd
 from sbdots.library.cli_utils import print_header, Spinner
-
-UDEV_RULES_DIR = Path("/etc/udev/rules.d")
-UDEV_RULE_FILE = UDEV_RULES_DIR / "99-power-state.rules"
-UDEV_RULE_FILE_CONTENT = '''SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/local/bin/set_power_profile -b" \n
-SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/local/bin/set_power_profile -s"'''
+from sbdots.constants import UDEV_RULE_FILE, UDEV_RULE_FILE_CONTENT
 
 
 class AutoPowerSaverInstaller:
@@ -30,7 +26,9 @@ class AutoPowerSaverInstaller:
 
         logger.debug("Checking for VM...")
         if is_vm():
-            logger.warning("Running on VM, skipping auto power saver installation...")
+            logger.warning(
+                "Running on VM, skipping auto power saver installation..."
+            )
             return True
 
         logger.debug("Checking for Laptop...")
@@ -43,7 +41,9 @@ class AutoPowerSaverInstaller:
         print_header("Setting auto power saver.")
 
         if dry_run:
-            with Spinner("Installing auto power saver...", verbose=verbose) as spinner:
+            with Spinner(
+                "Installing auto power saver...", verbose=verbose
+            ) as spinner:
                 sleep(1)
                 spinner.success("Auto power saver installed successfully.")
 
@@ -54,7 +54,9 @@ class AutoPowerSaverInstaller:
                 logger.error("Failed to get sudo permissions, exiting...")
                 return False
 
-            with Spinner("Installing auto power saver...", verbose=verbose) as spinner:
+            with Spinner(
+                "Installing auto power saver...", verbose=verbose
+            ) as spinner:
                 sleep(1)  # delay for better UX
 
                 spinner.update_text("Copying udev rule file...")
@@ -68,7 +70,10 @@ class AutoPowerSaverInstaller:
                         f"Destination dir: {dest} doesn't exists, creating it."
                     )
                     result = run_sudo_cmd(
-                        mkdir_cmd, logger=logger, spinner=spinner, verbose=verbose
+                        mkdir_cmd,
+                        logger=logger,
+                        spinner=spinner,
+                        verbose=verbose,
                     )
 
                 if not result:

@@ -1,14 +1,14 @@
 from pathlib import Path
-from typing import List, Tuple
 from time import sleep
 
 from sbdots.library.fs_ops import remove, create_symlink, path_lexists, copy
 from sbdots.library.cli_utils import print_header, Spinner
-
-HOME = Path.home()
-USER_CONFIGS_DIR = HOME / ".config"
-USER_DOTFILES_DIR = HOME / "Dotfiles"
-SBDOTS_DOTFILES_DIR = HOME / ".local" / "share" / "sbdots" / ".config"
+from sbdots.constants import (
+    USER_CONFIGS_DIR,
+    USER_DOTFILES_DIR,
+    SBDOTS_DOTFILES_DIR,
+    REQUIRED_DOTFILE_COMPONENTS,
+)
 
 
 class DotfilesInstaller:
@@ -16,24 +16,7 @@ class DotfilesInstaller:
         self.logger = logger
         self.verbose = verbose
         self.dry_run = dry_run
-        self.dotfiles_components = [
-            "hypr",
-            "waybar",
-            "rofi",
-            "fish",
-            "kitty",
-            "neofetch",
-            "fastfetch",
-            "cava",
-            "waypaper",
-            "swaync",
-            "btop",
-            "systemd",
-            "wlogout",
-            "atuin",
-            "code-flags.conf",
-            "starship.toml",
-        ]
+        self.dotfiles_components = REQUIRED_DOTFILE_COMPONENTS
 
         self.source_dotfiles_components_paths = [
             SBDOTS_DOTFILES_DIR / i for i in self.dotfiles_components
@@ -46,7 +29,9 @@ class DotfilesInstaller:
         self.logger.info("Dotfiles installer started")
         print_header("Installing dotfiles.")
 
-        with Spinner("Installing dotfiles...", verbose=self.verbose) as spinner:
+        with Spinner(
+            "Installing dotfiles...", verbose=self.verbose
+        ) as spinner:
             sleep(1)  # delay for better UX
 
             # Step 1: Check if source files exists
@@ -98,7 +83,11 @@ class DotfilesInstaller:
 
         self.logger.info("Copying...")
         try:
-            copy(logger=self.logger, src=SBDOTS_DOTFILES_DIR, dest=USER_DOTFILES_DIR)
+            copy(
+                logger=self.logger,
+                src=SBDOTS_DOTFILES_DIR,
+                dest=USER_DOTFILES_DIR,
+            )
         except Exception as e:
             self.logger.error(f"Failed to copy dotfiles: {e}")
             spinner.error("Failed to copy dotfiles.")
@@ -146,11 +135,13 @@ class DotfilesInstaller:
             sleep(1)
             return True
 
-        failed_links: List[Tuple[Path, Path]] = []
+        failed_links: list[tuple[Path, Path]] = []
         for component in self.dotfiles_components:
             source: Path = USER_DOTFILES_DIR / component
             target: Path = USER_CONFIGS_DIR / component
-            if not create_symlink(logger=self.logger, source=source, target=target):
+            if not create_symlink(
+                logger=self.logger, source=source, target=target
+            ):
                 self.logger.error(f"Failed to link {source} to {target}.")
                 failed_links.append((source, target))
 

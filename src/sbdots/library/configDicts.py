@@ -1,7 +1,9 @@
 import re
 from typing import Any, Dict
 
-_PLACEHOLDER_RE = re.compile(r"\{([a-zA-Z_][\w]*)\.([^\|}]+)(?:\|([^\}]+))?\}")
+from sbdots.constants import PLACEHOLDER_RE
+
+_PLACEHOLDER_RE = PLACEHOLDER_RE
 
 
 class ConfigResolvedDict(dict):

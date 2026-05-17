@@ -33,7 +33,10 @@ class InstallUpdates:
 
     def _run_command(self, cmd, spinner: Optional[Spinner] = None) -> bool:
         rc = run_sudo_cmd(
-            command=cmd, spinner=spinner, logger=self.logger, verbose=self.verbose
+            command=cmd,
+            spinner=spinner,
+            logger=self.logger,
+            verbose=self.verbose,
         )
 
         if not rc and rc != 0:
@@ -95,7 +98,9 @@ class InstallUpdates:
                 print_subtext(orphans)
 
                 # Remove orphans
-                cmd = f"pacman -Rns {orphans.replace(chr(10), ' ')} --noconfirm"
+                cmd = (
+                    f"pacman -Rns {orphans.replace(chr(10), ' ')} --noconfirm"
+                )
                 self._run_command(cmd)
             else:
                 print_success("No orphaned packages found")
@@ -125,7 +130,9 @@ class InstallUpdates:
 
         # Reboot check
         print_newline()
-        if confirm("Updates complete. Some updates may require a reboot. Reboot now?"):
+        if confirm(
+            "Updates complete. Some updates may require a reboot. Reboot now?"
+        ):
             self._run_command("reboot")
 
         print_newline()

@@ -3,14 +3,13 @@ import psutil
 import signal
 import shlex
 import subprocess
-from typing import Optional, Union, List
-from typing import Iterable
+from typing import Iterable, Optional
 
 from sbdots.library.exceptions import ProcessNotKilled, ProcessError
 from sbdots.library.logger import get_caller_logger
 
 
-def get_procs(name: str, logger=None) -> List[psutil.Process]:
+def get_procs(name: str, logger=None) -> list[psutil.Process]:
     """Return all processes matching 'name'."""
     logger = logger or get_caller_logger()
     logger.debug(f"Getting processes matching name: {name}")
@@ -28,7 +27,11 @@ def get_procs(name: str, logger=None) -> List[psutil.Process]:
                 and info["cmdline"][0].lower() == name
             ):
                 procs.append(p)
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+        except (
+            psutil.NoSuchProcess,
+            psutil.AccessDenied,
+            psutil.ZombieProcess,
+        ):
             continue
     logger.debug(f"Found {len(procs)} processes matching '{name}'")
     return procs
@@ -55,7 +58,7 @@ def get_pid(name: str, logger=None) -> int | None:
 
 
 def start_proc(
-    cmd: Union[str, List[str]],
+    cmd: str | list[str],
     disown: bool = False,
     background: bool = False,
     dev_null_stdout: bool = False,
@@ -81,8 +84,12 @@ def start_proc(
         cmd = shlex.split(cmd)
 
     # Prepare stdout/stderr redirection
-    stdout = subprocess.DEVNULL if dev_null_stdout else kwargs.pop("stdout", None)
-    stderr = subprocess.DEVNULL if dev_null_stderr else kwargs.pop("stderr", None)
+    stdout = (
+        subprocess.DEVNULL if dev_null_stdout else kwargs.pop("stdout", None)
+    )
+    stderr = (
+        subprocess.DEVNULL if dev_null_stderr else kwargs.pop("stderr", None)
+    )
 
     # Setup process group for disowned/background processes
     start_new_session = disown or background
@@ -109,8 +116,12 @@ def start_proc(
         logger.error(f"Command not found '{cmd_name}', error: {e}")
         raise ProcessError(f"Command not found '{cmd_name}', error: {e}")
     except PermissionError as e:
-        logger.error(f"Permission denied while starting '{cmd_name}', error: {e}")
-        raise ProcessError(f"Permission denied while starting '{cmd_name}', error: {e}")
+        logger.error(
+            f"Permission denied while starting '{cmd_name}', error: {e}"
+        )
+        raise ProcessError(
+            f"Permission denied while starting '{cmd_name}', error: {e}"
+        )
     except Exception as e:
         logger.exception(
             f"Unexpected error while starting the process '{cmd_name}', error: {e}"
@@ -157,7 +168,9 @@ def kill_proc_tree(
             logger.debug(f"Could not send signal to process {p.pid}")
 
     gone, alive = psutil.wait_procs(children, timeout=timeout)
-    logger.info(f"Process tree kill completed. Gone: {len(gone)}, Alive: {len(alive)}")
+    logger.info(
+        f"Process tree kill completed. Gone: {len(gone)}, Alive: {len(alive)}"
+    )
     return (gone, alive)
 
 
@@ -190,14 +203,20 @@ def kill_proc(pid: int, logger=None) -> None:
                 logger.exception(f"Error in kill_proc_tree for process {pid}")
                 pass
             # Raise if still active
-            logger.error(f"Process {pid} still alive after SIGKILL and kill_proc_tree")
+            logger.error(
+                f"Process {pid} still alive after SIGKILL and kill_proc_tree"
+            )
             raise ProcessNotKilled(pid, f"SIGKILL timed out: {e}")
     except psutil.NoSuchProcess:
         logger.warning(f"Process {pid} no longer exists")
         return
     except psutil.AccessDenied as e:
-        logger.error(f"Permission denied when sending SIGKILL to process {pid}: {e}")
-        raise ProcessNotKilled(pid, f"Permission denied when sending SIGKILL: {e}")
+        logger.error(
+            f"Permission denied when sending SIGKILL to process {pid}: {e}"
+        )
+        raise ProcessNotKilled(
+            pid, f"Permission denied when sending SIGKILL: {e}"
+        )
     except Exception as e:
         logger.exception(f"Unexpected error when killing process {pid}: {e}")
         raise ProcessNotKilled(pid, f"Unexpected error when killing: {e}")
@@ -255,11 +274,15 @@ def term_proc(pid: int, timeout: float, logger=None) -> None:
         logger.warning(f"Process {pid} no longer exists")
         return
     except psutil.AccessDenied as e:
-        logger.error(f"Permission denied sending SIGTERM to process {pid}: {e}")
+        logger.error(
+            f"Permission denied sending SIGTERM to process {pid}: {e}"
+        )
         raise ProcessNotKilled(pid, f"Permission denied sending SIGTERM: {e}")
     except Exception as e:
         logger.exception(f"Unexpected error terminating process {pid}: {e}")
-        raise ProcessNotKilled(pid, f"Unexpected error terminating process: {e}")
+        raise ProcessNotKilled(
+            pid, f"Unexpected error terminating process: {e}"
+        )
 
 
 def send_signal(pid: int, sig, logger=None) -> bool:

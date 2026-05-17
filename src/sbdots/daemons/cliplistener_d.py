@@ -4,12 +4,14 @@ import subprocess
 import time
 import signal
 from fcntl import flock, LOCK_EX, LOCK_UN
-from pathlib import Path
 import logging
 
 from sbdots.library.logger import setup_daemon_logging
-
-SBDOTS_CONFIG_DIR = Path().home() / ".sbdots"
+from sbdots.constants import (
+    CACHE_FILE,
+    MAX_ENTRIES,
+    MAX_LENGTH,
+)
 
 setup_daemon_logging("SBDotsClipboardListener")
 logger = logging.getLogger("SBDotsClipboardListener")
@@ -26,13 +28,6 @@ except Exception as e:
         exc_info=e,
     )
     pass
-
-
-# Config
-CACHE_FILE = SBDOTS_CONFIG_DIR / "cliphist"
-MAX_ENTRIES = 50
-MAX_LENGTH = 200
-POLL_SEC = 0.2
 
 # Event bool for graceful shutdown
 running = True
@@ -59,7 +54,10 @@ def get_clip():
     """Return clipboard text (string) or None on error."""
     try:
         p = subprocess.run(
-            ["wl-paste", "--no-newline"], capture_output=True, text=True, timeout=1
+            ["wl-paste", "--no-newline"],
+            capture_output=True,
+            text=True,
+            timeout=1,
         )
         if p.returncode != 0:
             return None
@@ -118,7 +116,9 @@ def append_clip(clip):
 
     lines = read_history()
     if clip in lines:
-        logger.info("'%s' is already in history, bringing it to the front...", clip)
+        logger.info(
+            "'%s' is already in history, bringing it to the front...", clip
+        )
         lines.remove(clip)
         lines.append(clip)
     else:
@@ -141,7 +141,9 @@ def main_loop():
             if clip != last_clip:
                 added = append_clip(clip)
                 if added:
-                    logger.info("Added clip | len: %d | clip: [%s]", len(clip), clip)
+                    logger.info(
+                        "Added clip | len: %d | clip: [%s]", len(clip), clip
+                    )
                 last_clip = clip
         time.sleep(0.2)
 

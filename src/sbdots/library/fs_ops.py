@@ -51,7 +51,9 @@ def _copy_without_sudo(logger: logging.Logger, src: Path, dest: Path) -> bool:
         return True
 
     except (PermissionError, OSError) as e:
-        logger.warning(f"Permission denied copying without sudo: {src} -> {dest}: {e}")
+        logger.warning(
+            f"Permission denied copying without sudo: {src} -> {dest}: {e}"
+        )
         return False
     except Exception as e:
         logger.error(f"Error copying without sudo: {src} -> {dest}: {e}")

@@ -7,7 +7,9 @@ class TestPkgUtils:
     """Tests for pkg_utils module"""
 
     @patch("sbdots.library.pkg_utils.run_command")
-    def test_is_installed_returns_true_for_installed_package(self, mock_run_cmd):
+    def test_is_installed_returns_true_for_installed_package(
+        self, mock_run_cmd
+    ):
         """Test is_installed returns True when package is installed"""
         mock_result = MagicMock()
         mock_result.returncode = 0
@@ -17,7 +19,9 @@ class TestPkgUtils:
         assert result is True
 
     @patch("sbdots.library.pkg_utils.run_command")
-    def test_is_installed_returns_false_for_missing_package(self, mock_run_cmd):
+    def test_is_installed_returns_false_for_missing_package(
+        self, mock_run_cmd
+    ):
         """Test is_installed returns False when package is not installed"""
         mock_result = MagicMock()
         mock_result.returncode = 1
@@ -28,7 +32,9 @@ class TestPkgUtils:
 
     @patch("sbdots.library.pkg_utils.is_installed")
     @patch("sbdots.library.pkg_utils.run_command")
-    def test_install_package_skips_already_installed(self, mock_run_cmd, mock_is_inst):
+    def test_install_package_skips_already_installed(
+        self, mock_run_cmd, mock_is_inst
+    ):
         """Test install_package skips installation if package is already installed"""
         mock_is_inst.return_value = True
         logger = MagicMock()
@@ -39,7 +45,9 @@ class TestPkgUtils:
 
     @patch("sbdots.library.pkg_utils.is_installed")
     @patch("sbdots.library.pkg_utils.run_command")
-    def test_install_package_installs_missing_package(self, mock_run_cmd, mock_is_inst):
+    def test_install_package_installs_missing_package(
+        self, mock_run_cmd, mock_is_inst
+    ):
         """Test install_package installs package if not installed"""
         mock_is_inst.return_value = False
         mock_result = MagicMock()

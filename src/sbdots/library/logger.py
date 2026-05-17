@@ -4,27 +4,17 @@ import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Optional, Union
-from enum import Enum
 import sys
-import os
 
 from rich.logging import RichHandler
 
-SBDOTS_STATE_DIR = (
-    Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "sbdots"
+from sbdots.constants import (
+    SBDOTS_STATE_DIR,
+    SBDOTS_LOG_DIR,
+    LogLevel,
+    LOG_MAX_BYTES,
+    LOG_BACKUP_COUNT,
 )
-
-SBDOTS_LOG_DIR = SBDOTS_STATE_DIR / "logs"
-
-
-class LogLevel(Enum):
-    """Log levels"""
-
-    DEBUG = "DEBUG"
-    INFO = "INFO"
-    WARNING = "WARNING"
-    ERROR = "ERROR"
-    CRITICAL = "CRITICAL"
 
 
 # internal state
@@ -45,8 +35,8 @@ def _get_handlers(
     sys_stream: bool = False,
     file_path: Union[str, Path, None] = None,
     file_handling_mode: str = "a",
-    max_bytes: int = 5 * 1024 * 1024,
-    backup_count: int = 3,
+    max_bytes: int = LOG_MAX_BYTES,
+    backup_count: int = LOG_BACKUP_COUNT,
 ) -> list:
     """Build a list of handlers based on the options provided"""
     handlers = []

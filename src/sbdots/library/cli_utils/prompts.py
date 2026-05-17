@@ -26,7 +26,9 @@ def prompt(
 
     try:
         while True:
-            input = Prompt.get_input(console=CONSOLE, prompt=message, password=password)
+            input = Prompt.get_input(
+                console=CONSOLE, prompt=message, password=password
+            )
 
             if not _validator(input):
                 print_error(
@@ -105,17 +107,25 @@ def _chose_multiple(
                 continue
 
             if not selected_indices and not skipable:
-                print_error("Invalid! Please select at least one item.", panel=False)
+                print_error(
+                    "Invalid! Please select at least one item.", panel=False
+                )
                 continue
 
-            return [choices[i] for i in selected_indices] if selected_indices else None
+            return (
+                [choices[i] for i in selected_indices]
+                if selected_indices
+                else None
+            )
 
     except KeyboardInterrupt:
         print_subtext("Cancelled")
         return None
 
 
-def _parse_selection(input_str: str, total_items: int) -> Union[list[int], None]:
+def _parse_selection(
+    input_str: str, total_items: int
+) -> Union[list[int], None]:
     """Parse selection input (e.g., '1 2 5-7' -> [0, 1, 4, 5, 6])."""
     selected = set()
 

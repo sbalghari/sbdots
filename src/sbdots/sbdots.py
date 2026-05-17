@@ -2,7 +2,7 @@ from typing import Optional, Annotated
 from importlib.metadata import PackageNotFoundError, version
 import typer
 
-from sbdots.lifecycle.installer import SBDotsInstaller
+from sbdots.lifecycle import SBDotsInstaller
 from sbdots.library.logger import setup_logging
 
 
@@ -24,7 +24,9 @@ def version_callback(version: bool):
 cli = typer.Typer(add_completion=False)
 
 common_options = [
-    typer.Option(False, "--dry-run/--no-dry-run", help="Run without making changes"),
+    typer.Option(
+        False, "--dry-run/--no-dry-run", help="Run without making changes"
+    ),
     typer.Option(False, "--verbose/--no-verbose", help="Verbose output"),
 ]
 
@@ -47,7 +49,9 @@ def _run(lifecycle_cls, verbose: bool, dry_run: bool, action: str):
         logger_initialized = True
 
     _setup_logger(verbose)
-    obj = lifecycle_cls(dry_run=dry_run, logger_name=LOGGER_NAME, verbose=verbose)
+    obj = lifecycle_cls(
+        dry_run=dry_run, logger_name=LOGGER_NAME, verbose=verbose
+    )
     return getattr(obj, action)()
 
 

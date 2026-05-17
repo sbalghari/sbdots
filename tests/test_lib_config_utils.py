@@ -22,7 +22,9 @@ class TestConfigUtils:
         with tempfile.TemporaryDirectory() as tmpdir:
             temp_path = Path(tmpdir)
             mock_config_dir.return_value = temp_path / ".sbdots"
-            mock_settings_file.return_value = temp_path / ".sbdots" / "setting.ini"
+            mock_settings_file.return_value = (
+                temp_path / ".sbdots" / "setting.ini"
+            )
 
             _ensure_paths()
 
@@ -39,8 +41,12 @@ class TestConfigUtils:
             settings_file = temp_path / "setting.ini"
             settings_file.touch()
 
-            with patch("sbdots.library.config_utils.SBDOTS_CONFIG_DIR", temp_path):
-                with patch("sbdots.library.config_utils.SETTINGS_FILE", settings_file):
+            with patch(
+                "sbdots.library.config_utils.SBDOTS_CONFIG_DIR", temp_path
+            ):
+                with patch(
+                    "sbdots.library.config_utils.SETTINGS_FILE", settings_file
+                ):
                     cfg = _load_config()
                     assert cfg is not None
 
@@ -61,7 +67,9 @@ class TestConfigUtils:
 
     @patch("sbdots.library.config_utils._load_config")
     @patch("sbdots.library.config_utils._atomic_write")
-    def test_set_config_creates_section(self, mock_atomic_write, mock_load_config):
+    def test_set_config_creates_section(
+        self, mock_atomic_write, mock_load_config
+    ):
         """Test that set_config creates a new section if it doesn't exist"""
         from configparser import ConfigParser
 

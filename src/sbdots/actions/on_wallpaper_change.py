@@ -36,7 +36,9 @@ class OnWallpaperChange:
     def _run_command(self, cmd) -> bool:
         """Run a shell command and return True on success, False on failure."""
         try:
-            subprocess.run(cmd, shell=True, check=True, capture_output=True, text=True)
+            subprocess.run(
+                cmd, shell=True, check=True, capture_output=True, text=True
+            )
             return True
         except subprocess.CalledProcessError as e:
             self.logger.error(
@@ -115,7 +117,9 @@ class OnWallpaperChange:
 
         pywal_colors_css = self.home / ".cache" / "wal" / "colors.css"
         if not path_lexists(pywal_colors_css):
-            self.logger.error(f"Pywal colors.css not found: {pywal_colors_css}")
+            self.logger.error(
+                f"Pywal colors.css not found: {pywal_colors_css}"
+            )
             return False
 
         try:
@@ -133,8 +137,12 @@ class OnWallpaperChange:
             bg_hex = bg_match.group(1)
 
             # Validate colors before conversion
-            if not (self._validate_color(fg_hex) and self._validate_color(bg_hex)):
-                self.logger.error("Invalid color format extracted from pywal CSS")
+            if not (
+                self._validate_color(fg_hex) and self._validate_color(bg_hex)
+            ):
+                self.logger.error(
+                    "Invalid color format extracted from pywal CSS"
+                )
                 return False
 
             fg_argb = self._hex_to_argb(fg_hex)
@@ -143,7 +151,9 @@ class OnWallpaperChange:
             self.logger.info(f"Foreground: {fg_argb}")
             self.logger.info(f"Background: {bg_argb}")
 
-            colors_conf = self.home / ".config" / "hypr" / "configs" / "colors.conf"
+            colors_conf = (
+                self.home / ".config" / "hypr" / "configs" / "colors.conf"
+            )
             colors_conf.parent.mkdir(parents=True, exist_ok=True)
 
             with open(colors_conf, "w") as f:
@@ -178,7 +188,9 @@ class OnWallpaperChange:
     def main(self):
         """Main sequence execution."""
         if not os.path.exists(self.wallpaper_path):
-            self.logger.error(f"Wallpaper path does not exist: {self.wallpaper_path}")
+            self.logger.error(
+                f"Wallpaper path does not exist: {self.wallpaper_path}"
+            )
             self._notify_action_failed()
 
         blur_thread = None
@@ -220,7 +232,8 @@ class OnWallpaperChange:
                 # Step 4: reload services
                 current_progress += progress_step
                 n.update(
-                    body_text="Reloading services...", progress_value=current_progress
+                    body_text="Reloading services...",
+                    progress_value=current_progress,
                 )
                 if not self.reload_services():
                     self._notify_action_failed()
@@ -244,7 +257,9 @@ class OnWallpaperChange:
                     body_text="Post wallpaper change scripts executed successfully.",
                     progress_value=100,
                 )
-                self.logger.info("Wallpaper change actions completed successfully")
+                self.logger.info(
+                    "Wallpaper change actions completed successfully"
+                )
 
         except Exception as e:
             self.logger.error(f"Unexpected error: {e}")
@@ -256,4 +271,6 @@ class OnWallpaperChange:
                 self.logger.debug("Waiting for blur thread to finish...")
                 blur_thread.join(timeout=2)
                 if blur_thread.is_alive():
-                    self.logger.warning("Blur thread still running after final timeout")
+                    self.logger.warning(
+                        "Blur thread still running after final timeout"
+                    )

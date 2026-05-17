@@ -6,17 +6,16 @@ from subprocess import CalledProcessError, CompletedProcess
 from shutil import which
 import shlex
 import signal
+import sys
 import pexpect
 import logging
-import re
-import sys
-from typing import Callable, Any, Optional, TypeAlias, Union
-
+from typing import Callable, Any, Optional
 
 from sbdots.library.exceptions import CommandNotFound
 from sbdots.library.cli_utils import prompt, Spinner, print_error
+from sbdots.constants import COMMAND, SUDO_PROMPT_PATTERNS
 
-COMMAND: TypeAlias = Union[list[Any], str]
+PATTERNS = SUDO_PROMPT_PATTERNS
 
 
 def _sig_handler(signum, frame):
@@ -24,21 +23,6 @@ def _sig_handler(signum, frame):
 
 
 signal.signal(signal.SIGALRM, _sig_handler)
-
-
-# RE for pexpect.expect for finding various sudo prompt patterns
-PATTERNS = [
-    re.compile(r"\[sudo\] password for .*:"),  # sudo password query prompt
-    re.compile(
-        r"Sorry, try again\.\s*\[sudo\] password for .*:"
-    ),  # sudo retry password prompt
-    re.compile(
-        r"sudo: \d+ incorrect password attempts"
-    ),  # sudo no password attempts left prompt
-    re.compile(
-        r"sudo: timed out reading password"
-    ),  # sudo password query timeout prompt
-]
 
 
 def _pre_run(command: COMMAND, shell: bool) -> COMMAND:
@@ -61,7 +45,9 @@ def _pre_run(command: COMMAND, shell: bool) -> COMMAND:
     return command
 
 
-def _run(command: COMMAND, run_func: Callable[..., Any], kwargs: dict[str, Any]) -> Any:
+def _run(
+    command: COMMAND, run_func: Callable[..., Any], kwargs: dict[str, Any]
+) -> Any:
     """Base function to run commands"""
     command = _pre_run(command, kwargs.get("shell", False))
 
@@ -178,13 +164,16 @@ def run_sudo_cmd(
             # break if met threshold
             if ask_pass_threshold and got_password >= ask_pass_threshold:
                 if logger:
-                    logger.debug(f"Please stop asking for password, '{command[1]}'")
+                    logger.debug(
+                        f"Please stop asking for password, '{command[1]}'"
+                    )
                 break
 
             # check for any of the prompt patterns with a short timeout
             try:
                 index = child.expect(
-                    pattern=[*PATTERNS, pexpect.EOF, pexpect.TIMEOUT], timeout=0.5
+                    pattern=[*PATTERNS, pexpect.EOF, pexpect.TIMEOUT],
+                    timeout=0.5,
                 )
             except pexpect.ExceptionPexpect:
                 break

@@ -40,7 +40,7 @@ dev = [
 ]
 
 [project.scripts]
-sbdots = "sbdots.sbdots:main"
+sbdots = "sbdots.sbdots:cli"
 sbdotsctl = "sbdots.sbdotsctl:cli"
 sbdots-actions = "sbdots.sbdots_actions:main"
 
@@ -49,5 +49,5 @@ package = true
 
 [tool.ruff]
 src = ["src"]
-line-length = 88
+line-length = 79
 target-version = "py311"

@@ -52,7 +52,9 @@ def _output(
     return panel(title, content, style=border_style)
 
 
-def info(message: str, *, details: Optional[str] = None, use_panel: bool = True):
+def info(
+    message: str, *, details: Optional[str] = None, use_panel: bool = True
+):
     return _output(
         message=message,
         details=details,
@@ -63,7 +65,9 @@ def info(message: str, *, details: Optional[str] = None, use_panel: bool = True)
     )
 
 
-def success(message: str, *, details: Optional[str] = None, use_panel: bool = True):
+def success(
+    message: str, *, details: Optional[str] = None, use_panel: bool = True
+):
     return _output(
         message=message,
         details=details,
@@ -74,7 +78,9 @@ def success(message: str, *, details: Optional[str] = None, use_panel: bool = Tr
     )
 
 
-def error(message: str, *, details: Optional[str] = None, use_panel: bool = True):
+def error(
+    message: str, *, details: Optional[str] = None, use_panel: bool = True
+):
     return _output(
         message=message,
         details=details,
@@ -85,7 +91,9 @@ def error(message: str, *, details: Optional[str] = None, use_panel: bool = True
     )
 
 
-def warning(message: str, *, details: Optional[str] = None, use_panel: bool = True):
+def warning(
+    message: str, *, details: Optional[str] = None, use_panel: bool = True
+):
     return _output(
         message=message,
         details=details,

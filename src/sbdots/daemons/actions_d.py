@@ -8,9 +8,8 @@ import io
 import signal
 import concurrent.futures
 from contextlib import redirect_stdout
-from typing import Dict, List
-
 from sbdots.library.logger import setup_daemon_logging
+from sbdots.constants import SOCKET_PATH, ACTION_TIMEOUT
 
 setup_daemon_logging("SBDotsActionsDaemon")
 logger = logging.getLogger("SBDotsActionsDaemon")
@@ -28,9 +27,7 @@ except Exception as e:
     )
     pass
 
-SOCKET_PATH = "/tmp/sbdots_actions.sock"
-LONG_RUNNING_ACTIONS: List[Dict] = []
-ACTION_TIMEOUT = 30  # seconds
+LONG_RUNNING_ACTIONS: list[dict] = []
 
 # For tracking connections and running actions
 state_lock = threading.Lock()
@@ -95,7 +92,9 @@ def handle_action(conn):
             send(conn, f"ERROR: {msg}")
             return
 
-        class_name = "".join(part.capitalize() for part in action2exec.split("_"))
+        class_name = "".join(
+            part.capitalize() for part in action2exec.split("_")
+        )
         if not hasattr(module, class_name):
             msg = f"No class '{class_name}' found in actions.{action2exec}"
             logger.error(msg)
@@ -165,7 +164,9 @@ def handle_action(conn):
                 try:
                     instance.main()
                 except Exception as e:
-                    logger.error(f"Long-running action '{action_name}' crashed: {e}")
+                    logger.error(
+                        f"Long-running action '{action_name}' crashed: {e}"
+                    )
                     try:
                         send(conn, f"ERROR: Action crashed: {e}")
                     except Exception:
@@ -188,7 +189,9 @@ def handle_action(conn):
                     instance.main()
 
             try:
-                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                with concurrent.futures.ThreadPoolExecutor(
+                    max_workers=1
+                ) as executor:
                     future = executor.submit(action_runner)
                     future.result(timeout=ACTION_TIMEOUT)
 
@@ -197,7 +200,9 @@ def handle_action(conn):
                 logger.debug(f"Action '{action2exec}' completed successfully.")
 
             except concurrent.futures.TimeoutError:
-                msg = f"Action '{action2exec}' timed out after {ACTION_TIMEOUT}s"
+                msg = (
+                    f"Action '{action2exec}' timed out after {ACTION_TIMEOUT}s"
+                )
                 logger.error(msg)
                 send(conn, f"ERROR: {msg}")
             except Exception as e:
@@ -254,7 +259,9 @@ def start_daemon():
                 conn, _ = s.accept()
             except socket.timeout:
                 with threads_lock:
-                    finished_threads = [t for t in active_threads if not t.is_alive()]
+                    finished_threads = [
+                        t for t in active_threads if not t.is_alive()
+                    ]
                     for thread in finished_threads:
                         active_threads.remove(thread)
                 continue
@@ -279,7 +286,9 @@ def start_daemon():
             with threads_lock:
                 active_threads.add(thread)
 
-        logger.info("Shutdown initiated. Waiting for active actions to complete...")
+        logger.info(
+            "Shutdown initiated. Waiting for active actions to complete..."
+        )
 
         # Stop long-running actions
         with state_lock:
@@ -287,7 +296,9 @@ def start_daemon():
                 name = entry["name"]
                 inst = entry["instance"]
                 conn = entry["conn"]
-                logger.info(f"Forcing shutdown of long-running action '{name}'")
+                logger.info(
+                    f"Forcing shutdown of long-running action '{name}'"
+                )
                 try:
                     if hasattr(inst, "stop"):
                         inst.stop()

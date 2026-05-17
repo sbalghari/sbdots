@@ -1,6 +1,6 @@
-from typing import List, Optional
 import logging
 import json
+from typing import Optional
 
 from sbdots.library.logger import setup_actions_state
 
@@ -41,7 +41,10 @@ class OnMediaChange:
         for player in self.manager.props.player_names:
             if player.name in self.excluded_player:
                 continue
-            if self.selected_player is not None and self.selected_player != player.name:
+            if (
+                self.selected_player is not None
+                and self.selected_player != player.name
+            ):
                 self.logger.debug(
                     f"{player.name} is not the filtered player, skipping it"
                 )
@@ -59,12 +62,14 @@ class OnMediaChange:
     def init_player(self, player):
         self.logger.info(f"Initialize new player: {player.name}")
         player_obj = Playerctl.Player.new_from_name(player.name)
-        player_obj.connect("playback-status", self.on_playback_status_changed, None)
+        player_obj.connect(
+            "playback-status", self.on_playback_status_changed, None
+        )
         player_obj.connect("metadata", self.on_metadata_changed, None)
         self.manager.manage_player(player_obj)
         self.on_metadata_changed(player_obj, player_obj.props.metadata)
 
-    def get_players(self) -> List[Playerctl.Player]:
+    def get_players(self) -> list[Playerctl.Player]:
         return self.manager.props.players
 
     def write_output(self, text, title, player):
@@ -108,7 +113,9 @@ class OnMediaChange:
 
     def get_first_playing_player(self) -> Optional[Playerctl.Player]:
         players = self.get_players()
-        self.logger.debug(f"Getting first playing player from {len(players)} players")
+        self.logger.debug(
+            f"Getting first playing player from {len(players)} players"
+        )
         if len(players) > 0:
             # if any are playing, show the first one that is playing
             # reverse order, so that the most recently added ones are preferred
@@ -128,12 +135,16 @@ class OnMediaChange:
         # or else show nothing
         current_player = self.get_first_playing_player()
         if current_player is not None:
-            self.on_metadata_changed(current_player, current_player.props.metadata)
+            self.on_metadata_changed(
+                current_player, current_player.props.metadata
+            )
         else:
             self.clear_output()
 
     def on_metadata_changed(self, player, metadata, _=None):
-        self.logger.debug(f"Metadata changed for player {player.props.player_name}")
+        self.logger.debug(
+            f"Metadata changed for player {player.props.player_name}"
+        )
         player_name = player.props.player_name
         artist = player.get_artist()
         title = player.get_title()

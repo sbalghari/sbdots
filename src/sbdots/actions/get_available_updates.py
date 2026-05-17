@@ -37,7 +37,9 @@ class GetAvailableUpdates:
                     text=True,
                 ).stdout.strip()
                 pacman_updates = (
-                    len(pacman_updates_raw.split("\n")) if pacman_updates_raw else 0
+                    len(pacman_updates_raw.split("\n"))
+                    if pacman_updates_raw
+                    else 0
                 )
                 total_updates += pacman_updates
             except FileNotFoundError:
@@ -54,9 +56,13 @@ class GetAvailableUpdates:
                         text=True,
                     ).stdout.strip()
                     aur_updates = (
-                        len(aur_updates_raw.split("\n")) if aur_updates_raw else 0
+                        len(aur_updates_raw.split("\n"))
+                        if aur_updates_raw
+                        else 0
                     )
-                    aur_updates -= 2  # first 2 lines are aur-check-updates's stdout
+                    aur_updates -= (
+                        2  # first 2 lines are aur-check-updates's stdout
+                    )
                     total_updates += aur_updates
                 except FileNotFoundError:
                     aur_updates = 0
@@ -73,7 +79,9 @@ class GetAvailableUpdates:
                     text=True,
                 ).stdout.strip()
                 flatpak_updates = (
-                    len(flatpak_updates_raw.split("\n")) if flatpak_updates_raw else 0
+                    len(flatpak_updates_raw.split("\n"))
+                    if flatpak_updates_raw
+                    else 0
                 )
                 total_updates += flatpak_updates
             except FileNotFoundError:
@@ -96,7 +104,9 @@ class GetAvailableUpdates:
             try:
                 self.conn.sendall(b"\n")
                 self.conn.sendall(
-                    (json.dumps({"text": "", "class": "none"}) + "\n").encode("utf-8")
+                    (json.dumps({"text": "", "class": "none"}) + "\n").encode(
+                        "utf-8"
+                    )
                 )
             except (BrokenPipeError, ConnectionResetError, OSError):
                 pass

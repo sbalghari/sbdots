@@ -12,7 +12,9 @@ from ._base import panel, success, error, warning
 class SpinnerProgress:
     """Context manager for showing a live console spinner."""
 
-    def __init__(self, message: str, spinner_type: str = "dots", verbose: bool = False):
+    def __init__(
+        self, message: str, spinner_type: str = "dots", verbose: bool = False
+    ):
         self.message = message
         self.spinner_type = spinner_type
         self.verbose = verbose

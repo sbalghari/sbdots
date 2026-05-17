@@ -60,17 +60,25 @@ def print_subtext(t: str) -> None:
     CONSOLE.print(t, style="subtext")
 
 
-def print_info(t: str, *, details: Optional[str] = None, panel: bool = False) -> None:
+def print_info(
+    t: str, *, details: Optional[str] = None, panel: bool = False
+) -> None:
     CONSOLE.print(info(t, details=details, use_panel=panel))
 
 
-def print_success(t: str, details: Optional[str] = None, panel: bool = False) -> None:
+def print_success(
+    t: str, details: Optional[str] = None, panel: bool = False
+) -> None:
     CONSOLE.print(success(t, details=details, use_panel=panel))
 
 
-def print_error(t: str, details: Optional[str] = None, panel: bool = False) -> None:
+def print_error(
+    t: str, details: Optional[str] = None, panel: bool = False
+) -> None:
     CONSOLE.print(error(t, details=details, use_panel=panel))
 
 
-def print_warning(t: str, details: Optional[str] = None, panel: bool = False) -> None:
+def print_warning(
+    t: str, details: Optional[str] = None, panel: bool = False
+) -> None:
     CONSOLE.print(warning(t, details=details, use_panel=panel))

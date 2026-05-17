@@ -1,3 +1,4 @@
+from sbdots.constants import HYPRSHADE_SECTION
 import logging
 from subprocess import CompletedProcess
 
@@ -18,7 +19,7 @@ class ToggleHyprshadeFilter:
         self.conn = conn
 
         self.default_filter = "blue-light-filter"
-        self.config_section = "Hyprshade"
+        self.config_section = HYPRSHADE_SECTION
 
     def _run_hyprshade_cmd(self, *args) -> CompletedProcess | None:
         """Runs a hyprshade command and return the CompletedProcess if success, else None"""
@@ -43,7 +44,9 @@ class ToggleHyprshadeFilter:
         """Get the saved hyprshade filter from settings.
         If not found, save and return the default filter"""
         self.logger.debug("Loading hyprshade filter from settings...")
-        _filter = get_config("filter", section=self.config_section, logger=self.logger)
+        _filter = get_config(
+            "filter", section=self.config_section, logger=self.logger
+        )
 
         if not _filter:
             self.logger.debug(
@@ -60,10 +63,14 @@ class ToggleHyprshadeFilter:
     def _set_saved_filter(self, filter_name: str) -> None:
         """Save the hyprshade filter to settings"""
         self.logger.debug(
-            "Saving hyprshade filter to settings...", extra={"filter": filter_name}
+            "Saving hyprshade filter to settings...",
+            extra={"filter": filter_name},
         )
         if not set_config(
-            "filter", filter_name, section=self.config_section, logger=self.logger
+            "filter",
+            filter_name,
+            section=self.config_section,
+            logger=self.logger,
         ):
             self.logger.error("Unable to save hyprshade filter!")
             return
@@ -104,13 +111,17 @@ class ToggleHyprshadeFilter:
         active = self._get_active_filter()
         # if active is None treat as not running
         if not active:
-            self.logger.debug("Hyprshade not active, enabling filter: %s", filter2apply)
+            self.logger.debug(
+                "Hyprshade not active, enabling filter: %s", filter2apply
+            )
             result = self._run_hyprshade_cmd("on", filter2apply)
             if not result:
                 self.logger.error("Failed to enable hyprshade")
                 return
             if result.returncode != 0:
-                self.logger.error(f"Failed to enable hyprshade: {result.stderr}")
+                self.logger.error(
+                    f"Failed to enable hyprshade: {result.stderr}"
+                )
                 return
             self.notify(f"hyprshade enabled with {filter2apply}")
             self.logger.info(f"hyprshade enabled with {filter2apply}")
@@ -120,13 +131,17 @@ class ToggleHyprshadeFilter:
         # If we get here, hyprshade is active. If the active filter equals saved filter, toggle off.
         # Otherwise change to the saved filter.
         if active == filter2apply.lower():
-            self.logger.debug("Active filter matches saved filter — toggling off")
+            self.logger.debug(
+                "Active filter matches saved filter — toggling off"
+            )
             result = self._run_hyprshade_cmd("off")
             if not result:
                 self.logger.error("Failed to disable hyprshade")
                 return
             if result.returncode != 0:
-                self.logger.error(f"Failed to disable hyprshade: {result.stderr}")
+                self.logger.error(
+                    f"Failed to disable hyprshade: {result.stderr}"
+                )
                 return
             self.notify("hyprshade toggled off")
             self.logger.info("hyprshade toggled off")
@@ -142,7 +157,9 @@ class ToggleHyprshadeFilter:
                 self.logger.error("Failed to switch hyprshade filter")
                 return
             if result.returncode != 0:
-                self.logger.error(f"Failed to enable hyprshade: {result.stderr}")
+                self.logger.error(
+                    f"Failed to enable hyprshade: {result.stderr}"
+                )
                 return
             self.notify(f"hyprshade enabled with {filter2apply}")
             self.logger.info(f"hyprshade enabled with {filter2apply}")

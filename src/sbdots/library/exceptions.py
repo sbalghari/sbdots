@@ -17,7 +17,9 @@ class ProcessNotKilled(ProcessError):
 
 
 class CommandNotFound(FileNotFoundError):
-    def __init__(self, command, stderr=None, stdout=None, return_code=None) -> None:
+    def __init__(
+        self, command, stderr=None, stdout=None, return_code=None
+    ) -> None:
         self.command = command
         self.stderr = stderr
         self.stdout = stdout
@@ -40,7 +42,10 @@ class RequirementError(Exception):
 
 class SysCallError(Exception):
     def __init__(
-        self, message: str, exit_code: int | None = None, worker_log: bytes = b""
+        self,
+        message: str,
+        exit_code: int | None = None,
+        worker_log: bytes = b"",
     ) -> None:
         super().__init__(message)
         self.message = message

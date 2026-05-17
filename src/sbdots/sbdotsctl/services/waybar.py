@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Annotated
 import logging
 import typer
@@ -9,8 +8,7 @@ from sbdots.library.procs_utils import start_proc
 from sbdots.library.cli_utils import print_error, print_warning
 from sbdots.library.config_utils import get_config, set_config
 from sbdots.library.logger import setup_logging
-
-USER_CONFIGS_DIR = Path().home() / ".config"
+from sbdots.constants import USER_CONFIGS_DIR, WAYBAR_SECTION
 
 
 class Waybar(Process):
@@ -35,7 +33,7 @@ class Waybar(Process):
         self.logger.debug(
             "Saving waybar's style in the settings...", extra={"style": style}
         )
-        if not set_config("style", style, section="Waybar"):
+        if not set_config("style", style, section=WAYBAR_SECTION):
             self.logger.error("Unable to save waybar style!")
 
         self.logger.info("Successfully saved waybar style setting.")
@@ -43,8 +41,12 @@ class Waybar(Process):
     def _get_style(self) -> str:
         """Load waybar style from settings, if none, set the default"""
 
-        self.logger.debug("Loading waybar's current style from the settings...")
-        _style = get_config("style", section="Waybar", logger=self.logger)
+        self.logger.debug(
+            "Loading waybar's current style from the settings..."
+        )
+        _style = get_config(
+            "style", section=WAYBAR_SECTION, logger=self.logger
+        )
 
         if not _style:
             self.logger.debug(
@@ -94,9 +96,13 @@ class Waybar(Process):
                 self.logger.error(
                     f"Unable to start waybar with style: {self.current_style}"
                 )
-            self.logger.info(f"Waybar started with style: {self.current_style}")
+            self.logger.info(
+                f"Waybar started with style: {self.current_style}"
+            )
         except Exception as e:
-            self.logger.exception("Unexpected error starting waybar:", exc_info=e)
+            self.logger.exception(
+                "Unexpected error starting waybar:", exc_info=e
+            )
             raise
 
     def reload(self):
@@ -146,10 +152,13 @@ def cli_api() -> typer.Typer:
         ] = False,
         reload_config: Annotated[
             bool,
-            typer.Option("--reload-config", "-rc", help="Reload waybar's config files"),
+            typer.Option(
+                "--reload-config", "-rc", help="Reload waybar's config files"
+            ),
         ] = False,
         toggle: Annotated[
-            bool, typer.Option("--toggle", "-t", help="Toggle waybar's visibility")
+            bool,
+            typer.Option("--toggle", "-t", help="Toggle waybar's visibility"),
         ] = False,
         kill: Annotated[
             bool, typer.Option("--kill", "-k", help="Kill waybar service")
