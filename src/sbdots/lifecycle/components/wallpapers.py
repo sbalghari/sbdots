@@ -9,11 +9,7 @@ from sbdots.library.cli_utils import (
     get_console,
     print_newline,
 )
-
-HOME = Path().home()
-SBDOTS_DATA_DIR = HOME / ".local" / "share" / "sbdots"
-SBDOTS_WALLPAPERS_DIR = SBDOTS_DATA_DIR / "wallpapers"
-USER_WALLPAPERS_DIR = HOME / "Wallpapers"
+from sbdots.constants import  SBDOTS_WALLPAPERS_DIR, USER_WALLPAPERS_DIR, SBDOTS_DATA_DIR
 
 
 class WallpapersInstaller:

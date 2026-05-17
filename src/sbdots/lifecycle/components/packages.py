@@ -12,7 +12,7 @@ from sbdots.library.cli_utils import (
     print_error,
     get_console,
 )
-
+from sbdots.constants import OPTIONAL_PACKAGES
 
 class OptPackagesInstaller:
     def __init__(self, logger, dry_run, verbose):
@@ -21,19 +21,7 @@ class OptPackagesInstaller:
         self.dry_run = dry_run
         self.console = get_console()
 
-        # TODO: add discribtions
-        self.optional_pkgs = [
-            "visual-studio-code-bin",
-            "vlc",
-            "smile",
-            "sddm",
-            "obs-studio",
-            "mission-center",
-            "loupe",
-            "libreoffice-fresh",
-            "gnome-text-editor",
-            "ark",
-        ]
+        self.optional_pkgs = OPTIONAL_PACKAGES
 
     def install(self) -> bool:
         self.logger.info("Optional packages installer started")
@@ -41,7 +29,7 @@ class OptPackagesInstaller:
         print_newline()
 
         chosen: list[str] | str | None = chose(
-            choices=self.optional_pkgs, message="Choose apps to install."
+            choices=self.optional_pkgs, message="Choose apps to install.", multiple=True
         )
 
         if not chosen:

@@ -18,40 +18,23 @@ HOME = Path.home()
 USER_CONFIGS_DIR = HOME / ".config"
 USER_DOTFILES_DIR = HOME / "Dotfiles"
 USER_WALLPAPERS_DIR = HOME / "Wallpapers"
+USER_THEME_PATH = USER_CONFIGS_DIR / "rich" / "theme.toml"
 SBDOTS_CONFIG_DIR = HOME / ".sbdots"
-SBDOTS_DOTFILES_DIR = HOME / ".local" / "share" / "sbdots" / ".config"
-
-# =============================================================================
-# STATE AND LOGGING PATHS
-# =============================================================================
+SBDOTS_DATA_DIR = HOME / ".local" / "share" / "sbdots"
 SBDOTS_STATE_DIR = (
     Path(os.environ.get("XDG_STATE_HOME", HOME / ".local/state")) / "sbdots"
 )
+SBDOTS_DOTFILES_DIR = HOME / ".local" / "share" / "sbdots" / ".config"
+SBDOTS_WALLPAPERS_DIR = SBDOTS_DATA_DIR / "wallpapers"
 SBDOTS_LOG_DIR = SBDOTS_STATE_DIR / "logs"
-
-# =============================================================================
-# THEME PATHS
-# =============================================================================
 DEFAULT_THEME_PATH = Path("/etc") / "sbdots" / "rich_theme.toml"
-USER_THEME_PATH = USER_CONFIGS_DIR / "rich" / "theme.toml"
 
-# =============================================================================
-# UDEV RULES
-# =============================================================================
-UDEV_RULES_DIR = Path("/etc/udev/rules.d")
-UDEV_RULE_FILE = UDEV_RULES_DIR / "99-power-state.rules"
-UDEV_RULE_FILE_CONTENT = (
-    'SUBSYSTEM=="power_supply", ATTR{online}=="1", '
-    'RUN+="/usr/local/bin/set_power_profile -b" \n'
-    'SUBSYSTEM=="power_supply", ATTR{online}=="0", '
-    'RUN+="/usr/local/bin/set_power_profile -s"'
-)
 
 # =============================================================================
 # DAEMON CONFIGURATION
 # =============================================================================
 # Clipboard listener configuration
-CACHE_FILE = SBDOTS_CONFIG_DIR / "cliphist"
+CACHE_FILE = SBDOTS_STATE_DIR / "cliphist"
 MAX_ENTRIES = 50
 MAX_LENGTH = 200
 POLL_SEC = 0.2
@@ -78,7 +61,7 @@ class LogLevel(Enum):
 
 
 # =============================================================================
-# DOTFILES COMPONENTS
+# COMPONENTS
 # =============================================================================
 REQUIRED_DOTFILE_COMPONENTS = [
     "hypr",
@@ -96,6 +79,19 @@ REQUIRED_DOTFILE_COMPONENTS = [
     "wlogout",
     "atuin",
     "starship.toml",
+]
+
+OPTIONAL_PACKAGES = [
+    "visual-studio-code-bin",
+    "vlc",
+    "smile",
+    "sddm",
+    "obs-studio",
+    "mission-center",
+    "loupe",
+    "libreoffice-fresh",
+    "gnome-text-editor",
+    "ark",
 ]
 
 # =============================================================================
