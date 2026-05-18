@@ -11,7 +11,6 @@ license=('GPL-3.0')
 
 depends=(
   kitty
-  ark
   nautilus
   atuin
   blueman
@@ -43,7 +42,7 @@ depends=(
   waybar
   starship
   swaync
-  swww
+  awww
   noto-fonts
   ttf-dejavu
   ttf-firacode-nerd
