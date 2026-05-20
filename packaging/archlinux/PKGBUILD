@@ -10,64 +10,52 @@ license=('GPL-3.0')
 
 
 depends=(
-  kitty
-  nautilus
   atuin
+  power-profiles-daemon
+  hyprpolkitagent
+  aur-check-updates
+  awww
+  bibata-cursor-theme-bin
   blueman
-  bluez-utils
   brightnessctl
   btop
   cava
-  pacman-contrib
   eza
   fastfetch
   figlet
-  python
-  python-requests
-  python-rich
-  python-typer
-  python-psutil
-  python-pexpect
-  python-pyfiglet
-  python-gobject
-  python-setproctitle
   fish
-  htop
-  neovim
-  network-manager-applet
-  pavucontrol
-  power-profiles-daemon
-  rofi
-  udiskie
-  waybar
-  starship
-  swaync
-  awww
-  noto-fonts
-  ttf-dejavu
-  ttf-firacode-nerd
-  ttf-font-awesome
-  ttf-intone-nerd
-  ttf-jetbrains-mono
-  ttf-jetbrains-mono-nerd
-  ttf-liberation
-  ttf-nerd-fonts-symbols
-  ttf-nerd-fonts-symbols-mono
-  ttf-roboto
+  gnome-keyring
   hypridle
-  hyprland
-  hyprland-protocols
   hyprlock
   hyprpicker
-  hyprpolkitagent
+  hyprshade
   hyprshot
-  xdg-desktop-portal-hyprland
+  kitty
+  kwalletmanager
+  noto-fonts
+  pacman-contrib
+  pavucontrol
+  polkit-kde-agent
+  python-pexpect
+  python-psutil
+  python-pyfiglet
   python-pywal
+  python-requests
+  python-rich
+  python-setproctitle
+  python-typer
+  rofi
+  starship
+  swaync
   tela-circle-icon-theme-standard
-  qt5-wayland
-  qt5ct
-  qt6-wayland
-  qt6ct
+  ttf-dejavu
+  ttf-jetbrains-mono
+  ttf-jetbrains-mono-nerd
+  udiskie
+  uwsm
+  waybar
+  waypaper
+  wlogout
 )
 
 makedepends=(
