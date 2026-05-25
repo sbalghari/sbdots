@@ -23,9 +23,7 @@ def install_package(logger: logging.Logger, package: str) -> bool:
         result = run_command(["yay", "-S", package, "--noconfirm", "--quiet"])
         return result.returncode == 0
     except subprocess.CalledProcessError as e:
-        logger.error(
-            f"Failed to install package: {package}. Exit code: {e.returncode}"
-        )
+        logger.error(f"Failed to install package: {package}. Exit code: {e.returncode}")
         return False
     except Exception as e:
         logger.error(f"Unexpected error installing package: {package}: {e}")

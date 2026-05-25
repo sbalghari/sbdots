@@ -30,9 +30,7 @@ class DotfilesInstaller:
         self.logger.info("Dotfiles installer started")
         print_header("Installing dotfiles.")
 
-        with Spinner(
-            "Installing dotfiles...", verbose=self.verbose
-        ) as spinner:
+        with Spinner("Installing dotfiles...", verbose=self.verbose) as spinner:
             # Step 1: Check if source files exists
             if not self._validate_sources(spinner):
                 return False

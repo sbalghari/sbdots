@@ -112,9 +112,7 @@ class SBDotsInstaller:
                 fails: str = ""
                 for component in self.failed_components:
                     fails += f"  - {component} \n"
-                print_error(
-                    INSTALLATION_FAILED_COMPONENTS_HEADER, details="\n" + fails
-                )
+                print_error(INSTALLATION_FAILED_COMPONENTS_HEADER, details="\n" + fails)
                 print_newline()
 
             print_error(INSTALLATION_FAILED_MESSAGE)
@@ -142,17 +140,13 @@ class SBDotsInstaller:
 
             try:
                 if self.sep_console_screen(lambda: install_func()):
-                    self.logger.info(
-                        f"{component_name} installed successfully."
-                    )
+                    self.logger.info(f"{component_name} installed successfully.")
                 else:
                     self.logger.error(f"{component_name} installation failed.")
                     self.failed_components.append(component_name)
                     all_success = False
             except Exception as e:
-                self.logger.error(
-                    f"Unexpected error installing {component_name}: {e}"
-                )
+                self.logger.error(f"Unexpected error installing {component_name}: {e}")
                 self.failed_components.append(component_name)
                 all_success = False
 
@@ -173,9 +167,7 @@ class SBDotsInstaller:
                     verbose=self.verbose,
                 )
             ):
-                self.logger.warning(
-                    "Couldn't install auto power saver, continuing..."
-                )
+                self.logger.warning("Couldn't install auto power saver, continuing...")
                 self.failed_components.append("Auto power saver")
         except Exception as e:
             self.logger.error(f"Error installing auto power saver: {e}")
@@ -197,9 +189,7 @@ class SBDotsInstaller:
             "Finalizing SBDots initialization...", verbose=self.verbose
         ) as spinner:
             result = self.finalization_manager.finalize(spinner)
-            self.failed_components.extend(
-                self.finalization_manager.failed_steps
-            )
+            self.failed_components.extend(self.finalization_manager.failed_steps)
             return result
 
     def install(self) -> None:
@@ -230,9 +220,7 @@ class SBDotsInstaller:
         # Install optional components
         self.logger.info("Installing optional components...")
         if not self.install_optional_components():
-            self.logger.warning(
-                "Some optional components failed, but continuing..."
-            )
+            self.logger.warning("Some optional components failed, but continuing...")
 
         # Finalize installation
         self.logger.info("Finalizing installation...")

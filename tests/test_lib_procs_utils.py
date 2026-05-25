@@ -7,9 +7,7 @@ class TestProcsUtils:
     """Tests for procs_utils module"""
 
     @patch("sbdots.library.procs_utils.subprocess.run")
-    def test_is_running_returns_true_for_running_process(
-        self, mock_subprocess
-    ):
+    def test_is_running_returns_true_for_running_process(self, mock_subprocess):
         """Test is_running returns True when process is running"""
         mock_result = MagicMock()
         mock_result.returncode = 0
@@ -20,9 +18,7 @@ class TestProcsUtils:
         assert result is True
 
     @patch("sbdots.library.procs_utils.subprocess.run")
-    def test_is_running_returns_false_for_stopped_process(
-        self, mock_subprocess
-    ):
+    def test_is_running_returns_false_for_stopped_process(self, mock_subprocess):
         """Test is_running returns False when process is not running"""
         mock_result = MagicMock()
         mock_result.returncode = 1

@@ -28,12 +28,7 @@ class ToggleHypridle(BaseAction):
         else:
             logger.debug("Hypridle is not running, toggling it on...")
             try:
-                start_proc(
-                    "hypridle",
-                    disown=True,
-                    dev_null_stdout=True,
-                    logger=logger
-                )
+                start_proc("hypridle", disown=True, dev_null_stdout=True, logger=logger)
 
             except RuntimeError as e:
                 logger.exception("'hypridle' failed to start: ", exc_info=e)

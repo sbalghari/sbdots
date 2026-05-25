@@ -37,9 +37,7 @@ def _pre_run(command: COMMAND, shell: bool) -> COMMAND:
     return command
 
 
-def _run(
-    command: COMMAND, run_func: Callable[..., Any], kwargs: dict[str, Any]
-) -> Any:
+def _run(command: COMMAND, run_func: Callable[..., Any], kwargs: dict[str, Any]) -> Any:
     """Base function to run commands"""
     command = _pre_run(command, kwargs.get("shell", False))
 
@@ -163,9 +161,7 @@ def run_sudo_cmd(
             # break if met threshold
             if ask_pass_threshold and got_password >= ask_pass_threshold:
                 if logger:
-                    logger.debug(
-                        f"Please stop asking for password, '{command[1]}'"
-                    )
+                    logger.debug(f"Please stop asking for password, '{command[1]}'")
                 break
 
             # check for any of the prompt patterns with a short timeout

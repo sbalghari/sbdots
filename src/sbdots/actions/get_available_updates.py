@@ -31,17 +31,13 @@ class GetAvailableUpdates(BaseAction):
     def _calculate_updates(self):
         total_updates: int = 0
         pacman_updates: str | int = self._get_pacman_updates()
-        total_updates += (
-            pacman_updates if isinstance(pacman_updates, int) else 0
-        )
+        total_updates += pacman_updates if isinstance(pacman_updates, int) else 0
 
         aur_updates: str | int = self._get_aur_updates()
         total_updates += aur_updates if isinstance(aur_updates, int) else 0
 
         flatpak_updates: str | int = self._get_flatpak_updates()
-        total_updates += (
-            flatpak_updates if isinstance(flatpak_updates, int) else 0
-        )
+        total_updates += flatpak_updates if isinstance(flatpak_updates, int) else 0
 
         return total_updates, pacman_updates, aur_updates, flatpak_updates
 
@@ -51,11 +47,7 @@ class GetAvailableUpdates(BaseAction):
                 pacman_updates_raw = check_output(
                     ["checkupdates"],
                 ).strip()
-                return (
-                    len(pacman_updates_raw.split("\n"))
-                    if pacman_updates_raw
-                    else 0
-                )
+                return len(pacman_updates_raw.split("\n")) if pacman_updates_raw else 0
             except FileNotFoundError:
                 return 0
         else:
@@ -69,9 +61,7 @@ class GetAvailableUpdates(BaseAction):
                         ["aur-check-updates"],
                     ).strip()
                     aur_updates = (
-                        len(aur_updates_raw.split("\n"))
-                        if aur_updates_raw
-                        else 0
+                        len(aur_updates_raw.split("\n")) if aur_updates_raw else 0
                     )
                     return (
                         aur_updates - 2
@@ -90,9 +80,7 @@ class GetAvailableUpdates(BaseAction):
                     ["flatpak", "remote-ls", "--updates"],
                 ).strip()
                 return (
-                    len(flatpak_updates_raw.split("\n"))
-                    if flatpak_updates_raw
-                    else 0
+                    len(flatpak_updates_raw.split("\n")) if flatpak_updates_raw else 0
                 )
             except FileNotFoundError:
                 return 0

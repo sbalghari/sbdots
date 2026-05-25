@@ -43,9 +43,7 @@ class OptPackagesInstaller:
 
         if self.dry_run:
             for i in chosen:
-                with Spinner(
-                    f"Installing {i}", verbose=self.verbose
-                ) as spinner:
+                with Spinner(f"Installing {i}", verbose=self.verbose) as spinner:
                     spinner.success(f"{i} successfully installed.")
 
             return True
@@ -64,18 +62,14 @@ class OptPackagesInstaller:
 
         with SudoKeepAlive(max_duration=1800):  # 30 minutes max duration
             for pkg in chosen:
-                with Spinner(
-                    f"Installing {pkg}", verbose=self.verbose
-                ) as spinner:
+                with Spinner(f"Installing {pkg}", verbose=self.verbose) as spinner:
                     try:
                         # Attempt to install the package
                         if install_package(package=pkg, logger=self.logger):
                             self.logger.info(f"Package: {pkg} installed.")
                             spinner.success(f"Installed {pkg}")
                         else:
-                            self.logger.error(
-                                f"Package: {pkg} failed to installed."
-                            )
+                            self.logger.error(f"Package: {pkg} failed to installed.")
                             spinner.error(f"Failed to install {pkg}")
                             failed_pkgs.append(pkg)
 
@@ -94,9 +88,7 @@ class OptPackagesInstaller:
                         failed_pkgs.append(pkg)
 
                     except Exception as e:
-                        spinner.error(
-                            f"Unexpected error installing {pkg}: {str(e)}"
-                        )
+                        spinner.error(f"Unexpected error installing {pkg}: {str(e)}")
                         failed_pkgs.append(pkg)
 
         if failed_pkgs:

@@ -19,8 +19,6 @@ def load_theme() -> tuple[Theme, dict, dict]:
     icons = config.get("icons", {})
 
     if not colors or not styles or not icons:
-        raise ThemeConfigError(
-            "Theme must define [colors], [styles] and [icons]"
-        )
+        raise ThemeConfigError("Theme must define [colors], [styles] and [icons]")
 
     return Theme(styles), colors, icons

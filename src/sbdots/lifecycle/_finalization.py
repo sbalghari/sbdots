@@ -25,9 +25,7 @@ class FinalizationManager:
         self.verbose = verbose
         self.failed_steps: list[str] = []
 
-    def _get_finalization_steps(
-        self, spinner: Spinner
-    ) -> list[FinalizationStep]:
+    def _get_finalization_steps(self, spinner: Spinner) -> list[FinalizationStep]:
         """
         Returns a list of finalization steps.
 
@@ -36,9 +34,7 @@ class FinalizationManager:
         return [
             (
                 "Starting SBDots Services...",
-                lambda: start_services(
-                    logger=self.logger, dry_run=self.dry_run
-                ),
+                lambda: start_services(logger=self.logger, dry_run=self.dry_run),
                 True,  # critical
             ),
             (
@@ -55,9 +51,7 @@ class FinalizationManager:
             ),
             (
                 "Applying wallpaper...",
-                lambda: apply_wallpaper(
-                    logger=self.logger, dry_run=self.dry_run
-                ),
+                lambda: apply_wallpaper(logger=self.logger, dry_run=self.dry_run),
                 False,  # Non-critical
             ),
         ]
@@ -85,27 +79,19 @@ class FinalizationManager:
                         all_success = False
                         break
                     else:
-                        spinner.warning(
-                            f"{step_text.strip()} completed with warnings."
-                        )
+                        spinner.warning(f"{step_text.strip()} completed with warnings.")
                         self.failed_steps.append(step_text.strip(" ."))
                 else:
-                    self.logger.info(
-                        f"{step_text.strip()} completed successfully."
-                    )
+                    self.logger.info(f"{step_text.strip()} completed successfully.")
 
             except Exception as e:
-                self.logger.error(
-                    f"Unexpected error during {step_text.strip()}: {e}"
-                )
+                self.logger.error(f"Unexpected error during {step_text.strip()}: {e}")
                 if is_critical:
                     spinner.error(f"{step_text.strip()} failed unexpectedly.")
                     all_success = False
                     break
                 else:
-                    spinner.warning(
-                        f"{step_text.strip()} completed with errors."
-                    )
+                    spinner.warning(f"{step_text.strip()} completed with errors.")
                     self.failed_steps.append(step_text.strip(" ."))
 
         if all_success:

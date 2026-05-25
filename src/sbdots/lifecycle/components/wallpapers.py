@@ -81,9 +81,7 @@ class WallpapersInstaller:
         print_header("Installing Wallpapers.")
         print_newline()
 
-        with Spinner(
-            "Installing wallpapers...", verbose=self.verbose
-        ) as spinner:
+        with Spinner("Installing wallpapers...", verbose=self.verbose) as spinner:
             try:
                 USER_WALLPAPERS_DIR.mkdir(parents=True, exist_ok=True)
                 self.logger.info("Ensured wallpapers dir exists.")
@@ -109,17 +107,13 @@ class WallpapersInstaller:
                             )
                             return False
                     except Exception as e:
-                        self.logger.error(
-                            f"Failed to copy default wallpapers: {e}"
-                        )
+                        self.logger.error(f"Failed to copy default wallpapers: {e}")
                         return False
 
                 spinner.success("Wallpapers installed successfully.")
 
             except Exception as e:
-                self.logger.exception(
-                    "Wallpaper installation failed", exc_info=e
-                )
+                self.logger.exception("Wallpaper installation failed", exc_info=e)
                 return False
 
         install_collection = confirm(
@@ -135,9 +129,7 @@ class WallpapersInstaller:
             ) as spinner:
                 if not self.dry_run:
                     if not self._install_wallpaper_collection(spinner):
-                        spinner.error(
-                            "Failed to install wallpaper collection."
-                        )
+                        spinner.error("Failed to install wallpaper collection.")
                         return False
                 spinner.success("Successfully installed wallpaper collection.")
         else:

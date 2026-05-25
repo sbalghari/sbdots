@@ -33,9 +33,7 @@ class Process:
 
         self._refresh_pid()
         if not self.pid:
-            self.logger.info(
-                f"{self.name} is not running, skipping to kill..."
-            )
+            self.logger.info(f"{self.name} is not running, skipping to kill...")
             return True
 
         try:
@@ -43,9 +41,7 @@ class Process:
             time.sleep(0.05)
             self._refresh_pid()
             if self.pid and psutil.pid_exists(self.pid):
-                self.logger.error(
-                    f"Failed to kill {self.name} (pid {self.pid})"
-                )
+                self.logger.error(f"Failed to kill {self.name} (pid {self.pid})")
                 return False
             self.logger.info(f"{self.name} killed.")
             return True
@@ -58,17 +54,13 @@ class Process:
 
     def start(self):
         """Start the process."""
-        raise NotImplementedError(
-            "Subclasses must implement the start method."
-        )
+        raise NotImplementedError("Subclasses must implement the start method.")
 
     def reload(self):
         """Reload the process."""
         if self.is_running():
             if not self.kill():
-                self.logger.info(
-                    f"{self.name} failed to reload. Unable to kill..."
-                )
+                self.logger.info(f"{self.name} failed to reload. Unable to kill...")
                 return
             time.sleep(0.2)
             self.start()
@@ -92,7 +84,5 @@ class Process:
             self.logger.info(f"Failed to send signal '{sig}'")
             return False
 
-        self.logger.debug(
-            f"Successfully sent signal {sig} to process '{self.name}'"
-        )
+        self.logger.debug(f"Successfully sent signal {sig} to process '{self.name}'")
         return True

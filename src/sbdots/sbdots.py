@@ -25,9 +25,7 @@ def version_callback(version: bool):
 cli = typer.Typer(add_completion=False)
 
 common_options = [
-    typer.Option(
-        False, "--dry-run/--no-dry-run", help="Run without making changes"
-    ),
+    typer.Option(False, "--dry-run/--no-dry-run", help="Run without making changes"),
     typer.Option(False, "--verbose/--no-verbose", help="Verbose output"),
 ]
 

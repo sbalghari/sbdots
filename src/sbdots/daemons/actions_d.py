@@ -71,7 +71,7 @@ def signal_handler(sig, frame):
 def error(conn, message: str):
     """Safely send a message to the client."""
     logger.error(message)
-    
+
     if SHUTDOWN_EVENT.is_set():
         logger.debug("Shutdown in progress. Suppressing send.")
         return
@@ -150,9 +150,7 @@ def run_long_running_action(name: str, cls_instance, conn) -> None:
                     entry.instance.stop()
                     entry.conn.close()
                 except Exception as e:
-                    logger.warning(
-                        f"Failed to stop previous '{entry.name}': {e}"
-                    )
+                    logger.warning(f"Failed to stop previous '{entry.name}': {e}")
                 RUNNING_ACTIONS.remove(entry)
                 break
 
@@ -200,9 +198,7 @@ def rm_prev_socket() -> None:
 def handle_shutdown(active_threads: set) -> None:
     """Shutdown the daemon gracfully"""
 
-    logger.info(
-        "Shutdown initiated. Waiting for active actions to complete..."
-    )
+    logger.info("Shutdown initiated. Waiting for active actions to complete...")
 
     # Stop long-running actions
     with STATE_LOCK:
@@ -315,9 +311,7 @@ def start_daemon():
                 conn, _ = s.accept()
             except socket.timeout:
                 with STATE_LOCK:
-                    finished_threads = [
-                        t for t in active_threads if not t.is_alive()
-                    ]
+                    finished_threads = [t for t in active_threads if not t.is_alive()]
                     for thread in finished_threads:
                         active_threads.remove(thread)
                 continue

@@ -29,12 +29,8 @@ class GetWeatherData(BaseAction):
         logger.debug("Loading weather credentials from settings...")
 
         api_key = get_config("api_key", section=WEATHER_SECTION, logger=logger)
-        latitude = get_config(
-            "latitude", section=WEATHER_SECTION, logger=logger
-        )
-        longitude = get_config(
-            "longitude", section=WEATHER_SECTION, logger=logger
-        )
+        latitude = get_config("latitude", section=WEATHER_SECTION, logger=logger)
+        longitude = get_config("longitude", section=WEATHER_SECTION, logger=logger)
 
         # If credentials don't exist, create defaults
         if not api_key or not latitude or not longitude:
@@ -73,9 +69,7 @@ class GetWeatherData(BaseAction):
             response = requests.get(url, timeout=10)
             response.raise_for_status()  # Raise an error for bad status codes
 
-            logger.info(
-                "Successfully fetched weather data from WeatherAPI.com"
-            )
+            logger.info("Successfully fetched weather data from WeatherAPI.com")
             return response.json()
         except requests.ConnectionError as e:
             logger.error(f"Connection error: {e}")
@@ -106,9 +100,7 @@ class GetWeatherData(BaseAction):
 
         # Shorten the condition text
         condition_text = (
-            condition_text[:20] + "..."
-            if len(condition_text) > 20
-            else condition_text
+            condition_text[:20] + "..." if len(condition_text) > 20 else condition_text
         )
 
         # Round the temperature to the nearest integer
@@ -133,18 +125,18 @@ class GetWeatherData(BaseAction):
         location_name = location.get("name", "Unknown")
         location_region = location.get("region", "Unknown")
         location_country = location.get("country", "Unknown")
-        location_line = f"Location: {location_name}, {location_region} - {location_country}"
+        location_line = (
+            f"Location: {location_name}, {location_region} - {location_country}"
+        )
 
         current_weather = data.get("current", {})
         tooltip = f"{location_line}\n"
         tooltip += f"Temperature: {current_weather.get('temp_c', 'N/A')}°C\n"
-        tooltip += f"Condition: {current_weather.get('condition', {}).get('text', 'N/A')}\n"
         tooltip += (
-            f"Wind Speed: {current_weather.get('wind_kph', 'N/A')} km/h\n"
+            f"Condition: {current_weather.get('condition', {}).get('text', 'N/A')}\n"
         )
-        tooltip += (
-            f"Wind Direction: {current_weather.get('wind_degree', 'N/A')}°\n"
-        )
+        tooltip += f"Wind Speed: {current_weather.get('wind_kph', 'N/A')} km/h\n"
+        tooltip += f"Wind Direction: {current_weather.get('wind_degree', 'N/A')}°\n"
         tooltip += f"Humidity: {current_weather.get('humidity', 'N/A')}%"
 
         return tooltip

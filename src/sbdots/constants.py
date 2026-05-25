@@ -23,8 +23,7 @@ USER_WALLPAPERS_DIR = HOME / "Wallpapers"
 SBDOTS_CONFIG_DIR = HOME / ".sbdots"
 SBDOTS_DATA_DIR = Path("/usr/share/sbdots")
 SBDOTS_STATE_DIR = (
-    Path(os.environ.get("XDG_STATE_HOME", HOME / ".local" / "state"))
-    / "sbdots"
+    Path(os.environ.get("XDG_STATE_HOME", HOME / ".local" / "state")) / "sbdots"
 )
 
 SBDOTS_DOTFILES_DIR = SBDOTS_DATA_DIR / "configs"
@@ -40,11 +39,11 @@ USER_RICH_THEME_PATH = USER_CONFIGS_DIR / "rich" / "theme.toml"
 # =============================================================================
 # Actions daemon
 VALID_ACTIONS: list[str] = [
-        "get_available_updates",
-        "get_hypridle_status",
-        "get_weather_data",
-        "toggle_hypridle",
-    ]
+    "get_available_updates",
+    "get_hypridle_status",
+    "get_weather_data",
+    "toggle_hypridle",
+]
 
 # Clipboard listener configuration
 CACHE_FILE = SBDOTS_STATE_DIR / "cliphist"
@@ -116,12 +115,16 @@ WAYBAR_SECTION = "Waybar"
 # INSTALLER UI MESSAGES
 # =============================================================================
 WELCOME_MESSAGE = "Welcome to SBDots initializer!"
-SETUP_DESCRIPTION = "This setup will copy sbdots files to the respective user dirs and apply settings."
+SETUP_DESCRIPTION = (
+    "This setup will copy sbdots files to the respective user dirs and apply settings."
+)
 DRY_RUN_MESSAGE = "Dry-run mode enabled. No changes will be made."
 VERBOSE_MESSAGE = "Verbose mode enabled. Might be noisy."
 
 ALREADY_INSTALLED_MESSAGE = "SBDots is already initialized."
-ALREADY_INSTALLED_DETAILS = "If you want to reinitialize or repair, please remove existing files first."
+ALREADY_INSTALLED_DETAILS = (
+    "If you want to reinitialize or repair, please remove existing files first."
+)
 
 INSTALLATION_CANCELLED_MESSAGE = "SBDots initialization cancelled!"
 INSTALLATION_CANCELLED_DETAILS = (
@@ -134,9 +137,7 @@ INSTALLATION_SUCCESS_DETAILS = "Please restart your PC once before using..."
 INSTALLATION_FAILED_MESSAGE = (
     "SBDots initialization failed. Please check the logs for details"
 )
-INSTALLATION_FAILED_COMPONENTS_HEADER = (
-    "The following components failed to initialize:"
-)
+INSTALLATION_FAILED_COMPONENTS_HEADER = "The following components failed to initialize:"
 
 CONFIRMATION_MESSAGE = "Do you want to start the initialization?"
 

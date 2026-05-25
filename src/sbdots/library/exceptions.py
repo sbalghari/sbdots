@@ -17,9 +17,7 @@ class ProcessNotKilled(ProcessError):
 
 
 class CommandNotFound(FileNotFoundError):
-    def __init__(
-        self, command, stderr=None, stdout=None, return_code=None
-    ) -> None:
+    def __init__(self, command, stderr=None, stdout=None, return_code=None) -> None:
         self.command = command
         self.stderr = stderr
         self.stdout = stdout

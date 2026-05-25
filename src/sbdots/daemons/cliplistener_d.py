@@ -116,9 +116,7 @@ def append_clip(clip):
 
     lines = read_history()
     if clip in lines:
-        logger.info(
-            "'%s' is already in history, bringing it to the front...", clip
-        )
+        logger.info("'%s' is already in history, bringing it to the front...", clip)
         lines.remove(clip)
         lines.append(clip)
     else:
@@ -141,9 +139,7 @@ def main_loop():
             if clip != last_clip:
                 added = append_clip(clip)
                 if added:
-                    logger.info(
-                        "Added clip | len: %d | clip: [%s]", len(clip), clip
-                    )
+                    logger.info("Added clip | len: %d | clip: [%s]", len(clip), clip)
                 last_clip = clip
         time.sleep(0.2)
 

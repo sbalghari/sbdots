@@ -33,16 +33,12 @@ class SudoKeepAlive:
                     ["sudo", "-v"], check=True, capture_output=True, text=True
                 )
             except subprocess.CalledProcessError as e:
-                raise RuntimeError(
-                    f"Failed to obtain sudo privileges: {e.stderr}"
-                )
+                raise RuntimeError(f"Failed to obtain sudo privileges: {e.stderr}")
 
             self._is_running = True
             self._start_time = time.time()
             self._stop.clear()
-            self._thread = threading.Thread(
-                target=self._keepalive, daemon=True
-            )
+            self._thread = threading.Thread(target=self._keepalive, daemon=True)
             self._thread.start()
             atexit.register(self.stop)
 

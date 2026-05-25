@@ -98,9 +98,7 @@ class InstallUpdates:
                 print_subtext(orphans)
 
                 # Remove orphans
-                cmd = (
-                    f"pacman -Rns {orphans.replace(chr(10), ' ')} --noconfirm"
-                )
+                cmd = f"pacman -Rns {orphans.replace(chr(10), ' ')} --noconfirm"
                 self._run_command(cmd)
             else:
                 print_success("No orphaned packages found")
@@ -130,9 +128,7 @@ class InstallUpdates:
 
         # Reboot check
         print_newline()
-        if confirm(
-            "Updates complete. Some updates may require a reboot. Reboot now?"
-        ):
+        if confirm("Updates complete. Some updates may require a reboot. Reboot now?"):
             self._run_command("reboot")
 
         print_newline()

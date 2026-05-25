@@ -41,12 +41,8 @@ class Waybar(Process):
     def _get_style(self) -> str:
         """Load waybar style from settings, if none, set the default"""
 
-        self.logger.debug(
-            "Loading waybar's current style from the settings..."
-        )
-        _style = get_config(
-            "style", section=WAYBAR_SECTION, logger=self.logger
-        )
+        self.logger.debug("Loading waybar's current style from the settings...")
+        _style = get_config("style", section=WAYBAR_SECTION, logger=self.logger)
 
         if not _style:
             self.logger.debug(
@@ -96,13 +92,9 @@ class Waybar(Process):
                 self.logger.error(
                     f"Unable to start waybar with style: {self.current_style}"
                 )
-            self.logger.info(
-                f"Waybar started with style: {self.current_style}"
-            )
+            self.logger.info(f"Waybar started with style: {self.current_style}")
         except Exception as e:
-            self.logger.exception(
-                "Unexpected error starting waybar:", exc_info=e
-            )
+            self.logger.exception("Unexpected error starting waybar:", exc_info=e)
             raise
 
     def reload(self):
@@ -152,9 +144,7 @@ def cli_api() -> typer.Typer:
         ] = False,
         reload_config: Annotated[
             bool,
-            typer.Option(
-                "--reload-config", "-rc", help="Reload waybar's config files"
-            ),
+            typer.Option("--reload-config", "-rc", help="Reload waybar's config files"),
         ] = False,
         toggle: Annotated[
             bool,

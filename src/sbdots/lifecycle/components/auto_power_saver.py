@@ -35,9 +35,7 @@ class AutoPowerSaverInstaller:
 
         logger.debug("Checking for VM...")
         if is_vm():
-            logger.warning(
-                "Running on VM, skipping auto power saver installation..."
-            )
+            logger.warning("Running on VM, skipping auto power saver installation...")
             return True
 
         logger.debug("Checking for Laptop...")
@@ -50,9 +48,7 @@ class AutoPowerSaverInstaller:
         print_header("Setting auto power saver.")
 
         if dry_run:
-            with Spinner(
-                "Installing auto power saver...", verbose=verbose
-            ) as spinner:
+            with Spinner("Installing auto power saver...", verbose=verbose) as spinner:
                 sleep(1)
                 spinner.success("Auto power saver installed successfully.")
             return True
@@ -62,9 +58,7 @@ class AutoPowerSaverInstaller:
                 logger.error("Failed to get sudo permissions, exiting...")
                 return False
 
-            with Spinner(
-                "Installing auto power saver...", verbose=verbose
-            ) as spinner:
+            with Spinner("Installing auto power saver...", verbose=verbose) as spinner:
                 # Create temporary file first
                 tmp_file = Path("/tmp/99-power-state.rules")
 
@@ -121,9 +115,7 @@ class AutoPowerSaverInstaller:
                 # Verify the rule was installed correctly
                 try:
                     if not UDEV_RULE_FILE.exists():
-                        spinner.error(
-                            "Rule file not found after installation."
-                        )
+                        spinner.error("Rule file not found after installation.")
                         return False
 
                     installed_content = UDEV_RULE_FILE.read_text()
