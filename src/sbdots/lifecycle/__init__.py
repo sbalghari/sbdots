@@ -17,34 +17,12 @@ from sbdots.library.cli_utils import (
     print_newline,
 )
 
-from .components import (
-    DotfilesInstaller,
-    WallpapersInstaller,
-    OptPackagesInstaller,
-    AutoPowerSaverInstaller,
-)
-
-from sbdots.constants import (
-    WELCOME_MESSAGE,
-    SETUP_DESCRIPTION,
-    DRY_RUN_MESSAGE,
-    VERBOSE_MESSAGE,
-    ALREADY_INSTALLED_MESSAGE,
-    ALREADY_INSTALLED_DETAILS,
-    INSTALLATION_CANCELLED_MESSAGE,
-    INSTALLATION_CANCELLED_DETAILS,
-    INSTALLATION_SUCCESS_MESSAGE,
-    INSTALLATION_SUCCESS_DETAILS,
-    INSTALLATION_FAILED_MESSAGE,
-    INSTALLATION_FAILED_COMPONENTS_HEADER,
-    CONFIRMATION_MESSAGE,
-    FINALIZATION_HEADER,
-)
+from .components import ComponentsManager
 from ._validators import is_already_installed
-from ._finalization import FinalizationManager
+from .postinstall import PostInstallHooks
 
 
-class SBDotsInstaller:
+class SBDotsInitializer:
     def __init__(
         self,
         logger: logging.Logger,
@@ -53,7 +31,7 @@ class SBDotsInstaller:
     ) -> None:
         self.dry_run = dry_run
         self.verbose = verbose
-        self.failed_components: list[str] = []
+        self.failed_steps = []
 
         # Setup logger
         self.logger = logger
@@ -63,22 +41,25 @@ class SBDotsInstaller:
 
         # Initialize sub-managers
         self.validator = is_already_installed
-        self.finalization_manager = FinalizationManager(
+        self.components = ComponentsManager(
+            self.logger, dry_run=self.dry_run, verbose=self.verbose
+        )
+        self.post_install_hooks = PostInstallHooks(
             self.logger, dry_run=self.dry_run, verbose=self.verbose
         )
 
-        self.logger.info("SBDots Installer initialized")
-
     def _title(self) -> None:
         print_ascii_art("SBDots Installer")
-        print_subtext(WELCOME_MESSAGE)
-        print_subtext(SETUP_DESCRIPTION)
+        print_subtext("Welcome to SBDots initializer!")
+        print_subtext(
+            "This setup will copy sbdots files to the respective user dirs and apply settings."
+        )
         print_newline()
 
         if self.dry_run:
-            print_subtext(DRY_RUN_MESSAGE)
+            print_subtext("Dry-run mode enabled. No changes will be made.")
         if self.verbose:
-            print_subtext(VERBOSE_MESSAGE)
+            print_subtext("Verbose mode enabled. Might be noisy.")
         print_newline()
 
     def _clear(self) -> None:
@@ -101,131 +82,63 @@ class SBDotsInstaller:
 
         if success:
             print_success(
-                INSTALLATION_SUCCESS_MESSAGE,
-                details=INSTALLATION_SUCCESS_DETAILS,
+                "SBDots initialization completed successfully!",
+                details="Please restart your PC once before using...",
             )
             sleep(0.5)
 
             sys.exit(0)
         else:
-            if self.failed_components:
+            if self.failed_steps:
                 fails: str = ""
-                for component in self.failed_components:
+                for component in self.failed_steps:
                     fails += f"  - {component} \n"
-                print_error(INSTALLATION_FAILED_COMPONENTS_HEADER, details="\n" + fails)
+                print_error(
+                    "The following components failed to initialize: ",
+                    details="\n" + fails,
+                )
                 print_newline()
 
-            print_error(INSTALLATION_FAILED_MESSAGE)
+            print_error(
+                "SBDots initialization failed. Please check the logs for details"
+            )
             sys.exit(1)
 
-    def install_components(self) -> bool:
-        self.logger.info("Starting installation of main components...")
+    def _postinstall(self) -> bool:
+        self.logger.info(f"{'=' * 50}\nPost install\n{'=' * 50}")
+        print_header("Post install hooks")
 
-        components: dict[str, Callable[[], bool]] = {
-            "Dotfiles": lambda: DotfilesInstaller(
-                dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
-            ).install(),
-            "Recommended Packages": lambda: OptPackagesInstaller(
-                dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
-            ).install(),
-            "Wallpapers": lambda: WallpapersInstaller(
-                dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
-            ).install(),
-        }
-
-        all_success = True
-
-        for component_name, install_func in components.items():
-            self.logger.info(f"Installing {component_name}...")
-
-            try:
-                if self.sep_console_screen(lambda: install_func()):
-                    self.logger.info(f"{component_name} installed successfully.")
-                else:
-                    self.logger.error(f"{component_name} installation failed.")
-                    self.failed_components.append(component_name)
-                    all_success = False
-            except Exception as e:
-                self.logger.error(f"Unexpected error installing {component_name}: {e}")
-                self.failed_components.append(component_name)
-                all_success = False
-
-        return all_success
-
-    def install_optional_components(self) -> bool:
-        """Install optional components that are not critical for basic functionality."""
-        self.logger.info("Installing optional components...")
-
-        optional_success = True
-
-        # Install auto power saver (non-critical), only for laptops
-        try:
-            if not self.sep_console_screen(
-                lambda: AutoPowerSaverInstaller().install(
-                    logger=self.logger,
-                    dry_run=self.dry_run,
-                    verbose=self.verbose,
-                )
-            ):
-                self.logger.warning("Couldn't install auto power saver, continuing...")
-                self.failed_components.append("Auto power saver")
-        except Exception as e:
-            self.logger.error(f"Error installing auto power saver: {e}")
-            optional_success = False
-
-        return optional_success
-
-    def finalize_installation(self) -> bool:
-        """
-        Perform final installation steps.
-
-        Returns:
-            bool: True if finalization completed (even with minor errors), False if critical error
-        """
-        self.logger.info("Finalizing installation")
-        print_header(FINALIZATION_HEADER)
-
-        with Spinner(
-            "Finalizing SBDots initialization...", verbose=self.verbose
-        ) as spinner:
-            result = self.finalization_manager.finalize(spinner)
-            self.failed_components.extend(self.finalization_manager.failed_steps)
+        with Spinner("Running post install hooks...", verbose=self.verbose) as spinner:
+            result = self.post_install_hooks.run_hooks(spinner)
+            self.failed_steps.extend(self.post_install_hooks.failed_steps)
             return result
 
     def install(self) -> None:
-        """Main installation method."""
+        self.logger.info("SBDots Installer initialized")
 
         if self.validator(self.logger) and not self.dry_run:
             print_warning(
-                ALREADY_INSTALLED_MESSAGE,
-                details=ALREADY_INSTALLED_DETAILS,
+                "SBDots is already initialized for the current user!",
+                details="If you want to repair, please remove existing files first.",
             )
 
-        if not confirm(message=CONFIRMATION_MESSAGE, default_yes=True):
+        if not confirm(
+            message="Do you want to start the initialization?", default_yes=True
+        ):
             print_warning(
-                INSTALLATION_CANCELLED_MESSAGE,
-                details=INSTALLATION_CANCELLED_DETAILS,
+                "SBDots initialization cancelled!",
+                details="If you want to initialize SBDots, please run 'sbdots init'.",
             )
             sleep(1)
             sys.exit(1)
 
-        self.logger.info("Starting SBDots installation process...")
+        self.logger.info("Starting SBDots initialization process...")
 
-        # Install main components
-        self.logger.info("Installing main components...")
-        if not self.install_components():
-            self.logger.error("Main components installation failed.")
+        if not self.components.install(self.sep_console_screen):
             self.sep_console_screen(lambda: self._exit(success=False))
+        self.failed_steps.extend(self.components.failed_steps)
 
-        # Install optional components
-        self.logger.info("Installing optional components...")
-        if not self.install_optional_components():
-            self.logger.warning("Some optional components failed, but continuing...")
-
-        # Finalize installation
-        self.logger.info("Finalizing installation...")
-        if not self.sep_console_screen(lambda: self.finalize_installation()):
-            self.logger.error("Finalization phase failed.")
+        if not self.sep_console_screen(lambda: self._postinstall()):
             self.sep_console_screen(lambda: self._exit(success=False))
 
         # Success exit

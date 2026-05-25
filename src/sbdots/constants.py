@@ -1,8 +1,8 @@
 """
-Global constants for the SBDots project.
+Global constants for SBDots.
 
-This module centralizes all constant definitions used throughout the application,
-including paths, configuration sections, UI messages, timeouts, and other magic values.
+This module centralizes all constant definitions used throughout,
+including paths, configuration sections, and other values.
 """
 
 from pathlib import Path
@@ -107,41 +107,9 @@ OPTIONAL_PACKAGES = [
 # CONFIGURATION SECTIONS
 # =============================================================================
 DEFAULT_SECTION = "core"
-WEATHER_SECTION = "Weather"
-HYPRSHADE_SECTION = "Hyprshade"
-WAYBAR_SECTION = "Waybar"
-
-# =============================================================================
-# INSTALLER UI MESSAGES
-# =============================================================================
-WELCOME_MESSAGE = "Welcome to SBDots initializer!"
-SETUP_DESCRIPTION = (
-    "This setup will copy sbdots files to the respective user dirs and apply settings."
-)
-DRY_RUN_MESSAGE = "Dry-run mode enabled. No changes will be made."
-VERBOSE_MESSAGE = "Verbose mode enabled. Might be noisy."
-
-ALREADY_INSTALLED_MESSAGE = "SBDots is already initialized."
-ALREADY_INSTALLED_DETAILS = (
-    "If you want to reinitialize or repair, please remove existing files first."
-)
-
-INSTALLATION_CANCELLED_MESSAGE = "SBDots initialization cancelled!"
-INSTALLATION_CANCELLED_DETAILS = (
-    "If you want to initialize SBDots, please run 'sbdots init'."
-)
-
-INSTALLATION_SUCCESS_MESSAGE = "SBDots initialization completed successfully!"
-INSTALLATION_SUCCESS_DETAILS = "Please restart your PC once before using..."
-
-INSTALLATION_FAILED_MESSAGE = (
-    "SBDots initialization failed. Please check the logs for details"
-)
-INSTALLATION_FAILED_COMPONENTS_HEADER = "The following components failed to initialize:"
-
-CONFIRMATION_MESSAGE = "Do you want to start the initialization?"
-
-FINALIZATION_HEADER = "Finalizing initialization:"
+WEATHER_SECTION = "weather"
+HYPRSHADE_SECTION = "hyprshade"
+WAYBAR_SECTION = "waybar"
 
 # =============================================================================
 # WEATHER DATA ICONS
@@ -201,10 +169,6 @@ WEATHER_ICONS: dict[int, str] = {
 # =============================================================================
 # CLI DISPLAY CONFIGURATION
 # =============================================================================
-# Note: HEADING_GRADIENT is defined in library/cli_utils/output.py as it requires
-# runtime access to COLORS dict from the theme loader
-# REGULAR EXPRESSIONS
-# =============================================================================
 # Pattern for resolving configuration placeholders
 PLACEHOLDER_RE = re.compile(r"\{([a-zA-Z_][\w]*)\.([^\|}]+)(?:\|([^\}]+))?\}")
 
@@ -226,4 +190,4 @@ SUDO_PROMPT_PATTERNS = [
 # TYPE ALIASES
 # =============================================================================
 COMMAND: TypeAlias = Union[list[Any], str]
-FinalizationStep: TypeAlias = tuple[str, Callable[[], bool], bool]
+LifeCycleStep: TypeAlias = tuple[str, Callable[[], bool], bool]
