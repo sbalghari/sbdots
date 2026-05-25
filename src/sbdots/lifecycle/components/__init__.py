@@ -65,7 +65,6 @@ class ComponentsManager:
         self.logger.info("Starting installation of main components...")
 
         components = self._get_components()
-        success = True
 
         for component_name, install_func, is_critical in components:
             self.logger.info(f"Installing {component_name}...")
@@ -78,14 +77,15 @@ class ComponentsManager:
                     self.logger.error(f"{component_name} installation failed.")
                     self.failed_steps.append(component_name)
                     if is_critical:
-                        success = False
-                        break
+                        return False
                     else:
                         self.failed_steps.append(component_name)
 
             except Exception as e:
                 self.logger.error(f"Unexpected error installing {component_name}: {e}")
-                self.failed_steps.append(component_name)
-                success = False
+                if is_critical:
+                    return False
+                else:
+                    self.failed_steps.append(component_name)
 
-        return success
+        return True
