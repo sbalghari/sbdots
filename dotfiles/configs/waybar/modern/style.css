@@ -60,7 +60,6 @@
 #network,
 #custom-sysinfo,
 #power-profiles-daemon,
-#custom-hyprshade,
 #custom-hypridle,
 #cpu,
 #memory,
@@ -71,7 +70,6 @@
 }
 
 #custom-sysinfo:hover,
-#custom-hyprshade:hover,
 #custom-hypridle:hover,
 #cpu:hover,
 #memory:hover,
@@ -114,7 +112,6 @@ tooltip label{color:@text;}
 ================================================================*/
 #custom-sysinfo,
 #power-profiles-daemon,
-#custom-hyprshade,
 #custom-hypridle,
 #cpu,
 #memory,

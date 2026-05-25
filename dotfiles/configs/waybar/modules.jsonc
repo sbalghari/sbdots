@@ -52,13 +52,10 @@
 
   // Active media
   "custom/mediaplayer": {
-    "exec": "sbdots-actions on_media_change",
-    "return-type": "json",
     "escape": true,
     "interval": 0,
-    "format": "{0}",
-    "tooltip-format": "{0}",
     "max-length": 30,
+    "tooltip": true,
     "on-click": "playerctl play-pause",
     "on-scroll-up": "playerctl next",
     "on-scroll-down": "playerctl previous"
@@ -66,9 +63,10 @@
 
   // Weather
   "custom/weather": {
+    "return-type": "json",
     "exec": "sbdots-actions get_weather_data",
     "interval": 60,
-    "return-type": "json"
+    "tooltip": true
   },
 
   // Workspaces
@@ -84,27 +82,16 @@
     }
   },
 
-  // Blue-light filter toggle
-  "custom/hyprshade": {
-    "format": "󰌁",
-    "return-type": "json",
-    "escape": true,
-    "exec-on-event": true,
-    "interval": 10,
-    "tooltip-format": "Toggle Screen Shader\nleft-click: Toggle screen shader\nright-click: Open screen shader menu",
-    "on-click": "sbdots-actions toggle_hyprshade_filter",
-    "on-click-right": "~/.config/rofi/applets/hyprshade.sh"
-  },
-
   // Locking system (hypridle)
   "custom/hypridle": {
     "format": "󱫔",
     "return-type": "json",
     "escape": true,
     "exec-on-event": true,
+    "tooltip": true,
     "interval": 60,
     "exec": "sbdots-actions get_hypridle_status",
-    "on-click": "~/.config/hypr/services/hypridle.sh toggle"
+    "on-click": "sbdots-actions toggle_hypridle"
   },
 
   // Updates
@@ -114,6 +101,7 @@
     "return-type": "json",
     "exec": "sbdots-actions get_available_updates",
     "interval": 60,
+    "tooltip": true,
     "on-click": "kitty --class floating -e ~/.config/waybar/scripts/installupdates.sh"
   },
 

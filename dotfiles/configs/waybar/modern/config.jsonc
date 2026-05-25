@@ -17,7 +17,6 @@
     // ToolBox
     "group/sysinfo",
     "power-profiles-daemon",
-    "custom/hyprshade",
     "custom/hypridle",
 
     "wlr/taskbar",
