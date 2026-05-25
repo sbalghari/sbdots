@@ -7,8 +7,6 @@ from .packages import OptPackagesInstaller
 from .wallpapers import WallpapersInstaller
 from .auto_power_saver import AutoPowerSaverInstaller
 
-from time import sleep  # temp
-
 
 class ComponentsManager:
     """Manages sbdots's components, i.e: their installation, uninstallaion and etc"""
@@ -68,7 +66,6 @@ class ComponentsManager:
 
         for component_name, install_func, is_critical in components:
             self.logger.info(f"Installing {component_name}...")
-            sleep(1)
 
             try:
                 if sep_console_func(lambda: install_func()):
