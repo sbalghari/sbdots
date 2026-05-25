@@ -10,65 +10,49 @@ license=('GPL-3.0')
 
 
 depends=(
-  kitty
-  ark
-  nautilus
   atuin
+  power-profiles-daemon
+  hyprpolkitagent
+  aur-check-updates
+  awww
+  bibata-cursor-theme-bin
   blueman
-  bluez-utils
   brightnessctl
   btop
-  cava
-  pacman-contrib
   eza
   fastfetch
   figlet
-  python
-  python-requests
-  python-rich
-  python-typer
-  python-psutil
-  python-pexpect
-  python-pyfiglet
-  python-gobject
-  python-setproctitle
   fish
-  htop
-  neovim
-  network-manager-applet
-  pavucontrol
-  power-profiles-daemon
-  rofi
-  udiskie
-  waybar
-  starship
-  swaync
-  swww
-  noto-fonts
-  ttf-dejavu
-  ttf-firacode-nerd
-  ttf-font-awesome
-  ttf-intone-nerd
-  ttf-jetbrains-mono
-  ttf-jetbrains-mono-nerd
-  ttf-liberation
-  ttf-nerd-fonts-symbols
-  ttf-nerd-fonts-symbols-mono
-  ttf-roboto
+  gnome-keyring
   hypridle
-  hyprland
-  hyprland-protocols
   hyprlock
   hyprpicker
-  hyprpolkitagent
   hyprshot
-  xdg-desktop-portal-hyprland
-  python-pywal
+  kitty
+  kwalletmanager
+  noto-fonts
+  pacman-contrib
+  pavucontrol
+  polkit-kde-agent
+  python-pexpect
+  python-psutil
+  python-pyfiglet
+  python-requests
+  python-rich
+  python-setproctitle
+  python-typer
+  rofi
+  starship
+  swaync
   tela-circle-icon-theme-standard
-  qt5-wayland
-  qt5ct
-  qt6-wayland
-  qt6ct
+  ttf-dejavu
+  ttf-jetbrains-mono
+  ttf-jetbrains-mono-nerd
+  udiskie
+  uwsm
+  waybar
+  waypaper
+  wlogout
 )
 
 makedepends=(
@@ -128,6 +112,11 @@ package() {
   install -Dm755 \
     sbdots-actions \
     "$pkgdir/usr/bin/sbdots-actions"
+
+  # install default  configs
+  install -dm755 "$pkgdir/etc/sbdots"
+  cp -r configs/. \
+    "$pkgdir/etc/sbdots/"
 
   # install app icon
   install -Dm644 \
