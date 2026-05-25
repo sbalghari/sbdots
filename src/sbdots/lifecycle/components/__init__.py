@@ -7,7 +7,7 @@ from .packages import OptPackagesInstaller
 from .wallpapers import WallpapersInstaller
 from .auto_power_saver import AutoPowerSaverInstaller
 
-from time import sleep # temp
+from time import sleep  # temp
 
 
 class ComponentsManager:
