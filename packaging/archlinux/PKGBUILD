@@ -65,7 +65,7 @@ makedepends=(
 )
 
 source=(
-  "git+https://github.com/sbalghari/sbdots.git#branch=refactor/module-restructure"
+  "git+https://github.com/sbalghari/sbdots.git"
 )
 
 sha256sums=('SKIP')
