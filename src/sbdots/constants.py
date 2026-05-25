@@ -97,6 +97,7 @@ OPTIONAL_PACKAGES = [
     "sddm",
     "obs-studio",
     "mission-center",
+    "freedownloadmanager-bin",
     "loupe",
     "libreoffice-fresh",
     "gnome-text-editor",
