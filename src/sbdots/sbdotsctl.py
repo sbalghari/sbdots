@@ -1,6 +1,6 @@
 import typer
 
-from sbdots.core.waybarctl import cli_api as waybar
+from sbdots.ctl.services.waybar import cli_api as waybar
 
 # Main typer app
 cli = typer.Typer()

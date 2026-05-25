@@ -19,7 +19,6 @@ depends=(
   blueman
   brightnessctl
   btop
-  cava
   eza
   fastfetch
   figlet
@@ -28,7 +27,6 @@ depends=(
   hypridle
   hyprlock
   hyprpicker
-  hyprshade
   hyprshot
   kitty
   kwalletmanager
@@ -39,7 +37,6 @@ depends=(
   python-pexpect
   python-psutil
   python-pyfiglet
-  python-pywal
   python-requests
   python-rich
   python-setproctitle
@@ -64,6 +61,7 @@ makedepends=(
   python-installer
   python-wheel
   python-setuptools
+  gcc
 )
 
 source=(
@@ -83,7 +81,11 @@ pkgver() {
 build() {
   cd "$srcdir/sbdots"
 
+  # build python wheel
   python -m build --wheel --no-isolation
+
+  # build cpp binary
+  g++ bin/sbdots-actions.cpp -o sbdots-actions
 }
 
 package() {
@@ -100,9 +102,22 @@ package() {
   cp -r dotfiles/. \
     "$pkgdir/usr/share/sbdots/"
 
-  # bin scripts
-  install -Dm755 bin/* "$pkgdir/usr/bin/"
-  
+  # install shell/python scripts from bin
+  for file in bin/*; do
+    [[ "$file" == *.cpp ]] && continue
+    install -Dm755 "$file" "$pkgdir/usr/bin/$(basename "$file")"
+  done
+
+  # install compiled cpp binary
+  install -Dm755 \
+    sbdots-actions \
+    "$pkgdir/usr/bin/sbdots-actions"
+
+  # install default  configs
+  install -dm755 "$pkgdir/etc/sbdots"
+  cp -r configs/. \
+    "$pkgdir/etc/sbdots/"
+
   # install app icon
   install -Dm644 \
     "assets/sbdots.svg" \

@@ -1,8 +1,8 @@
-from typing import List, Optional
 import logging
 import json
+from typing import Optional
 
-from sbdots.utils.logger import setup_actions_state
+from sbdots.library.logger import setup_actions_state
 
 import gi
 
@@ -12,9 +12,13 @@ from gi.repository import Playerctl, GLib  # type: ignore # noqa
 
 
 class OnMediaChange:
+    """
+    DEPRECATED, i'll rewrite
+    """
+
     is_long_running = True
 
-    def __init__(self, conn, selected_player=None, *args):
+    def __init__(self, conn, *args):
         # Setup logging
         self.logger_name = self.__class__.__name__
         setup_actions_state(self.logger_name)
@@ -32,7 +36,7 @@ class OnMediaChange:
         self.manager.connect(
             "player-vanished", lambda *args: self.on_player_vanished(*args)
         )
-        self.selected_player = selected_player
+        self.selected_player = None
         self.excluded_player = []
 
         self.init_players()
@@ -64,7 +68,7 @@ class OnMediaChange:
         self.manager.manage_player(player_obj)
         self.on_metadata_changed(player_obj, player_obj.props.metadata)
 
-    def get_players(self) -> List[Playerctl.Player]:
+    def get_players(self) -> list[Playerctl.Player]:
         return self.manager.props.players
 
     def write_output(self, text, title, player):

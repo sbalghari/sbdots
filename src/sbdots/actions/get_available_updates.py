@@ -1,88 +1,97 @@
 import shutil
-import subprocess
 import logging
-import json
 
-from sbdots.utils.logger import setup_actions_state
+from sbdots.library.logger import setup_actions_state
+from sbdots.library.commands import check_output
+from ._base import BaseAction
+
+setup_actions_state(__name__)
+logger = logging.getLogger(__name__)
 
 
-class GetAvailableUpdates:
-    def __init__(self, conn, *args):
-        # Setup logging
-        self.logger_name = self.__class__.__name__
-        setup_actions_state(self.logger_name)
-        self.logger = logging.getLogger(self.logger_name)
+class GetAvailableUpdates(BaseAction):
+    def main(self) -> None:
+        total_updates, pacman_updates, aur_updates, flatpak_updates = (
+            self._calculate_updates()
+        )
+        css_class = self._determine_css_class(total_updates)
 
-        self.conn = conn
+        if total_updates <= 0:
+            data = {"text": "", "class": "none"}
+        else:
+            data = {
+                "text": f" {total_updates}",
+                "alt": str(total_updates),
+                "tooltip": f"PACMAN updates: {pacman_updates} \nAUR updates: {aur_updates} \nFlatpak updates: {flatpak_updates}",
+                "class": css_class,
+            }
 
-    def main(self):
-        # Define thresholds for color indicators
-        threshold_none = 0
+        self.send(data)
+
+    def _calculate_updates(self):
+        total_updates: int = 0
+        pacman_updates: str | int = self._get_pacman_updates()
+        total_updates += pacman_updates if isinstance(pacman_updates, int) else 0
+
+        aur_updates: str | int = self._get_aur_updates()
+        total_updates += aur_updates if isinstance(aur_updates, int) else 0
+
+        flatpak_updates: str | int = self._get_flatpak_updates()
+        total_updates += flatpak_updates if isinstance(flatpak_updates, int) else 0
+
+        return total_updates, pacman_updates, aur_updates, flatpak_updates
+
+    def _get_pacman_updates(self):
+        if shutil.which("checkupdates"):
+            try:
+                pacman_updates_raw = check_output(
+                    ["checkupdates"],
+                ).strip()
+                return len(pacman_updates_raw.split("\n")) if pacman_updates_raw else 0
+            except FileNotFoundError:
+                return 0
+        else:
+            return "'pacman-contrib' Not-installed"
+
+    def _get_aur_updates(self):
+        if shutil.which("yay") or shutil.which("paru"):
+            if shutil.which("aur-check-updates"):
+                try:
+                    aur_updates_raw = check_output(
+                        ["aur-check-updates"],
+                    ).strip()
+                    aur_updates = (
+                        len(aur_updates_raw.split("\n")) if aur_updates_raw else 0
+                    )
+                    return (
+                        aur_updates - 2
+                    )  # first 2 lines are aur-check-updates's stdout
+                except FileNotFoundError:
+                    return 0
+            else:
+                return "'aur-check-updates' Not-installed"
+        else:
+            return "'yay' | 'paru' Not-installed"
+
+    def _get_flatpak_updates(self):
+        if shutil.which("flatpak"):
+            try:
+                flatpak_updates_raw = check_output(
+                    ["flatpak", "remote-ls", "--updates"],
+                ).strip()
+                return (
+                    len(flatpak_updates_raw.split("\n")) if flatpak_updates_raw else 0
+                )
+            except FileNotFoundError:
+                return 0
+        else:
+            return "'flatpak' Not-installed"
+
+    def _determine_css_class(self, total_updates):
         threshold_green = 1
         threshold_yellow = 25
         threshold_red = 50
 
-        # Updates counters
-        total_updates: int = 0
-        pacman_updates: str | int = 0
-        aur_updates: str | int = 0
-        flatpak_updates: str | int = 0
-
-        # Calculate updates
-        if shutil.which("checkupdates"):
-            try:
-                pacman_updates_raw = subprocess.run(
-                    ["checkupdates"],
-                    capture_output=True,
-                    text=True,
-                ).stdout.strip()
-                pacman_updates = (
-                    len(pacman_updates_raw.split("\n")) if pacman_updates_raw else 0
-                )
-                total_updates += pacman_updates
-            except FileNotFoundError:
-                pacman_updates = 0
-        else:
-            pacman_updates = "'pacman-contrib' Not-installed"
-
-        if shutil.which("yay") or shutil.which("paru"):
-            if shutil.which("aur-check-updates"):
-                try:
-                    aur_updates_raw = subprocess.run(
-                        ["aur-check-updates"],
-                        capture_output=True,
-                        text=True,
-                    ).stdout.strip()
-                    aur_updates = (
-                        len(aur_updates_raw.split("\n")) if aur_updates_raw else 0
-                    )
-                    aur_updates -= 2  # first 2 lines are aur-check-updates's stdout
-                    total_updates += aur_updates
-                except FileNotFoundError:
-                    aur_updates = 0
-            else:
-                aur_updates = "'aur-check-updates' Not-installed"
-        else:
-            aur_updates = "'yay' | 'paru' Not-installed"
-
-        if shutil.which("flatpak"):
-            try:
-                flatpak_updates_raw = subprocess.run(
-                    ["flatpak", "remote-ls", "--updates"],
-                    capture_output=True,
-                    text=True,
-                ).stdout.strip()
-                flatpak_updates = (
-                    len(flatpak_updates_raw.split("\n")) if flatpak_updates_raw else 0
-                )
-                total_updates += flatpak_updates
-            except FileNotFoundError:
-                flatpak_updates = 0
-
-        else:
-            flatpak_updates = "'flatpak' Not-installed"
-
-        # Determine CSS class
         css_class = "none"
         if total_updates >= threshold_green:
             css_class = "green"
@@ -90,31 +99,4 @@ class GetAvailableUpdates:
             css_class = "yellow"
         if total_updates >= threshold_red:
             css_class = "red"
-
-        # Output in JSON format
-        if total_updates <= threshold_none:
-            try:
-                self.conn.sendall(b"\n")
-                self.conn.sendall(
-                    (json.dumps({"text": "", "class": "none"}) + "\n").encode("utf-8")
-                )
-            except (BrokenPipeError, ConnectionResetError, OSError):
-                pass
-        else:
-            try:
-                self.conn.sendall(b"\n")
-                self.conn.sendall(
-                    (
-                        json.dumps(
-                            {
-                                "text": f" {total_updates}",
-                                "alt": str(total_updates),
-                                "tooltip": f"PACMAN updates: {pacman_updates} \nAUR updates: {aur_updates} \nFlatpak updates: {flatpak_updates}",
-                                "class": css_class,
-                            }
-                        )
-                        + "\n"
-                    ).encode("utf-8")
-                )
-            except (BrokenPipeError, ConnectionResetError, OSError):
-                pass
+        return css_class

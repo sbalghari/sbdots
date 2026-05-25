@@ -1,42 +1,28 @@
-import logging
-import json
+# import logging
 
-from sbdots.utils.logger import setup_actions_state
-from sbdots.core.process import is_running
+# from sbdots.library.logger import setup_actions_state
+from sbdots.library.procs_utils import is_running
+from ._base import BaseAction
 
 
-class GetHypridleStatus:
-    def __init__(self, conn, *args):
-        # Setup logging
-        self.logger_name = self.__class__.__name__
-        setup_actions_state(self.logger_name)
-        self.logger = logging.getLogger(self.logger_name)
+# setup_actions_state(__name__)
+# logger = logging.getLogger(__name__)
 
-        self.conn = conn
-        self.procs_name = "hypridle"
 
-    def send(self, data: dict) -> None:
-        try:
-            payload = json.dumps(data) + "\n"
-            self.conn.sendall(b"\n")
-            self.conn.sendall(payload.encode("utf-8"))
-        except (BrokenPipeError, ConnectionResetError, OSError):
-            pass
-
+class GetHypridleStatus(BaseAction):
     def main(self) -> None:
-        if is_running(self.procs_name):
-            self.send(
-                {
-                    "text": "On",
-                    "class": "active",
-                    "tooltip": "Screen locking active\nLeft: Deactivate\nRight: Lock Screen \nScreen will be locked after 5 minutes of inactivity.",
-                }
-            )
+        if is_running("hypridle"):
+            data = {
+                "text": "On",
+                "class": "active",
+                "tooltip": "Screen locking active\nLeft: Deactivate\nRight: Lock Screen \nScreen will be locked after 5 minutes of inactivity.",
+            }
+
         else:
-            self.send(
-                {
-                    "text": "Off",
-                    "class": "notactive",
-                    "tooltip": "Screen locking deactivated\nLeft: Activate\nRight: Lock Screen",
-                }
-            )
+            data = {
+                "text": "Off",
+                "class": "notactive",
+                "tooltip": "Screen locking deactivated\nLeft: Activate\nRight: Lock Screen",
+            }
+
+        self.send(data)

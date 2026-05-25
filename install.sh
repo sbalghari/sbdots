@@ -2,14 +2,13 @@
 
 set -e
 
-TMP_DIR="/tmp/sbdots-installer"
+TMP_DIR="/tmp/sbdots"
 PKGBUILD_URL="https://raw.githubusercontent.com/sbalghari/sbdots/main/packaging/archlinux/PKGBUILD"
 PKG_AUR_DEPS=(
 	nautilus
   	nautilus-code
   	nautilus-copy-path
   	nautilus-hide
-	smile
 	python-inquirerpy
 	hyprshade
 	bibata-cursor-theme-bin

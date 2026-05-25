@@ -6,22 +6,27 @@ import subprocess
 import concurrent.futures
 from pathlib import Path
 
-from sbdots.utils.logger import setup_actions_state
-from sbdots.utils.paths import SBDOTS_CONFIG_DIR
-from sbdots.core.fs_ops import path_lexists
-from sbdots.core.notify import Notification
+from sbdots.library.logger import setup_actions_state
+from sbdots.library.fs_ops import path_lexists
+from sbdots.library.notify import Notification
 
 
 class OnWallpaperChange:
-    def __init__(self, *args):
+    """
+    DEPRECATED, i'll rewrite
+    """
+
+    def __init__(self, conn, *args):
         # Setup logging
         self.logger_name = self.__class__.__name__
         setup_actions_state(self.logger_name)
         self.logger = logging.getLogger(self.logger_name)
 
+        self.conn = conn
+
         # Paths
         self.home = Path.home()
-        self.config_dir = SBDOTS_CONFIG_DIR
+        self.config_dir = self.home / ".sbdots"
 
         # Validate args
         if not args:
@@ -161,7 +166,7 @@ class OnWallpaperChange:
 
         cmds = [
             "swaync-client -rs",
-            "bash $HOME/.config/hypr/services/waybar.sh -r",
+            "sbdotsctl waybar --reload-config",
             "hyprctl reload",
         ]
         all_success = True
@@ -221,7 +226,8 @@ class OnWallpaperChange:
                 # Step 4: reload services
                 current_progress += progress_step
                 n.update(
-                    body_text="Reloading services...", progress_value=current_progress
+                    body_text="Reloading services...",
+                    progress_value=current_progress,
                 )
                 if not self.reload_services():
                     self._notify_action_failed()

@@ -1,5 +1,4 @@
 import subprocess
-from time import sleep
 
 
 def apply_gtk_theme(spinner, logger, dry_run) -> bool:
@@ -7,8 +6,6 @@ def apply_gtk_theme(spinner, logger, dry_run) -> bool:
     logger.info("Applying GTK theme...")
 
     try:
-        sleep(1)
-
         logger.info("Installing Catppuccin theme...")
         spinner.update_text("Downloading Catppuccin theme...")
 
@@ -19,8 +16,6 @@ def apply_gtk_theme(spinner, logger, dry_run) -> bool:
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
-        else:
-            sleep(1)
 
         logger.info("Applying Catppuccin theme...")
         spinner.update_text("Applying Catppuccin theme...")
@@ -43,8 +38,6 @@ def apply_gtk_theme(spinner, logger, dry_run) -> bool:
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
-        else:
-            sleep(1)
 
         spinner.success("GTK theme applied successfully.")
         return True
