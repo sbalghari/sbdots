@@ -20,21 +20,14 @@
 </div>
 
 > [!WARNING]
-> The project is being redesigned, so this is not maintained at the moment and is not compatible with Hyprland above 0.52.2.
+> The project is being redesigned, so it is not usable right now. Stay tuned.
 
-> [!NOTE]
-> SBDots is in alpha - expect some rough edges! Bug reports are appreciated.
-
-Welcome to SBDots – a polished, feature-rich and automated dotfiles setup for Arch Linux and Hyprland. Designed for aesthetics, eff
+Welcome to SBDots – a polished, feature-rich, and automated dotfiles setup for Arch Linux and Hyprland. Designed for aesthetics, eff
 
 ## Installation
 
 > [!NOTE]
->  As of now, **SBDots** is supported and tested for **Arch Linux** only, while arch based distributions may work, they are not tested.
-
-> [!NOTE]
->  Releasing soon on aur...
-
+>  As of now, **SBDots** is supported and tested for **Arch Linux** only; Arch-based distributions may work, they are not tested.
 
 ## Contributing
 
