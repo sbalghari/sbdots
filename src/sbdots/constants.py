@@ -38,15 +38,19 @@ USER_RICH_THEME_PATH = USER_CONFIGS_DIR / "rich" / "theme.toml"
 # =============================================================================
 # DAEMON CONFIGURATION
 # =============================================================================
+# Actions daemon
+VALID_ACTIONS: list[str] = [
+        "get_available_updates",
+        "get_hypridle_status",
+        "get_weather_data",
+        "toggle_hypridle",
+    ]
+
 # Clipboard listener configuration
 CACHE_FILE = SBDOTS_STATE_DIR / "cliphist"
 MAX_ENTRIES = 50
 MAX_LENGTH = 200
 POLL_SEC = 0.2
-
-# Actions daemon configuration
-SOCKET_PATH = "/tmp/sbdots_actions.sock"
-ACTION_TIMEOUT = 30  # seconds
 
 
 # =============================================================================

@@ -77,6 +77,7 @@ makedepends=(
   python-installer
   python-wheel
   python-setuptools
+  gcc
 )
 
 source=(
@@ -96,7 +97,11 @@ pkgver() {
 build() {
   cd "$srcdir/sbdots"
 
+  # build python wheel
   python -m build --wheel --no-isolation
+
+  # build cpp binary
+  g++ bin/sbdots-actions.cpp -o sbdots-actions
 }
 
 package() {
@@ -113,9 +118,17 @@ package() {
   cp -r dotfiles/. \
     "$pkgdir/usr/share/sbdots/"
 
-  # bin scripts
-  install -Dm755 bin/* "$pkgdir/usr/bin/"
-  
+  # install shell/python scripts from bin
+  for file in bin/*; do
+    [[ "$file" == *.cpp ]] && continue
+    install -Dm755 "$file" "$pkgdir/usr/bin/$(basename "$file")"
+  done
+
+  # install compiled cpp binary
+  install -Dm755 \
+    sbdots-actions \
+    "$pkgdir/usr/bin/sbdots-actions"
+
   # install app icon
   install -Dm644 \
     "assets/sbdots.svg" \

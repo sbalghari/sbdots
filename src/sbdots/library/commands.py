@@ -5,7 +5,6 @@ import subprocess
 from subprocess import CalledProcessError, CompletedProcess
 from shutil import which
 import shlex
-import signal
 import sys
 import pexpect
 import logging
@@ -16,13 +15,6 @@ from sbdots.library.cli_utils import prompt, Spinner, print_error
 from sbdots.constants import COMMAND, SUDO_PROMPT_PATTERNS
 
 PATTERNS = SUDO_PROMPT_PATTERNS
-
-
-def _sig_handler(signum, frame):
-    raise TimeoutError
-
-
-signal.signal(signal.SIGALRM, _sig_handler)
 
 
 def _pre_run(command: COMMAND, shell: bool) -> COMMAND:
@@ -104,6 +96,13 @@ def _handle_input(child, spinner, timeout: int = 300):
     # disable logging to avoid logging the password
     log_snap = child.logfile
     child.logfile = None
+
+    import signal
+
+    def _sig_handler(signum, frame):
+        raise TimeoutError
+
+    signal.signal(signal.SIGALRM, _sig_handler)
 
     # set timeout
     signal.alarm(timeout)

@@ -12,9 +12,14 @@ from gi.repository import Playerctl, GLib  # type: ignore # noqa
 
 
 class OnMediaChange:
+
+    """
+    DEPRECATED, i'll rewrite
+    """
+
     is_long_running = True
 
-    def __init__(self, conn, selected_player=None, *args):
+    def __init__(self, conn, *args):
         # Setup logging
         self.logger_name = self.__class__.__name__
         setup_actions_state(self.logger_name)
@@ -32,7 +37,7 @@ class OnMediaChange:
         self.manager.connect(
             "player-vanished", lambda *args: self.on_player_vanished(*args)
         )
-        self.selected_player = selected_player
+        self.selected_player = None
         self.excluded_player = []
 
         self.init_players()
