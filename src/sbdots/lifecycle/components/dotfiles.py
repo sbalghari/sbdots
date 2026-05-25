@@ -112,6 +112,7 @@ class DotfilesInstaller:
         return True
 
     def _remove_existing_configs(self, spinner) -> bool:
+        # TODO: Add backups
         self.logger.info("Removing existing configs.")
         spinner.update_text("Removing existing configs...")
 
