@@ -13,9 +13,7 @@ depends=(
   atuin
   power-profiles-daemon
   hyprpolkitagent
-  aur-check-updates
   awww
-  bibata-cursor-theme-bin
   blueman
   brightnessctl
   btop
@@ -51,8 +49,7 @@ depends=(
   udiskie
   uwsm
   waybar
-  waypaper
-  wlogout
+  wl-clipboard
 )
 
 makedepends=(

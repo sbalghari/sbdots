@@ -12,6 +12,7 @@ PKG_AUR_DEPS=(
 	python-inquirerpy
 	hyprshade
 	bibata-cursor-theme-bin
+	aur-check-updates
 	waypaper
 	wlogout
 	neofetch
