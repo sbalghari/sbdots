@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # File containing clipboard history
-history_file="$HOME/.sbdots/cliphist"
+history_file="$HOME/.local/state/sbdots/cliphist"
 
 # Theme
 theme="$HOME/.config/rofi/configs/dmenu.rasi"
