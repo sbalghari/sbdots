@@ -33,7 +33,7 @@ The goal is a clean, usable Hyprland setup that stays simple, structured, and ea
 >  As of now, **SBDots** is supported and tested for **Arch Linux** only; Arch-based distributions may work, they are not tested.
 
 > [!WARNING]
-This will be released on AUR, but for now, you could use the **install.sh** but it isn't fully tested, so use it at your own risk.
+> This will be released on AUR, but for now, you could use the **install.sh** but it isn't fully tested, so use it at your own risk.
 
 ## Contributing
 
