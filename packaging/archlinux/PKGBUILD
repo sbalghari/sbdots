@@ -13,6 +13,8 @@ depends=(
   atuin
   power-profiles-daemon
   hyprpolkitagent
+  breeze-icons
+  breeze-gtk 
   awww
   blueman
   brightnessctl

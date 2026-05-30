@@ -21,9 +21,9 @@ window {
     padding:                     10px;
     border:                      1px solid;
     border-radius:               12px;
-    border-color:                @border-color;
+    border-color:                @outline;
     cursor:                      "default";
-    background-color:            @background-color;
+    background-color:            @surface;
 }
 
 // Main box
@@ -46,9 +46,9 @@ inputbar {
     padding:                     0px;
     border:                      0px;
     border-radius:               0px;
-    border-color:                @selected;
+    border-color:                @primary;
     background-color:            transparent;
-    text-color:                  @text-color;
+    text-color:                  @on-surface;
     children:                    [ "textbox-prompt-colon", "prompt"];
 }
 textbox-prompt-colon {
@@ -56,15 +56,15 @@ textbox-prompt-colon {
     expand:                      false;
     padding:                     10px 14px;
     border-radius:               100%;
-    background-color:            @urgent;
-    text-color:                  rgb(35, 35, 46);
+    background-color:            @error;
+    text-color:                  @on-error;
 }
 prompt {
     enabled:                     true;
     padding:                     10px;
     border-radius:               100%;
-    background-color:            @active;
-    text-color:                  rgb(35, 35, 46);
+    background-color:            @primary;
+    text-color:                  @on-primary;
 }
 
 // Message
@@ -74,9 +74,9 @@ message {
     padding:                     10px;
     border:                      0px solid;
     border-radius:               100%;
-    border-color:                @selected;
+    border-color:                @primary;
     background-color:            transparent;
-    text-color:                  @text-color;
+    text-color:                  @on-surface;
 }
 
 // List-view
@@ -96,9 +96,9 @@ listview {
     margin:                      0px;
     border:                      0px solid;
     border-radius:               0px;
-    border-color:                @selected;
+    border-color:                @primary;
     background-color:            transparent;
-    text-color:                  @text-color;
+    text-color:                  @on-surface;
 }
 
 // List-view elements
@@ -109,34 +109,34 @@ element {
     padding:                     10px;
     border:                      0px solid;
     border-radius:               12px;
-    border-color:                @selected;
+    border-color:                @primary;
     background-color:            transparent;
     cursor:                      inherit;
 }
 element-text {
     background-color:            transparent;
-    text-color:                  @text-color;
+    text-color:                  @on-surface;
     cursor:                      inherit;
     vertical-align:              0.5;
     horizontal-align:            0.0;
 }
 element selected.normal {
-    background-color:            @background-color-elements;
-    text-color:                #000000;
+    background-color:            @surface-container;
+    text-color:                  @inverse-on-surface;
 }
 element.normal.normal,
 element.alternate.normal {
     background-color: transparent;
-    text-color: @text-color;
+    text-color: @on-surface;
 }
 
 // Others
 textbox {
     background-color:            inherit;
-    text-color:                  @text-color;
+    text-color:                  @on-surface;
     vertical-align:              0.5;
     horizontal-align:            0.0;
-    placeholder-color:           @foreground;
+    placeholder-color:           @on-surface-variant;
     blink:                       true;
     markup:                      true;
 }

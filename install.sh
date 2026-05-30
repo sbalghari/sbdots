@@ -9,7 +9,10 @@ PKG_AUR_DEPS=(
   	nautilus-code
   	nautilus-copy-path
   	nautilus-hide
+	matugen-bin
 	python-inquirerpy
+	qt6ct-kde 
+	qt5ct-kde
 	hyprshade
 	bibata-cursor-theme-bin
 	aur-check-updates

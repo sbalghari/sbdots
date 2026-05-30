@@ -12,10 +12,9 @@
   "include": ["~/.config/waybar/modules.jsonc"],
   "modules-left": [
     "hyprland/workspaces",
-    "mpris",
     "custom/weather"
   ],
-  "modules-center": ["hyprland/window"],
+  "modules-center": ["custom/mediaplayer"],
   "modules-right": [
     "custom/updates",
     "pulseaudio",

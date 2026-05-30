@@ -1,23 +1,29 @@
-/* Colors */
-@define-color accent @accent_color;
-@define-color background @theme_bg_color;
-@define-color background-alt @theme_selected_bg_color;
-@define-color border @color11;
-@define-color border-alt alpha(@color11, 0.63);
-@define-color text @theme_fg_color;
-@define-color text-alt @theme_selected_fg_color;
-@define-color hover @accent_bg_color;
+@import '../colors.css';
 
-@define-color color1 shade(alpha(@STRAWBERRY_700, 0.7), 1.25);
-@define-color color2 shade(alpha(@GRAPE_700, 0.7), 1.25);
-@define-color color3 shade(alpha(@ORANGE_700, 0.7), 1.25);
-@define-color color4 shade(alpha(@LIME_700, 0.7), 1.25);
-@define-color color5 shade(alpha(@COCOA_700, 0.7), 1.25);
-@define-color color6 shade(alpha(@SILVER_700, 0.7), 1.25);
-@define-color color7 shade(alpha(@SLATE_700, 0.7), 1.25);
-@define-color color8 shade(alpha(@BLUEBERRY_700, 0.7), 1.25);
-@define-color color9 shade(alpha(@BANANA_700, 0.7), 1.25);
+/* Colors - Mapped from Matugen */
+@define-color accent @primary;
+@define-color background @surface;
+@define-color background-alt @surface_container_high;
+@define-color border @outline;
+@define-color border-alt alpha(@outline, 0.63);
+@define-color text @on_surface;
+@define-color text-alt @on_primary;
+@define-color hover @primary;
 
+@define-color green @primary;
+@define-color yellow @tertiary;
+@define-color red @error;
+
+/* Color aliases for compatibility */
+@define-color color1 alpha(@primary, 0.7);
+@define-color color2 alpha(@secondary, 0.7);
+@define-color color3 alpha(@tertiary, 0.7);
+@define-color color4 alpha(@primary_fixed, 0.7);
+@define-color color5 alpha(@secondary_fixed, 0.7);
+@define-color color6 alpha(@surface_variant, 0.7);
+@define-color color7 alpha(@outline_variant, 0.7);
+@define-color color8 alpha(@primary_container, 0.7);
+@define-color color9 alpha(@tertiary_container, 0.7);
 
 /* General */
 * {
@@ -27,13 +33,13 @@
   font-weight: bold;
   font-size: 12px;
   min-height: 20px;
-  background: alpha(@background, 0.5);
+  background: alpha(@surface, 0.5);
 }
 
 /* Tooltip */
 tooltip {
-  border: @border;
-  background-color: @background;
+  border: 1px solid @border;
+  background-color: @surface_container;
 }
 tooltip label {
   color: @text;
@@ -56,7 +62,7 @@ tooltip label {
   min-width: 24px;
 }
 #workspaces button.urgent {
-  background-color: @red;
+  background-color: @error;
 }
 
 /* Weather */
@@ -69,12 +75,12 @@ tooltip label {
 }
 
 /* MPD */
-#mpris {
+#custom-mediaplayer {
   border: none;
   background: transparent;
   color: @text;
 }
-#mpris:hover {
+#custom-mediaplayer:hover {
   color: @hover;
 }
 
@@ -93,7 +99,7 @@ tooltip label {
   color: @yellow;
 }
 #custom-updates.red {
-  color: @red;
+  color: @error;
 }
 
 /* Audio */
@@ -137,7 +143,7 @@ tooltip label {
 }
 @keyframes blink {
   to {
-    color: @red;
+    color: @error;
   }
 }
 #battery.critical:not(.charging) {
@@ -166,7 +172,7 @@ tooltip label {
 #tray menu {
   border-radius: 8px;
   color: @text;
-  background-color: @background;
+  background-color: @surface_container;
   padding: 4px;
 }
 

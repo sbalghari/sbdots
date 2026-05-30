@@ -1,16 +1,20 @@
-/*===============================================================
-=> Colors GTK
-================================================================*/
-@define-color accent shade(alpha(@accent_color,0.9),1.25);
-@define-color background shade(alpha(@theme_bg_color,0.9),0.9);
-@define-color border alpha(#cba6f7,0.63);
-@define-color border-alt alpha(#cba6f7,0.63);
-@define-color text @theme_fg_color;
-@define-color text-alt @theme_selected_fg_color;
-@define-color hover shade(alpha(@accent_bg_color,0.5),1.25);
-@define-color green @success_color;
-@define-color yellow @warning_color;
-@define-color red @error_color;
+@import '../colors.css';
+
+@define-color accent @primary;
+@define-color accent_color @primary;
+@define-color theme_bg_color @surface;
+@define-color theme_fg_color @on_surface;
+@define-color accent_bg_color @primary;
+@define-color theme_selected_fg_color @on_primary;
+@define-color success_color @primary;
+@define-color warning_color @tertiary;
+@define-color error_color @error;
+
+@define-color border alpha(@outline, 0.63);
+@define-color border-alt alpha(@outline, 0.63);
+@define-color text @on_surface;
+@define-color text-alt @on_primary;
+@define-color hover alpha(@primary, 0.7);
 
 /*================================================================
 => General
@@ -18,11 +22,26 @@
 *{
   margin:0;
   padding:0px;
+  background: transparent;
   font-family:"JetBrainsMono Nerd Font","JetBrainsMono";
   font-weight:bold;
   font-size:12px;
-  min-height:15px;
-  background:transparent;
+  min-height: 15px;
+}
+
+/*================================================================
+=> Tooltip
+================================================================*/
+tooltip {
+    background: @surface_container;
+    color: @text;
+    border-radius: 8px;
+    border: 1px solid @border;
+}
+
+tooltip * {
+    background: transparent;
+    color: @text;
 }
 
 /*================================================================
@@ -38,7 +57,7 @@
 #custom-power{
   margin:2px 4px;
   border-radius:6px;
-  background:@background;
+  background: @surface_container;
   color:@text;
 }
 
@@ -65,7 +84,7 @@
 #memory,
 #temperature{
   border:1px solid alpha(@border,0.33);
-  background:@background;
+  background: @surface_container;
   color:@text;
 }
 
@@ -86,25 +105,7 @@
 #bluetooth:hover,
 #battery:hover,
 #network:hover{
-  color:shade(@hover,1.25);
-}
-
-/*================================================================
-=> Tooltip
-================================================================*/
-tooltip{
-  border:@border;
-  background-color:@background;
-}
-tooltip label{color:@text;}
-
-/*================================================================
-=> App Menu
-================================================================*/
-#custom-menu{
-  margin-left:0px;
-  padding:0px 12px 0px 8px;
-  font-size:15px;
+  color: shade(@hover, 1.25);
 }
 
 /*================================================================
@@ -142,14 +143,14 @@ tooltip label{color:@text;}
 }
 
 #power-profiles-daemon.balanced{color:@text;}
-#power-profiles-daemon.performance{color:@red;}
-#power-profiles-daemon.power-saver{color:@green;}
-#custom-hypridle.notactive{color:@red;}
+#power-profiles-daemon.performance{color:@error;}
+#power-profiles-daemon.power-saver{color:@primary;}
+#custom-hypridle.notactive{color:@error;}
 
 /*================================================================
 => Workspaces
 ================================================================*/
-#workspaces{padding:1px;}
+#workspaces{padding:1px; margin-left:0px;}
 
 #workspaces button{
   min-width:20px;
@@ -166,7 +167,7 @@ tooltip label{color:@text;}
 #workspaces button.active{
   min-width:28px;
   transition:all 0.1s linear;
-  color:@background;
+  color:@surface;
   background:@text;
 }
 
@@ -175,7 +176,7 @@ tooltip label{color:@text;}
   border:none;
 }
 
-#workspaces button.urgent{background-color:@red;}
+#workspaces button.urgent{background-color:@error;}
 
 /*===============================================================
 => Taskbar
@@ -216,23 +217,23 @@ tooltip label{color:@text;}
   margin:2px 4px;
   border-radius:6px;
   padding:1px 10px 0px 8px;
-  background:@background;
+  background: @surface_container;
   border:none;
 }
 
 #custom-updates.green{
   background:@text;
-  color:@background;
+  color:@surface;
 }
 
 #custom-updates.yellow{
-  background:@yellow;
-  color:@background;
+  background:@tertiary;
+  color:@surface;
 }
 
 #custom-updates.red{
-  background:@red;
-  color:@background;
+  background:@error;
+  color:@surface;
 }
 
 /*================================================================
@@ -284,14 +285,14 @@ tooltip label{color:@text;}
 }
 
 #battery.charging,
-#battery.plugged{color:@green;}
+#battery.plugged{color:@primary;}
 
 @keyframes blink{
-  to{color:@red;}
+  to{color:@error;}
 }
 
 #battery.critical:not(.charging){
-  color:@teal;
+  color:alpha(@primary, 0.5);
   animation-name:blink;
   animation-duration:0.5s;
   animation-timing-function:linear;
@@ -316,7 +317,7 @@ tooltip label{color:@text;}
   margin:3px 2px;
   border-radius:6px;
   padding:0px 4px;
-  background:alpha(@background,0.5);
+  background:alpha(@surface,0.5);
   border:1px solid alpha(@border,0.33);
 }
 
@@ -326,7 +327,7 @@ tooltip label{color:@text;}
 #tray menu{
   border-radius:8px;
   color:@text;
-  background-color:@background;
+  background-color:@surface_container;
   padding:4px;
 }
 
@@ -369,4 +370,68 @@ window#waybar.empty #window,
   background-color:transparent;
   padding:0px;
   margin:0px;
+}
+
+/*===============================================================
+=> MPRIS Media Control
+================================================================*/
+#mpris{
+  margin:2px 4px;
+  padding:0px 10px;
+  border-radius:6px;
+  background: @surface_container;
+  color:@text;
+  border:1px solid alpha(@border,0.33);
+  font-size:12px;
+  font-weight:bold;
+}
+
+/* state-based styling */
+#mpris.playing{
+  color:@text;
+}
+
+#mpris.paused{
+  color:alpha(@text,0.6);
+}
+
+#mpris.stopped{
+  color:alpha(@text,0.4);
+}
+
+/* optional: hover feedback */
+#mpris:hover{
+  color:@hover;
+}
+
+/*===============================================================
+=> Per-player styling (Spotify, VLC, etc.)
+================================================================*/
+
+/* Spotify */
+#mpris.spotify{
+  border:1px solid alpha(@primary,0.4);
+}
+
+#mpris.spotify.playing{
+  color:@primary;
+}
+
+/* VLC */
+#mpris.vlc{
+  border:1px solid alpha(@tertiary,0.4);
+}
+
+#mpris.vlc.playing{
+  color:@tertiary;
+}
+
+/* Firefox media sessions */
+#mpris.firefox{
+  border:1px solid alpha(@text,0.25);
+}
+
+/* fallback generic player styling */
+#mpris.default{
+  opacity:0.9;
 }
