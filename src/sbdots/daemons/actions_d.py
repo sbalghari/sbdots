@@ -6,7 +6,6 @@ import threading
 import logging
 import signal
 from pathlib import Path
-from dataclasses import dataclass
 
 from sbdots.library.logger import setup_daemon_logging
 from sbdots.actions._base import BaseAction
@@ -33,16 +32,8 @@ RUNTIME_DIR = Path(os.getenv("XDG_RUNTIME_DIR", "/tmp"))
 SOCKET_PATH = RUNTIME_DIR / "sbdots-actions.sock"
 
 
-@dataclass
-class RunningAction:
-    name: str
-    instance: BaseAction
-    thread: threading.Thread | None
-    conn: socket.socket
-
-
 # For tracking connections and running actions
-RUNNING_ACTIONS: list[RunningAction] = []
+RUNNING_ACTIONS = list()
 ACTIVE_CONNECTIONS = 0
 STATE_LOCK = threading.Lock()
 ACTION_TIMEOUT = 30
@@ -76,10 +67,10 @@ def error(conn, message: str):
         logger.debug("Shutdown in progress. Suppressing send.")
         return
 
-    message = "Error: " + message
+    payload = ("Error: " + message + "\n").encode()
 
     try:
-        conn.send(message.encode())
+        conn.sendall(payload)
     except BrokenPipeError:
         logger.debug("Client disconnected before response could be sent.")
     except Exception as e:
@@ -122,64 +113,13 @@ def load_action(name: str, conn) -> type[BaseAction] | None:
     return _class
 
 
-def unregister_action(name: str) -> None:
-    with STATE_LOCK:
-        for entry in RUNNING_ACTIONS[:]:
-            if entry.name == name:
-                RUNNING_ACTIONS.remove(entry)
-
-
-def run_normal_action(name: str, cls_instance, conn) -> None:
+def run_action(name: str, cls_instance, conn) -> None:
     try:
         cls_instance.main()
         logger.debug(f"Action '{name}' completed successfully.")
 
     except Exception as e:
         error(conn, f"Error during '{name}'.main() execution: {e}")
-
-
-def run_long_running_action(name: str, cls_instance, conn) -> None:
-    # Stop if already running
-    with STATE_LOCK:
-        for entry in RUNNING_ACTIONS[:]:
-            if entry.name == name:
-                logger.warning(
-                    f"Long running action [{name}] is already running. Stopping..."
-                )
-                try:
-                    entry.instance.stop()
-                    entry.conn.close()
-                except Exception as e:
-                    logger.warning(f"Failed to stop previous '{entry.name}': {e}")
-                RUNNING_ACTIONS.remove(entry)
-                break
-
-    def _long_running_wrapper():
-        try:
-            cls_instance.main()
-        except Exception as e:
-            error(conn, f"Long-running action '{name}' crashed: {e}")
-
-            # Clean up the failed action
-            with STATE_LOCK:
-                for entry in RUNNING_ACTIONS[:]:
-                    if entry.name == name:
-                        RUNNING_ACTIONS.remove(entry)
-                        break
-            return
-
-        finally:
-            unregister_action(name)
-
-    # Start
-    thread = threading.Thread(target=_long_running_wrapper, daemon=True)
-    thread.start()
-
-    # Update thread
-    with STATE_LOCK:
-        for entry in RUNNING_ACTIONS:
-            if entry.name == name:
-                entry.thread = thread
 
 
 def rm_prev_socket() -> None:
@@ -200,21 +140,6 @@ def handle_shutdown(active_threads: set) -> None:
 
     logger.info("Shutdown initiated. Waiting for active actions to complete...")
 
-    # Stop long-running actions
-    with STATE_LOCK:
-        for entry in RUNNING_ACTIONS[:]:
-            name = entry.name
-            inst = entry.instance
-            logger.info(f"Forcing shutdown of long-running action '{name}'")
-            try:
-                if hasattr(inst, "stop"):
-                    inst.stop()
-
-            except Exception as e:
-                logger.warning(f"Failed to stop '{name}': {e}")
-
-        RUNNING_ACTIONS.clear()
-
     with STATE_LOCK:
         current_threads = list(active_threads)
 
@@ -230,7 +155,6 @@ def handle_shutdown(active_threads: set) -> None:
 def handle_action(conn):
     """Handles a single client connection and action execution."""
     global RUNNING_ACTIONS
-    is_long_running: bool = False
     action_name = "unknown"
 
     try:
@@ -247,8 +171,6 @@ def handle_action(conn):
         if ActionClass is None:
             return
 
-        is_long_running = getattr(ActionClass, "is_long_running", False)
-
         # ACTIONS STARTING PROCCESS STARTS FROM HERE
         log_daemon_status(f"Action '{action_name}' started")
 
@@ -260,31 +182,26 @@ def handle_action(conn):
 
         # Register
         with STATE_LOCK:
-            RUNNING_ACTIONS.append(
-                RunningAction(
-                    name=action_name,
-                    instance=instance,
-                    thread=None,
-                    conn=conn,
-                )
-            )
+            RUNNING_ACTIONS.append(action_name)
 
-        if is_long_running:
-            run_long_running_action(action_name, instance, conn)
-        else:
-            run_normal_action(action_name, instance, conn)
+        run_action(action_name, instance, conn)
 
     except (ConnectionResetError, BrokenPipeError):
         logger.exception("Client disconnected unexpectedly: ")
-    except Exception:
+    except Exception as e:
         logger.exception("Unexpected error in handle_action: ")
+        try:
+            error(conn, f"Unexpected server error: {e}")
+        except Exception:
+            pass
 
-    # Unregister normal actions
+    # Unregister
     finally:
-        if not is_long_running:
-            unregister_action(action_name)
-            log_daemon_status(f"Action '{action_name}' finished")
-            conn.close()
+        if action_name in RUNNING_ACTIONS:
+            RUNNING_ACTIONS.remove(action_name)
+
+        log_daemon_status(f"Action '{action_name}' finished")
+        conn.close()
 
 
 def start_daemon():

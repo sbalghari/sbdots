@@ -69,12 +69,12 @@ tooltip label {
 }
 
 /* MPD */
-#custom-mediaplayer {
+#mpris {
   border: none;
   background: transparent;
   color: @text;
 }
-#custom-mediaplayer:hover {
+#mpris:hover {
   color: @hover;
 }
 

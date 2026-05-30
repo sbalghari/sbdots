@@ -2,13 +2,6 @@
 // By: Saifullah Balghari
 
 {
-  // Application menu
-  "custom/menu": {
-    "format": "",
-    "tooltip-format": "Application menu\nRight-click: Display Keybindings",
-    "on-click-right": "~/.config/rofi/applets/keybindings.sh"
-  },
-
   // Taskbar
   "wlr/taskbar": {
     "format": "{icon}",
@@ -50,22 +43,55 @@
     "separate-outputs": false
   },
 
-  // Active media
-  "custom/mediaplayer": {
-    "escape": true,
-    "interval": 0,
-    "max-length": 30,
-    "tooltip": true,
-    "on-click": "playerctl play-pause",
-    "on-scroll-up": "playerctl next",
-    "on-scroll-down": "playerctl previous"
+  // mpd
+  "mpris": {
+    "format": "{player_icon} {dynamic}",
+    "tooltip-format": "{player_icon} {player} [{status}]\nTitle: {title}\nArtist: {artist}\n{position} / {length}",
+    "player-icons": {
+      "spotify": "",
+      "vlc": "󰕼",
+      "firefox": "",
+      "brave": "󰖟",
+      "chromium": "",
+      "default": "▶"
+    },
+
+    "status-icons": {
+      "playing": "▶",
+      "paused": "⏸",
+      "stopped": "⏹"
+    },
+
+    "dynamic-order": [
+      "title",
+      "artist",
+      "album"
+      // "position",
+      // "length"
+    ],
+
+    "dynamic-separator": " • ",
+    "dynamic-len": 50,
+    "dynamic-importance-order": [
+      "title",
+      "artist",
+      "album",
+      "position",
+      "length"
+    ],
+
+    "title-len": 30,
+    "artist-len": 20,
+    "album-len": 10,
+
+    "ellipsis": "…"
   },
 
   // Weather
   "custom/weather": {
     "return-type": "json",
     "exec": "sbdots-actions get_weather_data",
-    "interval": 60,
+    "interval": 600, // 10 mins
     "tooltip": true
   },
 
@@ -100,7 +126,7 @@
     "escape": true,
     "return-type": "json",
     "exec": "sbdots-actions get_available_updates",
-    "interval": 60,
+    "interval": 3600, // 1 hour
     "tooltip": true,
     "on-click": "kitty --class floating -e ~/.config/waybar/scripts/installupdates.sh"
   },
@@ -111,7 +137,8 @@
     "format-alt": "{icon}",
     "format-icons": ["󰃞", "󰃞", "󰃞", "󰃟", "󰃟", "󰃟", "󰃠", "󰃠", "󰃠"],
     "scroll-step": 5,
-    "tooltip-format": "{percent}%"
+    "tooltip-format": "{percent}%",
+    "tooltip": true
   },
 
   // Battery
@@ -122,10 +149,9 @@
     "format-charging": " {capacity}%",
     "tooltip": true,
     "format-plugged": " {capacity}%",
-    "interval": 5,
     "states": {
-      "warning": 50,
-      "critical": 30
+      "warning": 30,
+      "critical": 15
     },
     "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
   },
@@ -137,9 +163,8 @@
     "format-alt": "",
     "format-disabled": "󰂲 Disabled",
     "format-on": " On",
-    // "format-connected-battery": " Connected-{device_battery_percentage}%", always shows 100%, idk why
+    "format-connected-battery": " {device_battery_percentage}%",
     "format-off": "󰂲 Off",
-    "interval": 30,
     "on-click-right": "blueman-manager",
     "format-no-controller": ""
   },
@@ -184,17 +209,15 @@
 
   // System Tray
   "tray": {
-    "icon-size": 12,
+    "icon-size": 15,
     "spacing": 6,
     "show-passive-items": true,
-    "tooltip": false
   },
 
   // Power Profiles Daemon
   "power-profiles-daemon": {
     "format": "{icon}",
     "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-    "tooltip": true,
     "format-icons": {
       "default": "",
       "performance": "",
@@ -236,37 +259,6 @@
     "format": "",
     "on-click": "wlogout",
     "tooltip-format": "Power Menu"
-  },
-
-  // Others
-  "user": {
-    "format": "{user}",
-    "interval": 60,
-    "icon": false
-  },
-  "custom/dot": {
-    "format": "",
-    "tooltip": false
-  },
-  "custom/separator-left": {
-    "format": "/",
-    "tooltip": false
-  },
-  "custom/separator-right": {
-    "format": "\\",
-    "tooltip": false
-  },
-  "custom/arrow-left": {
-    "format": "",
-    "tooltip": false
-  },
-  "custom/arrow-right": {
-    "format": "",
-    "tooltip": false
-  },
-  "custom/empty": {
-    "format": " ",
-    "tooltip": false
   },
 
   // System info drawer
