@@ -42,6 +42,7 @@ VALID_ACTIONS: list[str] = [
     "get_available_updates",
     "get_hypridle_status",
     "get_weather_data",
+    "on_wallpaper_change",
     "toggle_hypridle",
 ]
 
@@ -109,8 +110,8 @@ OPTIONAL_PACKAGES = [
 # =============================================================================
 DEFAULT_SECTION = "core"
 WEATHER_SECTION = "weather"
-HYPRSHADE_SECTION = "hyprshade"
 WAYBAR_SECTION = "waybar"
+MATUGEN_SECTION = "matugen"
 
 # =============================================================================
 # WEATHER DATA ICONS

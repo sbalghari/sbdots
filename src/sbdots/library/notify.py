@@ -105,7 +105,7 @@ class Notification:
         self._context_active = False
 
 
-def notiy_send(
+def notify_send(
     message: str, title: str = "SBDots", urgency: str = "normal", time: int = 3
 ) -> None:
     instance: Notification = Notification(
