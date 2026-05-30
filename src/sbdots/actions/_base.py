@@ -14,6 +14,7 @@ class BaseAction(ABC):
     - implement main()
     - optionally implement stop()
     """
+
     def __init__(self, conn: socket.socket, *args: str):
         self.conn = conn
         self.args = args
