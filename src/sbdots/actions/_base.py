@@ -14,10 +14,6 @@ class BaseAction(ABC):
     - implement main()
     - optionally implement stop()
     """
-
-    # Whether this action stays alive after main() starts
-    is_long_running: bool = False
-
     def __init__(self, conn: socket.socket, *args: str):
         self.conn = conn
         self.args = args
@@ -37,10 +33,13 @@ class BaseAction(ABC):
         """
         pass
 
-    def send(self, data: dict = {}) -> None:
+    def send(self, data: dict | None = None) -> None:
         """
         Send structured response to daemon/client.
         """
+        if data is None:
+            data = {}
+
         try:
             encoded = (json.dumps(data) + "\n").encode()
             self.conn.sendall(encoded)

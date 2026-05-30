@@ -11,16 +11,15 @@
 
   "include": ["~/.config/waybar/modules.jsonc"],
   "modules-left": [
-    "custom/menu",
     "hyprland/workspaces",
 
     // ToolBox
     "group/sysinfo",
     "power-profiles-daemon",
     "custom/hypridle",
-
-    "wlr/taskbar",
-    "custom/mediaplayer"
+    
+    "mpris"
+    //"wlr/taskbar",
   ],
   "modules-center": ["hyprland/window"],
   "modules-right": [
