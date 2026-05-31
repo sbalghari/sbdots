@@ -7,6 +7,7 @@ pkgdesc="A Modern, Feature-Rich, and Polished Hyprland Setup"
 arch=('x86_64')
 url="https://github.com/sbalghari/sbdots"
 license=('GPL-3.0')
+install=sbdots-git.install
 
 
 depends=(
@@ -131,32 +132,4 @@ package() {
   install -dm755 "$pkgdir/usr/lib/systemd/system"
   install -Dm644 services/system/*.service \
     "$pkgdir/usr/lib/systemd/system/"
-}
-
-post_install() {
-  cat << 'POSTINST'
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 SBDots Systemd Services Installation
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-✓ User services have been installed and will be started automatically.
-
-⚠️  System services require manual enablement (requires root/sudo):
-  To enable system services, run:
-    sudo systemctl enable --now <service-name>
-
-  Available system services:
-POSTINST
-
-  for service in /usr/lib/systemd/system/sbdots-*.service; do
-    if [ -f "$service" ]; then
-      echo "    - $(basename "$service")"
-    fi
-  done
-
-  cat << 'POSTINST'
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-POSTINST
 }

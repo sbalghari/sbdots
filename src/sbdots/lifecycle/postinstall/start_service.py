@@ -72,7 +72,11 @@ def _reload_user_systemd_daemon(logger, dry_run) -> bool:
 
     if not dry_run:
         reload_command: list[str] = ["systemctl", "--user", "daemon-reload"]
-        result: CompletedProcess = run_command(command=reload_command)
+        try:
+            result: CompletedProcess = run_command(command=reload_command)
+        except Exception as exc:
+            logger.error(f"Exception while reloading systemd user daemon: {exc}")
+            return False
 
         if result.returncode != 0:
             logger.error("Failed to reload systemd user daemon")
