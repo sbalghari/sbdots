@@ -31,7 +31,9 @@ def start_services(logger, dry_run) -> bool:
     # Check for system services
     available_system_services = _get_available_system_services()
     if available_system_services:
-        logger.info("System services are available but require root privileges to enable/start.")
+        logger.info(
+            "System services are available but require root privileges to enable/start."
+        )
         logger.info("To enable system services, run:")
         for svc in available_system_services:
             logger.info(f"  sudo systemctl enable --now {svc}")
@@ -91,7 +93,9 @@ def _get_available_user_services() -> list[str]:
     sbdots_services = [
         entry.name
         for entry in services_dir.iterdir()
-        if entry.is_file() and entry.suffix == ".service" and entry.name.startswith("sbdots-")
+        if entry.is_file()
+        and entry.suffix == ".service"
+        and entry.name.startswith("sbdots-")
     ]
 
     return sbdots_services
@@ -105,7 +109,9 @@ def _get_available_system_services() -> list[str]:
     sbdots_services = [
         entry.name
         for entry in services_dir.iterdir()
-        if entry.is_file() and entry.suffix == ".service" and entry.name.startswith("sbdots-")
+        if entry.is_file()
+        and entry.suffix == ".service"
+        and entry.name.startswith("sbdots-")
     ]
 
     return sbdots_services
