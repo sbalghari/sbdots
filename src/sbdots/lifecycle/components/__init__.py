@@ -5,7 +5,6 @@ from sbdots.constants import LifeCycleStep
 from .dotfiles import DotfilesInstaller
 from .packages import OptPackagesInstaller
 from .wallpapers import WallpapersInstaller
-from .auto_power_saver import AutoPowerSaverInstaller
 
 
 class ComponentsManager:
@@ -46,15 +45,6 @@ class ComponentsManager:
                 lambda: OptPackagesInstaller(
                     dry_run=self.dry_run, logger=self.logger, verbose=self.verbose
                 ).install(),
-                False,
-            ),
-            (
-                "Auto Power Saver",
-                lambda: AutoPowerSaverInstaller().install(
-                    logger=self.logger,
-                    dry_run=self.dry_run,
-                    verbose=self.verbose,
-                ),
                 False,
             ),
         ]

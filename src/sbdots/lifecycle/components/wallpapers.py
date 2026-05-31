@@ -12,6 +12,7 @@ from sbdots.library.cli_utils import (
 )
 from sbdots.constants import (
     SBDOTS_WALLPAPERS_DIR,
+    SBDOTS_CONFIG_DIR,
     USER_WALLPAPERS_DIR,
     SBDOTS_DATA_DIR,
 )
@@ -90,7 +91,7 @@ class WallpapersInstaller:
                 if not self.dry_run:
                     try:
                         avatar = SBDOTS_DATA_DIR / "avatar.png"
-                        avatar_dst = Path().home()
+                        avatar_dst = SBDOTS_CONFIG_DIR / '.avatar'
                         copy_success = all(
                             [
                                 copy(
