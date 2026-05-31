@@ -2,6 +2,9 @@
 # by Saifullah Balghari 
 # -----------------------------------------------------
 
+# Matugen
+test -f ~/.cache/color-sequences; and cat ~/.cache/color-sequences &
+
 # Remove the fish greetings
 set -g fish_greeting
 

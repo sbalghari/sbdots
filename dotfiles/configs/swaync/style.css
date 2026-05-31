@@ -1,18 +1,15 @@
-/* 
-  ============================================================
-  => Colors
-  ============================================================
-*/
-@define-color accent shade(alpha(@accent_color, 0.9), 1.25);
-@define-color background alpha(@theme_bg_color, 0.98);
-@define-color border alpha(#cba6f7, 0.63);
-@define-color border-alt alpha(#cba6f7, 0.63);
-@define-color text @theme_fg_color;
-@define-color text-alt @theme_selected_fg_color;
-@define-color hover alpha(@accent_bg_color, 0.5);
-@define-color green @success_color;
-@define-color yellow @warning_color;
-@define-color red @error_color;
+@import 'colors.css';
+
+@define-color accent @primary;
+@define-color background alpha(@surface, 0.98);
+@define-color border @outline;
+@define-color border-alt @outline;
+@define-color text @on_surface;
+@define-color text-alt @on_primary;
+@define-color hover alpha(@primary, 0.5);
+@define-color green @primary;
+@define-color yellow @tertiary;
+@define-color red @error;
 
 /* 
   ============================================================
@@ -42,7 +39,7 @@
 }
 .close-button:hover {
   box-shadow: none;
-  background: @red;
+  background: @error;
   color: @text-alt;
   transition: background 0.15s ease-in-out;
   border: none;
@@ -52,13 +49,13 @@
   border: 1px solid @border;
   padding: 8px;
   transition: background 0.15s ease-in-out;
-  background: @theme_bg_color;
+  background: @surface;
 }
 .low {
-  background: alpha(@background, 0.75);
+  background: alpha(@surface, 0.75);
 }
 .critical {
-  background: alpha(@red, 0.75);
+  background: alpha(@error, 0.75);
 }
 .notification-action,
 .notification-default-action {
@@ -132,7 +129,7 @@
   border: 1px solid @border;
   color: @text;
   border-radius: 6px;
-  box-shadow: 0 2px 4px 0 alpha(#000, 0.5);
+  box-shadow: 0 2px 4px 0 alpha(@scrim, 0.5);
 }
 .control-center-list-placeholder {
   opacity: 0.5;
@@ -154,7 +151,7 @@
   font-size: 12px;
   color: @text;
   padding: 0px 6px;
-  background: shade(alpha(@background, 0.9), 1.2);
+  background: shade(alpha(@surface, 0.9), 1.2);
   border: 1px solid alpha(@border, 0.5);
   border-radius: 4px;
 }
@@ -179,14 +176,14 @@
   background: @hover;
 }
 .widget-dnd > switch slider {
-  background: @background;
+  background: @surface;
   border-radius: 4px;
 }
 
 /* Notification list */
 .notification-group-headers > label {
   color: @text;
-  background: shade(alpha(@background, 0.3), 1.12);
+  background: shade(alpha(@surface, 0.3), 1.12);
   border: 1px solid alpha(@border, 0.1);
   padding: 0px 8px;
   border-radius: 6px;
@@ -196,24 +193,24 @@
 .notification-group.collapsed:hover
   .notification-row:not(:only-child)
   .notification {
-  box-shadow: 0 2px 3px 0 alpha(#000, 0.2);
+  box-shadow: 0 2px 3px 0 alpha(@scrim, 0.2);
 }
 .notification-group,
 .notification-group.collapsed {
   background: transparent;
 }
 .notification-group .notification:hover {
-  box-shadow: 0 2px 3px 0 alpha(#000, 0.2);
+  box-shadow: 0 2px 3px 0 alpha(@scrim, 0.2);
 }
 .notification-group .notification:hover {
-  box-shadow: 0 2px 3px 0 alpha(#000, 0.3);
+  box-shadow: 0 2px 3px 0 alpha(@scrim, 0.3);
 }
 .notification-group-buttons > button {
   font-size: 12px;
   margin-right: 6px;
   color: @text;
   padding: 0px 4px;
-  background: shade(alpha(@background, 0.5), 1.2);
+  background: shade(alpha(@surface, 0.5), 1.2);
   border: 1px solid alpha(@border, 0.4);
   border-radius: 6px;
 }

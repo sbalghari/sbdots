@@ -31,7 +31,7 @@ class OptPackagesInstaller:
 
         chosen: list[str] | str | None = chose(
             choices=self.optional_pkgs,
-            message="Choose apps to install.",
+            message="Choose (Recommended)apps to install.",
             multiple=True,
         )
 

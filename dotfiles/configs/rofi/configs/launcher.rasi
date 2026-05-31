@@ -1,4 +1,4 @@
-@import "~/.config/rofi/colors.rasi"
+@import "./colors.rasi"
 
 // General Configurations
 configuration {
@@ -48,8 +48,8 @@ window {
     border:                      1px solid;
     border-radius:               12px;
     cursor:                      "default";
-    border-color:                @border-color;
-    background-color:            @background-color;
+    border-color:                @outline;
+    background-color:            @surface;
 }
 
 // Main box
@@ -68,7 +68,7 @@ inputbar {
     spacing:                     10px;
     padding:                     12px;
     border:                      0px 0px 1px 0px;
-    border-color:                @border-color;
+    border-color:                @outline;
     background-color:            transparent;
     children:                    [ "textbox-prompt-colon", "entry" ];
 }
@@ -76,15 +76,15 @@ inputbar {
 textbox-prompt-colon {
     enabled:                     true;
     expand:                      false;
-    str:                         " ";
+    str:                         " ";
     background-color:            transparent;
-    text-color:                  inherit;
+    text-color:                  @on-surface;
 }
 
 entry {
     enabled:                     true;
     background-color:            transparent;
-    text-color:                  inherit;
+    text-color:                  @on-surface;
     cursor:                      text;
     placeholder:                 "Search";
     placeholder-color:           inherit;
@@ -113,32 +113,32 @@ element {
     padding:                     10px;
     border-radius:               12px;
     background-color:            transparent;
-    text-color:                  @text-color;
+    text-color:                  @on-surface;
     cursor:                      pointer;
 }
 
 element.normal.normal {
     background-color: transparent;
-    text-color: @text-color;
+    text-color: @on-surface;
 }
 
 element.alternate.normal {
     background-color: transparent;
-    text-color: @text-color;
+    text-color: @on-surface;
 }
 
 element normal.active {
-    background-color: @active;
+    background-color: @primary;
     text-color: inherit;
 }
 
 element selected.normal {
-    background-color: @background-color-elements;
-    text-color: @text-color;
+    background-color: @surface-container;
+    text-color: @on-surface;
 }
 
 element selected.active {
-    background-color: @active;
+    background-color: @primary;
     text-color: inherit;
 }
 
@@ -165,8 +165,8 @@ message {
 textbox {
     padding: 10px;
     border-radius: 12px;
-    background-color: @background-color-elements;
-    text-color: @text-color;
+    background-color: @surface-container;
+    text-color: @on-surface;
     vertical-align: 0.5;
     horizontal-align: 0.0;
 }
@@ -174,5 +174,5 @@ textbox {
 error-message {
     padding: 10px;
     background-color: transparent;
-    text-color: @text-color;
+    text-color: @on-surface;
 }

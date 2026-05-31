@@ -42,6 +42,7 @@ VALID_ACTIONS: list[str] = [
     "get_available_updates",
     "get_hypridle_status",
     "get_weather_data",
+    "on_wallpaper_change",
     "toggle_hypridle",
 ]
 
@@ -73,21 +74,25 @@ class LogLevel(Enum):
 # COMPONENTS
 # =============================================================================
 REQUIRED_DOTFILE_COMPONENTS = [
-    "hypr",
-    "waybar",
-    "rofi",
-    "fish",
-    "kitty",
-    "neofetch",
-    "fastfetch",
-    "cava",
-    "waypaper",
-    "swaync",
-    "btop",
-    "systemd",
-    "wlogout",
     "atuin",
-    "starship.toml",
+    "btop",
+    "cava",
+    "fastfetch",
+    "fish",
+    "gtk-3.0",
+    "gtk-4.0",
+    "hypr",
+    "kitty",
+    "matugen",
+    "neofetch",
+    "qt5ct",
+    "qt6ct",
+    "rofi",
+    "swaync",
+    "systemd",
+    "waybar",
+    "waypaper",
+    "wlogout",
 ]
 
 OPTIONAL_PACKAGES = [
@@ -109,8 +114,8 @@ OPTIONAL_PACKAGES = [
 # =============================================================================
 DEFAULT_SECTION = "core"
 WEATHER_SECTION = "weather"
-HYPRSHADE_SECTION = "hyprshade"
 WAYBAR_SECTION = "waybar"
+MATUGEN_SECTION = "matugen"
 
 # =============================================================================
 # WEATHER DATA ICONS

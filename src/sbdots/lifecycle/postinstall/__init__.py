@@ -3,9 +3,7 @@ from logging import Logger
 from sbdots.library.cli_utils import Spinner
 from sbdots.constants import LifeCycleStep
 
-from .apply_gtk_theme import apply_gtk_theme
 from .apply_wallpaper import apply_wallpaper
-from .reload_hyprctl import reload_hyprland
 from .start_service import start_services
 
 
@@ -32,18 +30,6 @@ class PostInstallHooks:
                 "Starting SBDots Services...",
                 lambda: start_services(logger=self.logger, dry_run=self.dry_run),
                 True,  # critical
-            ),
-            (
-                "Reloading Hyprland...",
-                lambda: reload_hyprland(dry_run=self.dry_run),
-                False,  # Non-critical
-            ),
-            (
-                "Installing GTK Catppuccin theme...",
-                lambda: apply_gtk_theme(
-                    spinner=spinner, logger=self.logger, dry_run=self.dry_run
-                ),
-                True,  # Critical
             ),
             (
                 "Applying wallpaper...",

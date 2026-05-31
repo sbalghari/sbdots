@@ -1,74 +1,86 @@
-
+@import "colors.css";
+* {
+    margin: 20px 80px;
+}
 window {
-  font-family: JetBrainMono;
-  font-size: 14px;
-  color: alpha(#cdd6f4, 0.7);
-  background-color: alpha(#313244, 0.9);
+    font-family: "JetBrainsMono";
+    font-size: 14px;
+    background-color: @background;
 }
 
 button {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 20%;
-  border: 1px solid alpha(#cba6f7, 0.63);
-  border-radius: 6px;
-  margin: 5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20%;
+
+    border: 1px solid alpha(@outline, 0.63);
+    border-radius: 6px;
+
+    background-color: @surface_container;
+    color: @on_surface;
+
+    margin: 8px;
 }
 
 button:focus {
-  border: 0px;
+    outline: none;
+    box-shadow: none;
 }
 
 button:hover {
-  background-color: #cba6f7;
-  color: #1e1e2e;
-  background-size: 30%;
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.28, 1.682),
-    box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    background-color: @outline;
+    color: @surface;
+    background-size: 30%;
 }
 
 button span {
-  font-size: 0.2em;
+    font-size: 0;
 }
 
+/* Lock */
 #lock {
-  background-image: image(url("./icons/lock.png"));
+    background-image: image(url("./icons/lock.png"));
 }
 #lock:hover {
-  background-image: image(url("./icons/lock-hover.png"));
+    background-image: image(url("./icons/lock-hover.png"));
 }
 
+/* Logout */
 #logout {
-  background-image: image(url("./icons/logout.png"));
+    background-image: image(url("./icons/logout.png"));
 }
 #logout:hover {
-  background-image: image(url("./icons/logout-hover.png"));
+    background-image: image(url("./icons/logout-hover.png"));
 }
 
+/* Suspend */
 #suspend {
-  background-image: image(url("./icons/sleep.png"));
+    background-image: image(url("./icons/sleep.png"));
 }
-#suspend:hover{
-  background-image: image(url("./icons/sleep-hover.png"));
+#suspend:hover {
+    background-image: image(url("./icons/sleep-hover.png"));
 }
 
+/* Shutdown */
 #shutdown {
-  background-image: image(url("./icons/power.png"));
+    background-image: image(url("./icons/power.png"));
 }
-#shutdown:hover{
-  background-image: image(url("./icons/power-hover.png"));
+#shutdown:hover {
+    background-image: image(url("./icons/power-hover.png"));
 }
 
+/* Reboot */
 #reboot {
-  background-image: image(url("./icons/restart.png"));
+    background-image: image(url("./icons/restart.png"));
 }
 #reboot:hover {
-  background-image: image(url("./icons/restart-hover.png"));
+    background-image: image(url("./icons/restart-hover.png"));
 }
 
+/* Hibernate */
 #hibernate {
-  background-image: image(url("./icons/hibernate.png"));
+    background-image: image(url("./icons/hibernate.png"));
 }
-#hibernate:hover{
-  background-image: image(url("./icons/hibernate-hover.png"));
+#hibernate:hover {
+    background-image: image(url("./icons/hibernate-hover.png"));
 }
