@@ -91,7 +91,7 @@ class WallpapersInstaller:
                 if not self.dry_run:
                     try:
                         avatar = SBDOTS_DATA_DIR / "avatar.png"
-                        avatar_dst = SBDOTS_CONFIG_DIR / '.avatar'
+                        avatar_dst = SBDOTS_CONFIG_DIR / ".avatar"
                         copy_success = all(
                             [
                                 copy(
