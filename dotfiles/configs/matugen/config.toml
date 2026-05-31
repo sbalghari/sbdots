@@ -24,9 +24,13 @@ post_hook = 'pkill -USR1 cava || true'
 input_path = '~/.config/matugen/templates/starship.toml'
 output_path = '~/.config/starship.toml'
 
-[templates.hyprland]
+[templates.hyprlandConf]
 input_path = '~/.config/matugen/templates/hyprland.conf'
 output_path = '~/.config/hypr/colors.conf'
+
+[templates.hyprlandLua]
+input_path = '~/.config/matugen/templates/hyprland.lua'
+output_path = '~/.config/hypr/colors.lua'
 post_hook = 'hyprctl reload'
 
 [templates.waybar]
