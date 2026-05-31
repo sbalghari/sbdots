@@ -1,0 +1,16 @@
+[Unit]
+Description=SBDots Example System Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+
+ExecStart=/usr/bin/true
+
+RemainAfterExit=yes
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
