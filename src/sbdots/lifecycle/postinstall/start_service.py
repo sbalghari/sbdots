@@ -13,7 +13,7 @@ def start_services(logger, dry_run) -> bool:
         return False
 
     logger.debug("Starting available user services")
-    available_user_services = _get_available_user_services()
+    available_user_services = _get_available_services(Path("/usr/lib/systemd/user"))
 
     if not available_user_services:
         logger.debug("No user services found to start.")
@@ -27,16 +27,6 @@ def start_services(logger, dry_run) -> bool:
                 return False
 
     logger.debug("User services started successfully")
-
-    # Check for system services
-    available_system_services = _get_available_system_services()
-    if available_system_services:
-        logger.info(
-            "System services are available but require root privileges to enable/start."
-        )
-        logger.info("To enable system services, run:")
-        for svc in available_system_services:
-            logger.info(f"  sudo systemctl enable --now {svc}")
 
     return True
 
@@ -85,24 +75,8 @@ def _reload_user_systemd_daemon(logger, dry_run) -> bool:
     return True
 
 
-def _get_available_user_services() -> list[str]:
-    services_dir = Path("/usr/lib/systemd/user")
-    if not services_dir.is_dir():
-        return []
-
-    sbdots_services = [
-        entry.name
-        for entry in services_dir.iterdir()
-        if entry.is_file()
-        and entry.suffix == ".service"
-        and entry.name.startswith("sbdots-")
-    ]
-
-    return sbdots_services
-
-
-def _get_available_system_services() -> list[str]:
-    services_dir = Path("/usr/lib/systemd/system")
+def _get_available_services(path: Path) -> list[str]:
+    services_dir = path
     if not services_dir.is_dir():
         return []
 
