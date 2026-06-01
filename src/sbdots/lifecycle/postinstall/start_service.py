@@ -23,7 +23,7 @@ def start_services(logger, dry_run) -> bool:
         )
 
         for svc in available_user_services:
-            if not _enable_and_start_user_service(logger, dry_run, svc):
+            if not start_user_service(logger, dry_run, svc):
                 return False
 
     logger.debug("User services started successfully")
@@ -31,24 +31,24 @@ def start_services(logger, dry_run) -> bool:
     return True
 
 
-def _enable_and_start_user_service(logger, dry_run, service: str) -> bool:
-    enable_command: list[str] = [
+def start_user_service(logger, dry_run, service: str) -> bool:
+    start_command: list[str] = [
         "systemctl",
         "--user",
-        "enable",
+        "start",
         "--now",
         service,
     ]
-    logger.debug(f"Enabling and starting user service {service}")
+    logger.debug(f"Starting user service: {service}")
     if not dry_run:
         try:
-            res: CompletedProcess = run_command(command=enable_command)
+            res: CompletedProcess = run_command(command=start_command)
         except Exception as exc:
-            logger.error(f"Exception while enabling/starting service {service}: {exc}")
+            logger.error(f"Exception while starting service {service}: {exc}")
             return False
 
         if res.returncode != 0:
-            logger.error(f"Failed to enable/start service {service}")
+            logger.error(f"Failed to start service {service}")
             logger.debug(f"Enable command output: {res.stdout}")
             if getattr(res, "stderr", None):
                 logger.debug(f"Enable command error: {res.stderr}")
