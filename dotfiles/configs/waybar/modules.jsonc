@@ -2,49 +2,6 @@
 // By: Saifullah Balghari
 
 {
-  "mpris": {
-    "format": "{player_icon} {dynamic}",
-    "tooltip-format": "{player_icon} {player} [{status}]\nTitle: {title}\nArtist: {artist}\n{position} / {length}",
-    "player-icons": {
-      "spotify": "",
-      "vlc": "󰕼",
-      "firefox": "",
-      "brave": "󰖟",
-      "chromium": "",
-      "default": "▶"
-    },
-
-    "status-icons": {
-      "playing": "▶",
-      "paused": "⏸",
-      "stopped": "⏹"
-    },
-
-    "dynamic-order": [
-      "title",
-      "artist",
-      "album"
-      // "position",
-      // "length"
-    ],
-
-    "dynamic-separator": " • ",
-    "dynamic-len": 50,
-    "dynamic-importance-order": [
-      "title",
-      "artist",
-      "album",
-      "position",
-      "length"
-    ],
-
-    "title-len": 30,
-    "artist-len": 20,
-    "album-len": 10,
-
-    "ellipsis": "…"
-  },
-  
   // Taskbar
   "wlr/taskbar": {
     "format": "{icon}",

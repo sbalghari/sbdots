@@ -16,7 +16,7 @@ output_path = '~/.config/btop/themes/matugen.theme'
 post_hook = 'pkill -USR2 btop || true'
 
 [templates.cava]
-input_path = '~/.config/matugen/templates/cava-colors.ini'
+input_path = '~/.config/matugen/templates/cava.ini'
 output_path = '~/.config/cava/themes/your-theme'
 post_hook = 'pkill -USR1 cava || true'
 
@@ -24,11 +24,11 @@ post_hook = 'pkill -USR1 cava || true'
 input_path = '~/.config/matugen/templates/starship.toml'
 output_path = '~/.config/starship.toml'
 
-[templates.hyprlandConf]
+[templates.hyprland-conf]
 input_path = '~/.config/matugen/templates/hyprland.conf'
 output_path = '~/.config/hypr/colors.conf'
 
-[templates.hyprlandLua]
+[templates.hyprland-lua]
 input_path = '~/.config/matugen/templates/hyprland.lua'
 output_path = '~/.config/hypr/colors.lua'
 post_hook = 'hyprctl reload'
@@ -62,17 +62,17 @@ output_path = '~/.config/gtk-4.0/colors.css'
 post_hook = '~/.config/matugen/post-hook-scripts/gtk-themes-reload.sh'
 
 [templates.qt5ct]
-input_path = '~/.config/matugen/templates/qtct-colors.conf'
+input_path = '~/.config/matugen/templates/qtct.conf'
 output_path = '~/.config/qt5ct/colors/matugen.conf'
 
 [templates.qt6ct]
-input_path = '~/.config/matugen/templates/qtct-colors.conf'
+input_path = '~/.config/matugen/templates/qtct.conf'
 output_path = '~/.config/qt6ct/colors/matugen.conf'
 
 [templates.vscode-raw]
-input_path = '~/.config/matugen/templates/vscode-colors'
+input_path = '~/.config/matugen/templates/vscode'
 output_path = '~/.cache/matugen/vscode-colors'
 
 [templates.vscode-json]
-input_path = '~/.config/matugen/templates/vscode-colors.json'
+input_path = '~/.config/matugen/templates/vscode.json'
 output_path = '~/.cache/matugen/vscode-colors.json'

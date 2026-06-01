@@ -1,16 +1,16 @@
-require("../colors")
+local colors = require("colors")
 
 hl.config({
     general = {
-        gaps_in = 2,
+        gaps_in = 4,
         gaps_out = 5,
         gaps_workspaces = 0,
         border_size = 1,
         col = {
-            active_border = outline,
-            inactive_border = surface,
-            nogroup_border_active = outline,
-            nogroup_border = surface,
+            active_border = colors.outline,
+            inactive_border = colors.surface,
+            nogroup_border_active = colors.outline,
+            nogroup_border = colors.surface,
         },
         resize_on_border = true,
         extend_border_grab_area = 15,

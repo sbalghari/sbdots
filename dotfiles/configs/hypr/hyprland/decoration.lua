@@ -1,4 +1,4 @@
-require("../colors")
+local colors = require("colors")
 
 hl.config({
     decoration = {
@@ -26,8 +26,8 @@ hl.config({
             range = 4,
             render_power = 2,
             scale = 1.0,
-            color = shadow,
-            color_inactive = surface,
+            color = colors.shadow,
+            color_inactive = colors.surface,
         },
     },
 })

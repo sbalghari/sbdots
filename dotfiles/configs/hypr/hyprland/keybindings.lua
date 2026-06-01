@@ -1,8 +1,7 @@
 -- Variables
 local mainMod = "SUPER"
-local scripts = "~/.config/hypr/scripts"
 local rofiApplets = "~/.config/rofi/applets"
-local appLauncher = "rofi -show drun -theme $HOME/.config/rofi/configs/launcher.rasi"
+local appLauncher = "rofi -show drun -theme $HOME/.config/rofi/launcher.rasi"
 
 -----------------------
 ------ General --------
@@ -16,12 +15,11 @@ hl.bind(mainMod .. " + A ", hl.dsp.window.float({
 hl.bind(mainMod .. " + F ", hl.dsp.window.fullscreen())                                        -- Fullscreen The Active Window
 hl.bind(mainMod .. " + SHIFT + C ", hl.dsp.exec_cmd("waypaper --random"))                      -- Change Wallpaper Randomly
 hl.bind(mainMod .. " + SHIFT + P ", hl.dsp.exec_cmd("~/.config/hypr/scripts/color_picker.sh")) -- Color Picker
-hl.bind(mainMod .. " + CTRL + R ", hl.dsp.exec_cmd("sbdotsctl waybar -r"))                     -- Reload Waybar's configs
-hl.bind(mainMod .. " + CTRL + T ", hl.dsp.exec_cmd("sbdotsctl waybar -t"))                     -- Apps and Applets
+hl.bind(mainMod .. " + CTRL + R ", hl.dsp.exec_cmd("sbdotsctl waybar -rc"))                    -- Reload Waybar's configs
+hl.bind(mainMod .. " + CTRL + T ", hl.dsp.exec_cmd("sbdotsctl waybar -r"))                     -- Reload Waybar
 hl.bind(mainMod .. " + SPACE ", hl.dsp.exec_cmd(appLauncher))                                  -- Application Launcher
 hl.bind(mainMod .. " + V ", hl.dsp.exec_cmd(rofiApplets .. "/clipboard.sh"))                   -- Clipboard Manager
 hl.bind(mainMod .. " + SHIFT + S ", hl.dsp.exec_cmd(rofiApplets .. "/screenshot.sh"))          -- Screenshot Manager
-hl.bind(mainMod .. " + SHIFT + B ", hl.dsp.exec_cmd(rofiApplets .. "/keybindings.sh"))         -- Show Keybinds
 hl.bind(mainMod .. " + SHIFT + Q ", hl.dsp.exec_cmd("wlogout"))                                -- Power Menu
 hl.bind(mainMod .. " + E ", hl.dsp.exec_cmd("nautilus"))                                       -- Launch File Manager
 hl.bind(mainMod .. " + RETURN ", hl.dsp.exec_cmd("kitty"))                                     -- Launch Terminal

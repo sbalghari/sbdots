@@ -4,7 +4,7 @@
 history_file="$HOME/.local/state/sbdots/cliphist"
 
 # Theme
-theme="$HOME/.config/rofi/configs/dmenu.rasi"
+theme="$HOME/.config/rofi/dmenu.rasi"
 
 title="Clipboard History"
 
