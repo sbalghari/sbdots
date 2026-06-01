@@ -89,7 +89,6 @@ REQUIRED_DOTFILE_COMPONENTS = [
     "qt6ct",
     "rofi",
     "swaync",
-    "systemd",
     "waybar",
     "waypaper",
     "wlogout",
