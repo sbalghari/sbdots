@@ -5,11 +5,47 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+---
+
+## [0.0.4-alpha] - 2026-06-01
 ### Added
-  - module `lib/modules/auto_power_saver.py
+- Hyprland configuration migration to Lua format for improved maintainability (#23).
+- `freedownloadmanager-bin` to recommended packages list.
+- ROADMAP.md for project planning and direction.
+- PKGBUILD for Arch Linux packaging support.
+- `sbdotsctl` command with waybar flags for enhanced control.
+- Project logo (sbdots.svg) in assets.
+- `sbdots-actions` daemon for managing system actions and automation.
+- Ruff CI workflow for automatic code linting and formatting.
 
 ### Changed
-  - Changed project name from HyprDots to SBDots
+- Renamed defaults config directory from `configs` to `defaults`.
+- Migrated services to systemd services with updated post-install script (#20).
+- Fully migrated theming system from pywal to matugen (#19).
+- Reorganized module structure with various rewrites for better maintainability (#14).
+- Changed project name from HyprDots to SBDots.
+- Updated PKGBUILD: removed ark, renamed swww to awww.
+- Improved Waypaper configuration with corrected wallpaper paths.
+- Updated README.md documentation multiple times for clarity.
+- Changed waybar commands from scripts to flags.
+
+### Fixed
+- Removed 'systemd' from required_dotfile_components constant.
+- Fixed service name and post-install hook to use `start` instead of `enable`.
+- Corrected `require()` usage in hypr*.lua files and adjusted matugen template path for hyprland.lua (#25).
+- Fixed incomplete/incorrect configurations introduced by previous refactors.
+- Corrected Waypaper's post_command value.
+- Removed on_media_change action in favor of Waybar's built-in MPRIS module (#17).
+- Changed incorrect cliphist path.
+- Fixed invalid keybind's exec configuration.
+- Fixed minor documentation typo.
+- Resolved dependency issues and removed deprecated AUR packages from PKGBUILD.
+- Removed usage of deprecated/unfinished actions in configs.
+
+### Removed
+- Ark from PKGBUILD.
+- `on_media_change` action in favor of Waybar's built-in MPRIS module.
 
 ---
 
