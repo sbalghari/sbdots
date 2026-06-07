@@ -55,7 +55,7 @@ class Volume(BaseAction):
     def notify(self, value: int) -> None:
         # Check if muted
         is_muted = self.is_muted()
-        
+
         if is_muted:
             icon = "󰝟"  # muted icon
         else:
@@ -88,13 +88,20 @@ class Volume(BaseAction):
         try:
             if delta == "+":
                 run_command(
-                    ["wpctl", "set-volume", "-l", "1", "@DEFAULT_AUDIO_SINK@", f"{delta_value}%+"],
-                    check=True
+                    [
+                        "wpctl",
+                        "set-volume",
+                        "-l",
+                        "1",
+                        "@DEFAULT_AUDIO_SINK@",
+                        f"{delta_value}%+",
+                    ],
+                    check=True,
                 )
             else:  # delta == "-"
                 run_command(
                     ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", f"{delta_value}%-"],
-                    check=True
+                    check=True,
                 )
         except CalledProcessError as e:
             self.send(
@@ -110,15 +117,16 @@ class Volume(BaseAction):
     def get_current(self) -> int:
         # Get current volume from wpctl
         output: str = check_output(["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"])
-        
+
         # Parse volume (e.g., "Volume: 0.64" or "Volume: 0.64 [MUTED]")
         import re
-        match = re.search(r'Volume:\s+([\d.]+)', output)
+
+        match = re.search(r"Volume:\s+([\d.]+)", output)
         if match:
             # Convert from decimal (0.00-1.00) to percentage (0-100)
             volume_decimal = float(match.group(1))
             return min(100, max(0, round(volume_decimal * 100)))
-        
+
         return 0
 
     def is_muted(self) -> bool:
@@ -132,19 +140,21 @@ class Volume(BaseAction):
     def toggle_mute(self) -> None:
         """Toggle mute state"""
         try:
-            run_command(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"], check=True)
-            
+            run_command(
+                ["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"], check=True
+            )
+
             # Send notification for mute/unmute
             is_muted = self.is_muted()
             current_vol = self.get_current()
-            
+
             if is_muted:
                 icon = "󰝟"
                 vol_display = "Muted"
             else:
                 icon = "󰕾"
                 vol_display = f"{current_vol}%"
-            
+
             run_command(
                 [
                     "notify-send",

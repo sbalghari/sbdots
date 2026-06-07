@@ -120,11 +120,13 @@ class InstallUpdates:
         print_success("UPDATE COMPLETE")
 
         # Notify
-        run_command([
-            "notify-send",
-            "System Update",
-            "All updates completed successfully!",
-        ])
+        run_command(
+            [
+                "notify-send",
+                "System Update",
+                "All updates completed successfully!",
+            ]
+        )
 
         # Reboot check
         print_newline()

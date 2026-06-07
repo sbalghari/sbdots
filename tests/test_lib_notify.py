@@ -21,7 +21,7 @@ class TestNotification:
         """Test Notification expiry time conversion to milliseconds"""
         notif = Notification(title="Test", text="Test", expire_time=10)
         assert notif.expiry_time == 10000
-        
+
     def test_notification_invalid_urgency_level(self):
         """Test Notification raises error for invalid urgency level"""
         with pytest.raises(ValueError):
