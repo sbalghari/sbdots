@@ -7,18 +7,22 @@ from .commands import run_command
 class Notification:
     def __init__(
         self,
-        title: str,
-        body_text: str,
+        text: str,
+        *,
+        title: str | None = None,
         urgency_level: str = "normal",
         expire_time: int = 5,
-        progression: bool = False,
-    ) -> None:
+        icon_name: str | None = None,
+        progress_value: int = 0,
+        sync_tag: str | None = None,
+    ):
         self.title = title
-        self.body_text = body_text
+        self.text = text
         self.urgency_level = urgency_level
         self.expiry_time = expire_time * 1000  # Convert to ms
-        self.progression = progression
-        self.progress_value: int = 0
+        self.progress_value: int = progress_value
+        self.icon_name = icon_name
+        self.sync_tag = sync_tag
         self._notification_id: int = 0
         self._context_active: bool = False
         self.notify_cmd: list[str] = []
@@ -26,10 +30,9 @@ class Notification:
         self._validate_urgency_level()
 
     def _build_cmd(self) -> list[str]:
+        icon = self.icon_name if self.icon_name is not None else "sbdots"
         cmd = [
             "notify-send",
-            self.title,
-            self.body_text,
             "-a",
             "SBDOTS",
             "-u",
@@ -37,10 +40,18 @@ class Notification:
             "-t",
             str(self.expiry_time),
             "-i",
-            "sbdots",
+            icon,
         ]
-        if self.progression:
+        if self.progress_value:
             cmd += ["-h", f"int:value:{self.progress_value}"]
+
+        if self.sync_tag:
+            cmd += ["-h", f"string:x-canonical-private-synchronous:{self.sync_tag}"]
+
+        if self.title:
+            cmd += self.title
+
+        cmd += self.text
         return cmd
 
     def is_file_path(self, s: str) -> bool:
@@ -71,13 +82,13 @@ class Notification:
 
     def update(
         self,
-        body_text: Optional[str] = None,
+        text: Optional[str] = None,
         progress_value: Optional[int] = None,
         urgency_level: Optional[str] = None,
         expiry_time: Optional[int] = None,
     ) -> None:
-        if body_text:
-            self.body_text = body_text
+        if text:
+            self.text = text
         if progress_value:
             self.progress_value = progress_value
         if urgency_level:
@@ -103,12 +114,3 @@ class Notification:
     def __exit__(self, *args) -> None:
         self.update(progress_value=100, expiry_time=1)
         self._context_active = False
-
-
-def notify_send(
-    message: str, title: str = "SBDots", urgency: str = "normal", time: int = 3
-) -> None:
-    instance: Notification = Notification(
-        title=title, body_text=message, urgency_level=urgency, expire_time=time
-    )
-    return instance.notify()

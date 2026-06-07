@@ -211,7 +211,7 @@
   "tray": {
     "icon-size": 15,
     "spacing": 6,
-    "show-passive-items": true,
+    "show-passive-items": true
   },
 
   // Power Profiles Daemon

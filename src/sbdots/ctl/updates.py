@@ -1,5 +1,4 @@
-from sbdots.library.notify import notify_send
-from sbdots.library.commands import check_output, run_sudo_cmd
+from sbdots.library.commands import check_output, run_sudo_cmd, run_command
 from sbdots.library.cli_utils import (
     print_error,
     print_info,
@@ -121,10 +120,11 @@ class InstallUpdates:
         print_success("UPDATE COMPLETE")
 
         # Notify
-        notify_send(
+        run_command([
+            "notify-send",
             "System Update",
             "All updates completed successfully!",
-        )
+        ])
 
         # Reboot check
         print_newline()
