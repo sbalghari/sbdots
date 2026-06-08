@@ -2,7 +2,7 @@ import subprocess
 from time import sleep
 import logging
 
-from sbdots.library.notify import notify_send
+from sbdots.library.notify import Notification
 
 
 def apply_wallpaper(logger: logging.Logger, dry_run) -> bool:
@@ -21,10 +21,11 @@ def apply_wallpaper(logger: logging.Logger, dry_run) -> bool:
         logger.info("Wallpaper applied successfully.")
         return True
     except subprocess.CalledProcessError:
-        notify_send(
-            message="post-install hook 'apply_wallpaper' failed; try running 'waypaper --random'. if any error appears, feel free to open an issue on gituhub with the logfile.",
-            urgency="critical",
-            time=5,
-        )
+        Notification(
+            "post-install hook 'apply_wallpaper' failed; try running 'waypaper --random'. if error presists, feel free to open an issue on gituhub with the logfile.",
+            title="SBDots Postinstall",
+            urgency_level="critical",
+            expire_time=5,
+        ).notify()
         logger.exception("Failed to apply wallpaper: ")
         return False

@@ -43,6 +43,8 @@ VALID_ACTIONS: list[str] = [
     "get_hypridle_status",
     "get_weather_data",
     "on_wallpaper_change",
+    "brightness",
+    "volume",
     "toggle_hypridle",
 ]
 

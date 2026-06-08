@@ -5,7 +5,7 @@ from pathlib import Path
 
 from sbdots.library.logger import setup_actions_state
 from sbdots.library.fs_ops import path_lexists
-from sbdots.library.notify import Notification, notify_send
+from sbdots.library.notify import Notification
 from sbdots.library.command import MatugenImage
 from sbdots.constants import SBDOTS_STATE_DIR
 from ._base import BaseAction
@@ -30,11 +30,11 @@ class OnWallpaperChange(BaseAction):
     def _notify_action_failed(self):
         """Show a desktop notification when the action fails."""
         try:
-            notify_send(
+            Notification(
+                f"action: 'on_wallpaper_change' has failed, check logs at '{SBDOTS_STATE_DIR}'",
                 title="SBDots-Actions",
-                message=f"action: 'on_wallpaper_change' has failed, check logs at '{SBDOTS_STATE_DIR}'",
-                urgency="critical",
-            )
+                urgency_level="critical",
+            ).notify()
         finally:
             raise RuntimeError("Post wallpaper change script failed.")
 
@@ -53,7 +53,7 @@ class OnWallpaperChange(BaseAction):
 
         try:
             with Notification(
-                "SBDots - Actions", "Executing post wallpaper change scripts."
+                "Executing post wallpaper change scripts.", title="SBDots - Actions"
             ) as n:
                 total_steps = 3
                 progress_step = 100 // total_steps
