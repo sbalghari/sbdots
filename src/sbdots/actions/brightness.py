@@ -2,6 +2,7 @@ from typing import Literal
 from subprocess import CalledProcessError
 
 from sbdots.library.commands import check_output, run_command
+from sbdots.library.command import notify_send
 from ._base import BaseAction
 
 
@@ -35,10 +36,8 @@ class Brightness(BaseAction):
 
         if delta == "down":
             self.update("-", delta_value)
-            self.notify(curr - delta_value)
         elif delta == "up":
             self.update("+", delta_value)
-            self.notify(curr + delta_value)
         else:
             self.send(
                 {
@@ -58,24 +57,18 @@ class Brightness(BaseAction):
 
         icon = next(i for threshold, i in icons if value <= threshold)
 
-        run_command(
-            [
-                "notify-send",
-                f"{icon}  {value}%",
-                "-u",
-                "low",
-                "-t",
-                "1000",
-                "-h",
-                f"int:value:{value}",
-                "-h",
-                "string:x-canonical-private-synchronous:brightness-notification",
-            ]
+        notify_send(
+            f"{icon}  {value}%",
+            urgency="low",
+            expire_time=1000,
+            progress_value=value,
+            sync_tag="brightness-notification",
         )
 
     def update(self, delta: Literal["-"] | Literal["+"], delta_value: int) -> None:
         try:
             run_command(["brightnessctl", "set", f"{delta_value}%{delta}"], check=True)
+            self.notify(self.get_current())
 
         except CalledProcessError as e:
             self.send(

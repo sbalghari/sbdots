@@ -2,6 +2,7 @@ from typing import Literal
 from subprocess import CalledProcessError
 
 from sbdots.library.commands import check_output, run_command
+from sbdots.library.command import notify_send
 from ._base import BaseAction
 
 
@@ -39,10 +40,8 @@ class Volume(BaseAction):
             self.toggle_mute()
         elif delta == "down":
             self.update("-", delta_value)
-            self.notify(curr - delta_value)
         elif delta == "up":
             self.update("+", delta_value)
-            self.notify(curr + delta_value)
         else:
             self.send(
                 {
@@ -55,7 +54,7 @@ class Volume(BaseAction):
     def notify(self, value: int) -> None:
         # Check if muted
         is_muted = self.is_muted()
-        
+
         if is_muted:
             icon = "󰝟"  # muted icon
         else:
@@ -67,35 +66,36 @@ class Volume(BaseAction):
             ]
             icon = next(i for threshold, i in icons if value <= threshold)
 
-        run_command(
-            [
-                "notify-send",
-                f"{icon}  {value}%",
-                "-a",
-                "SBDOTS",
-                "-u",
-                "low",
-                "-t",
-                "1000",
-                "-h",
-                f"int:value:{value}",
-                "-h",
-                "string:x-canonical-private-synchronous:volume-notification",
-            ]
+        notify_send(
+            f"{icon}  {value}%",
+            urgency="low",
+            expire_time=1000,
+            progress_value=value,
+            sync_tag="volume-notification",
         )
 
     def update(self, delta: Literal["-"] | Literal["+"], delta_value: int) -> None:
         try:
             if delta == "+":
                 run_command(
-                    ["wpctl", "set-volume", "-l", "1", "@DEFAULT_AUDIO_SINK@", f"{delta_value}%+"],
-                    check=True
+                    [
+                        "wpctl",
+                        "set-volume",
+                        "-l",
+                        "1",
+                        "@DEFAULT_AUDIO_SINK@",
+                        f"{delta_value}%+",
+                    ],
+                    check=True,
                 )
+                self.notify(self.get_current())
             else:  # delta == "-"
                 run_command(
                     ["wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", f"{delta_value}%-"],
-                    check=True
+                    check=True,
                 )
+                self.notify(self.get_current())
+
         except CalledProcessError as e:
             self.send(
                 {
@@ -110,15 +110,16 @@ class Volume(BaseAction):
     def get_current(self) -> int:
         # Get current volume from wpctl
         output: str = check_output(["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"])
-        
+
         # Parse volume (e.g., "Volume: 0.64" or "Volume: 0.64 [MUTED]")
         import re
-        match = re.search(r'Volume:\s+([\d.]+)', output)
+
+        match = re.search(r"Volume:\s+([\d.]+)", output)
         if match:
             # Convert from decimal (0.00-1.00) to percentage (0-100)
             volume_decimal = float(match.group(1))
             return min(100, max(0, round(volume_decimal * 100)))
-        
+
         return 0
 
     def is_muted(self) -> bool:
@@ -132,33 +133,28 @@ class Volume(BaseAction):
     def toggle_mute(self) -> None:
         """Toggle mute state"""
         try:
-            run_command(["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"], check=True)
-            
+            run_command(
+                ["wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle"], check=True
+            )
+
             # Send notification for mute/unmute
             is_muted = self.is_muted()
             current_vol = self.get_current()
-            
+
             if is_muted:
                 icon = "󰝟"
                 vol_display = "Muted"
             else:
                 icon = "󰕾"
                 vol_display = f"{current_vol}%"
-            
-            run_command(
-                [
-                    "notify-send",
-                    f"{icon}  {vol_display}",
-                    "-a",
-                    "SBDOTS",
-                    "-u",
-                    "low",
-                    "-t",
-                    "1000",
-                    "-h",
-                    "string:x-canonical-private-synchronous:volume-notification",
-                ]
+
+            notify_send(
+                f"{icon}  {vol_display}%",
+                urgency="low",
+                expire_time=1000,
+                sync_tag="volume-notification",
             )
+
         except CalledProcessError as e:
             self.send(
                 {
