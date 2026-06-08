@@ -1,15 +1,42 @@
 @import 'colors.css';
 
+/* Catppuccin accent colors */
+@define-color rosewater #f5e0dc;
+@define-color flamingo #f2cdcd;
+@define-color pink #f5c2e7;
+@define-color mauve #cba6f7;
+@define-color red #f38ba8;
+@define-color maroon #eba0ac;
+@define-color peach #fab387;
+@define-color yellow #f9e2af;
+@define-color green #a6e3a1;
+@define-color teal #94e2d5;
+@define-color blue #89b4fa;
+@define-color sky #89dceb;
+@define-color lavender #b4befe;
+
+/* Base colors from your theme */
 @define-color accent @primary;
-@define-color background alpha(@surface, 0.98);
-@define-color border @outline;
-@define-color border-alt @outline;
+@define-color accent_color @primary;
+@define-color theme_bg_color @surface;
+@define-color theme_fg_color @on_surface;
+@define-color accent_bg_color @primary;
+@define-color theme_selected_fg_color @on_primary;
+@define-color success_color @primary;
+@define-color warning_color @tertiary;
+@define-color error_color @error;
+
+/* Transparent variants */
+@define-color border alpha(@outline, 0.63);
 @define-color text @on_surface;
 @define-color text-alt @on_primary;
-@define-color hover alpha(@primary, 0.5);
-@define-color green @primary;
-@define-color yellow @tertiary;
-@define-color red @error;
+@define-color hover alpha(@primary, 0.7);
+@define-color surface_light alpha(@surface_container, 0.7);
+@define-color surface_mid alpha(@surface_container, 0.5);
+@define-color surface_dark alpha(@surface_container, 0.3);
+@define-color bg_glass alpha(@surface, 0.85);
+@define-color border_light alpha(@border, 0.5);
+@define-color text_dim alpha(@text, 0.5);
 
 /* 
   ============================================================
@@ -27,13 +54,13 @@
   ============================================================
 */
 .notification-background {
-  padding: 10px;
+  padding: 5px;
 }
 .close-button {
   background: transparent;
   padding: 0px;
-  border-radius: 6px;
-  margin: 4px;
+  border-radius: 4px;
+  margin: 2px;
   box-shadow: none;
   border: none;
 }
@@ -41,21 +68,19 @@
   box-shadow: none;
   background: @error;
   color: @text-alt;
-  transition: background 0.15s ease-in-out;
   border: none;
 }
 .notification {
-  border-radius: 6px;
+  border-radius: 10px;
   border: 1px solid @border;
-  padding: 8px;
-  transition: background 0.15s ease-in-out;
-  background: @surface;
+  padding: 3px;
+  background: @surface_light;
 }
 .low {
-  background: alpha(@surface, 0.75);
+  background: @surface_light;
 }
 .critical {
-  background: alpha(@error, 0.75);
+  background: alpha(@error, 0.5);
 }
 .notification-action,
 .notification-default-action {
@@ -81,41 +106,41 @@
 .notification-content {
   background: transparent;
   border-radius: 0px;
-  padding: 4px;
+  padding: 2px;
 }
 .image {
-  border-radius: 6px;
-  margin: 4px;
+  border-radius: 4px;
+  margin: 2px;
 }
 .app-icon {
-  margin: 6px;
+  margin: 3px;
 }
 .summary {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   background: transparent;
   color: @text;
   text-shadow: none;
-  padding-left: 10px;
+  padding-left: 6px;
 }
 .time {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   background: transparent;
   color: @text;
   text-shadow: none;
-  margin-right: 30px;
+  margin-right: 20px;
 }
 .body {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: normal;
   background: transparent;
-  color: alpha(@text, 0.8);
+  color: @text;
   text-shadow: none;
-  padding-left: 10px;
+  padding-left: 6px;
 }
 .progressbar {
-  margin-top: 4px;
+  margin-top: 2px;
   color: @accent;
 }
 
@@ -125,10 +150,11 @@
   ============================================================
 */
 .control-center {
-  background: @background;
+  background: @bg_glass;
   border: 1px solid @border;
+  border-right: none;
+  border-radius: 10px 0px 0px 10px;
   color: @text;
-  border-radius: 6px;
   box-shadow: 0 2px 4px 0 alpha(@scrim, 0.5);
 }
 .control-center-list-placeholder {
@@ -143,17 +169,17 @@
 
 /* Notification widget */
 .widget-title > label {
-  color: @text;
-  font-size: 20px;
+  color: @sky;
+  font-size: 18px;
   font-weight: bold;
 }
 .widget-title > button {
-  font-size: 12px;
+  font-size: 11px;
   color: @text;
-  padding: 0px 6px;
-  background: shade(alpha(@surface, 0.9), 1.2);
-  border: 1px solid alpha(@border, 0.5);
-  border-radius: 4px;
+  padding: 0px 8px;
+  background: @surface_mid;
+  border: 1px solid @border_light;
+  border-radius: 8px;
 }
 .widget-title > button:hover {
   background: @hover;
@@ -161,12 +187,12 @@
 
 /* DND widget */
 .widget-dnd > label {
-  color: @text;
-  font-size: 16px;
+  color: @peach;
+  font-size: 14px;
 }
 .widget-dnd > switch {
-  border-radius: 4px;
-  background: alpha(@text, 0.5);
+  border-radius: 12px;
+  background: @text_dim;
   border: 1px solid @border;
 }
 .widget-dnd > switch:checked {
@@ -177,17 +203,17 @@
 }
 .widget-dnd > switch slider {
   background: @surface;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 /* Notification list */
 .notification-group-headers > label {
-  color: @text;
-  background: shade(alpha(@surface, 0.3), 1.12);
+  color: @lavender;
+  background: @surface_dark;
   border: 1px solid alpha(@border, 0.1);
-  padding: 0px 8px;
-  border-radius: 6px;
-  font-size: 16px;
+  padding: 0px 6px;
+  border-radius: 4px;
+  font-size: 14px;
   font-weight: bold;
 }
 .notification-group.collapsed:hover
@@ -200,20 +226,28 @@
   background: transparent;
 }
 .notification-group .notification:hover {
-  box-shadow: 0 2px 3px 0 alpha(@scrim, 0.2);
-}
-.notification-group .notification:hover {
   box-shadow: 0 2px 3px 0 alpha(@scrim, 0.3);
 }
 .notification-group-buttons > button {
-  font-size: 12px;
-  margin-right: 6px;
+  font-size: 11px;
+  margin-right: 4px;
   color: @text;
-  padding: 0px 4px;
-  background: shade(alpha(@surface, 0.5), 1.2);
-  border: 1px solid alpha(@border, 0.4);
-  border-radius: 6px;
+  padding: 0px 3px;
+  background: @surface_mid;
+  border: 1px solid @border_light;
+  border-radius: 4px;
 }
 .notification-group-buttons > button:hover {
-  background: alpha(@hover, 0.8);
+  background: @hover;
+}
+
+/* Action buttons styling */
+.notification-action {
+  color: @blue;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+.notification-action:hover {
+  color: @sky;
+  background: @surface_mid;
 }

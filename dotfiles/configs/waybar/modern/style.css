@@ -1,4 +1,19 @@
-@import '../colors.css';
+@import "../colors.css";
+
+/* Catppuccin accent colors */
+@define-color rosewater #f5e0dc;
+@define-color flamingo #f2cdcd;
+@define-color pink #f5c2e7;
+@define-color mauve #cba6f7;
+@define-color red #f38ba8;
+@define-color maroon #eba0ac;
+@define-color peach #fab387;
+@define-color yellow #f9e2af;
+@define-color green #a6e3a1;
+@define-color teal #94e2d5;
+@define-color blue #89b4fa;
+@define-color sky #89dceb;
+@define-color lavender #b4befe;
 
 @define-color accent @primary;
 @define-color accent_color @primary;
@@ -15,423 +30,381 @@
 @define-color text @on_surface;
 @define-color text-alt @on_primary;
 @define-color hover alpha(@primary, 0.7);
+@define-color surface_transparent alpha(@surface_container, 0.85);
+@define-color surface_light alpha(@surface_container, 0.7);
+@define-color surface_mid alpha(@surface_container, 0.5);
+@define-color surface_dark alpha(@surface_container, 0.3);
+@define-color bg_glass alpha(@surface, 0.85);
+@define-color border_light alpha(@border, 0.5);
+@define-color text_dim alpha(@text, 0.5);
+@define-color text_dimmer alpha(@text, 0.3);
 
-/*================================================================
-=> General
-================================================================*/
-*{
-  margin:0;
-  padding:0px;
+/* General */
+* {
+  margin: 0;
+  padding: 0px;
   background: transparent;
-  font-family:"JetBrainsMono Nerd Font","JetBrainsMono";
-  font-weight:bold;
-  font-size:12px;
+  font-family: "JetBrainsMono Nerd Font", "JetBrainsMono";
+  font-size: 12px;
+  font-weight: 500;
   min-height: 15px;
 }
 
-/*================================================================
-=> Tooltip
-================================================================*/
+window#waybar > * {
+  margin: 3px 0;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+window#waybar {
+  background: @bg_glass;
+  border-radius: 0 0 10px 10px;
+  border-bottom: 1px solid @border;
+}
+
+/* Tooltip */
 tooltip {
-    background: @surface_container;
-    color: @text;
-    border-radius: 8px;
-    border: 1px solid @border;
+  background: @bg_glass;
+  color: @text;
+  border-radius: 8px;
+  border: 1px solid @border;
+  padding: 6px;
 }
 
 tooltip * {
-    background: transparent;
-    color: @text;
+  background: transparent;
+  color: @text;
 }
 
-/*================================================================
-=> Shared modules
-================================================================*/
-#custom-menu,
-#workspaces,
+/* Shared cards */
+#custom-weather,
+#mpris,
 #window,
-#custom-mediaplayer,
+#clock,
+#power-profiles-daemon,
+#custom-hypridle,
+#custom-notifications,
+#custom-power {
+  margin: 3px 3px;
+  background: @surface_light;
+  color: @text;
+  border-radius: 8px;
+}
+
 #custom-weather,
 #clock,
+#power-profiles-daemon,
+#custom-hypridle,
 #custom-notifications,
-#custom-power{
-  margin:2px 4px;
-  border-radius:6px;
+#custom-power {
+  border: 1px solid @border;
+}
+
+#mpris,
+#window {
+  border: 1px solid @border_light;
+  padding: 0px 8px;
+}
+
+/* Workspaces */
+#workspaces {
+  margin: 3px 3px;
+  margin-left: 2px;
+  padding: 2px 3px;
+  border-radius: 8px;
+  background: @surface_mid;
+  color: @text;
+  border: 1px solid @border;
+}
+
+#workspaces button {
+  box-shadow: none;
+  text-shadow: none;
+  border: none;
+  margin: 0px 2px;
+  background: transparent;
+  color: @text_dimmer;
+}
+
+#workspaces button.active {
+  color: @primary;
+}
+#workspaces button:hover {
+  color: @text;
+}
+#workspaces button.urgent {
+  color: @error;
+}
+
+/* Weather */
+#custom-weather {
+  padding: 0px 8px;
+  color: @sky;
+}
+
+/* MPRIS */
+#mpris {
+  padding: 0px 8px;
+}
+#mpris.playing,
+#mpris.spotify.playing {
+  color: @green;
+}
+#mpris.paused {
+  color: @text_dim;
+}
+#mpris.stopped {
+  color: @text_dimmer;
+}
+#mpris.spotify {
+  border-left: 2px solid @green;
+}
+#mpris.vlc {
+  border-left: 2px solid @blue;
+}
+#mpris.vlc.playing {
+  color: @blue;
+}
+#mpris.firefox {
+  border-left: 2px solid @peach;
+}
+#mpris.firefox.playing {
+  color: @peach;
+}
+
+/* Updates */
+#custom-updates {
+  margin: 3px 3px;
+  border-radius: 8px;
+  padding: 1px 8px 0px 6px;
   background: @surface_container;
-  color:@text;
+  border: none;
 }
 
-#custom-menu,
-#workspaces,
-#custom-weather,
-#clock,
-#custom-notifications,
-#custom-power{
-  border:1px solid @border;
+#custom-updates.green {
+  background: @green;
+  color: @surface;
+}
+#custom-updates.yellow {
+  background: @yellow;
+  color: @surface;
+}
+#custom-updates.red {
+  background: @red;
+  color: @surface;
 }
 
-#window,
-#custom-mediaplayer,
+/* Window */
+#window {
+  background: @surface_mid;
+  padding: 0px 8px;
+}
+
+/* CPU / Memory / Temperature */
+#cpu,
+#memory,
+#temperature {
+  background: @surface_light;
+  margin: 4px 0px;
+  padding: 0px 6px;
+  font-size: 10px;
+  font-weight: bolder;
+}
+
+#cpu {
+  border-radius: 8px 0 0 8px;
+  color: @blue;
+}
+#memory {
+  border-radius: 0;
+  color: @teal;
+}
+#temperature {
+  border-radius: 0 8px 8px 0;
+  color: @peach;
+}
+
+/* Audio chain */
 #pulseaudio,
 #backlight,
 #bluetooth,
-#battery,
-#network,
-#custom-sysinfo,
-#power-profiles-daemon,
-#custom-hypridle,
-#cpu,
-#memory,
-#temperature{
-  border:1px solid alpha(@border,0.33);
-  background: @surface_container;
-  color:@text;
+#battery {
+  border: 1px solid @border_light;
+  background: @surface_light;
+  margin: 3px 0px;
 }
 
-#custom-sysinfo:hover,
-#custom-hypridle:hover,
+#pulseaudio {
+  margin-left: 4px;
+  padding: 0 6px;
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+  color: @teal;
+}
+
+#backlight {
+  padding: 0 8px 0 6px;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  color: @yellow;
+}
+
+#bluetooth {
+  padding: 0 6px 0 4px;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  color: @blue;
+}
+
+#bluetooth.disabled {
+  color: @text_dim;
+}
+
+#battery {
+  padding: 0 6px 0 4px;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  color: @green;
+}
+
+#battery.charging,
+#battery.plugged {
+  color: @green;
+}
+
+#battery.critical:not(.charging) {
+  color: @red;
+}
+
+/* Network */
+#network {
+  border: 1px solid @border_light;
+  background: @surface_light;
+  margin: 3px 4px 3px 0;
+  padding: 0 10px 0 5px;
+  border-radius: 0 8px 8px 0;
+  border-left: none;
+  color: @lavender;
+}
+
+#network.disconnected {
+  color: @red;
+}
+
+/* Shared hover */
+#mpris:hover,
 #cpu:hover,
 #memory:hover,
 #temperature:hover,
-#custom-menu:hover,
-#custom-mediaplayer:hover,
+#custom-hypridle:hover,
 #custom-notifications:hover,
-#custom-power:hover{
-  color:@hover;
+#custom-power:hover {
+  color: @hover;
+  background: @surface_transparent;
 }
 
 #pulseaudio:hover,
 #backlight:hover,
 #bluetooth:hover,
 #battery:hover,
-#network:hover{
+#network:hover {
   color: shade(@hover, 1.25);
 }
 
-/*================================================================
-=> Tools menu
-================================================================*/
-#custom-sysinfo,
-#power-profiles-daemon,
-#custom-hypridle,
-#cpu,
-#memory,
-#temperature{
-  margin:2px 0px;
-  font-size:13px;
-  padding:0px 8px;
+/* Tray */
+#tray {
+  margin: 3px 3px;
+  padding: 0px 5px;
 }
 
-#cpu,
-#memory,
-#temperature{
-  font-size:11px;
-  font-weight:bolder;
+#tray > .passive {
+  -gtk-icon-effect: dim;
 }
 
-#power-profiles-daemon{padding:0px 12px 0px 6px;}
-
-#custom-sysinfo{
-  margin-left:4px;
-  border-radius:6px 0px 0px 6px;
+#tray menu {
+  border-radius: 8px;
+  color: @text;
+  background-color: @surface_container;
+  padding: 5px;
+  border: 1px solid @border;
 }
 
-#custom-hypridle{
-  padding-right:10px;
-  margin-right:4px;
-  border-radius:0px 6px 6px 0px;
+/* Clock */
+#clock {
+  padding: 0px 8px;
+  font-weight: bold;
+  background: alpha(@primary, 0.15);
+  border-color: @primary;
 }
 
-#power-profiles-daemon.balanced{color:@text;}
-#power-profiles-daemon.performance{color:@error;}
-#power-profiles-daemon.power-saver{color:@primary;}
-#custom-hypridle.notactive{color:@error;}
-
-/*================================================================
-=> Workspaces
-================================================================*/
-#workspaces{padding:1px; margin-left:0px;}
-
-#workspaces button{
-  min-width:20px;
-  box-shadow:none;
-  margin:2px 3px;
-  text-shadow:none;
-  border:none;
-  border-radius:3px;
-  background:alpha(@text,0.1);
-  color:alpha(@text,0.5);
-  transition:all 0.1s linear;
+/* Power profile */
+#power-profiles-daemon {
+  margin-right: 0;
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+  padding: 0 12px 0 6px;
 }
 
-#workspaces button.active{
-  min-width:28px;
-  transition:all 0.1s linear;
-  color:@surface;
-  background:@text;
+#power-profiles-daemon.balanced {
+  color: @text;
+}
+#power-profiles-daemon.performance {
+  color: @red;
+}
+#power-profiles-daemon.power-saver {
+  color: @green;
 }
 
-#workspaces button:hover{
-  background:alpha(@text,0.2);
-  border:none;
+/* Hypridle */
+#custom-hypridle {
+  margin-right: 0;
+  margin-left: 0;
+  border-radius: 0;
+  padding: 0 10px 0 6px;
+  color: @sky;
 }
 
-#workspaces button.urgent{background-color:@error;}
-
-/*===============================================================
-=> Taskbar
-================================================================*/
-#taskbar{
-  margin:3px 4px;
-  padding:0px;
-  background:transparent;
-  border:none;
-  font-size:15px;
-  font-weight:bolder;
+#custom-hypridle.notactive {
+  color: @red;
 }
 
-#taskbar button{
-  padding:0px 3px;
-  margin-right:2px;
-  border-radius:6px;
-  border:none;
+/* Notifications */
+#custom-notifications {
+  font-size: 12px;
+  margin-right: 0;
+  margin-left: 0;
+  border-radius: 0;
+  border-right: none;
+  border-left: none;
+  padding: 0 8px 0 6px;
+  color: @peach;
 }
 
-#taskbar button:hover{background:@hover;}
-#taskbar button.active{background:alpha(@hover,0.3);}
-
-/*===============================================================
-=> Active Window
-================================================================*/
-#window{padding:0px 8px;}
-
-/*===============================================================
-=> MPD
-================================================================*/
-#custom-mediaplayer{padding:0px 8px;}
-
-/*===============================================================
-=> Updates
-================================================================*/
-#custom-updates{
-  margin:2px 4px;
-  border-radius:6px;
-  padding:1px 10px 0px 8px;
-  background: @surface_container;
-  border:none;
+/* Power */
+#custom-power {
+  font-size: 12px;
+  margin-right: 4px;
+  margin-left: 0;
+  border-radius: 0 8px 8px 0;
+  padding: 0 10px 0 6px;
+  color: @red;
 }
 
-#custom-updates.green{
-  background:@text;
-  color:@surface;
+#custom-power:hover {
+  color: @maroon;
 }
 
-#custom-updates.yellow{
-  background:@tertiary;
-  color:@surface;
-}
-
-#custom-updates.red{
-  background:@error;
-  color:@surface;
-}
-
-/*================================================================
-=> Weather
-================================================================*/
-#custom-weather{padding:0px 9px 0px 8px;}
-
-/*===============================================================
-=> Pulse Audio
-================================================================*/
-#pulseaudio{
-  margin:2px 0px 2px 4px;
-  padding:0px 8px;
-  border-radius:6px 0px 0px 6px;
-  border-right:none;
-}
-
-/*===============================================================
-=> Backlight (brightness)
-================================================================*/
-#backlight{
-  margin:2px 0px;
-  border-radius:0px;
-  border-right:none;
-  border-left:none;
-  padding:0px 12px 0px 8px;
-}
-
-/*================================================================
-=> Bluetooth
-================================================================*/
-#bluetooth{
-  margin:2px 0px;
-  padding:0px 8px 0px 4px;
-  border-radius:0px;
-  border-right:none;
-  border-left:none;
-}
-
-/*===============================================================
-=> Battery
-================================================================*/
-#battery{
-  margin:2px 0px;
-  padding:0px 8px 0px 4px;
-  border-radius:0px;
-  border-right:none;
-  border-left:none;
-}
-
-#battery.charging,
-#battery.plugged{color:@primary;}
-
-@keyframes blink{
-  to{color:@error;}
-}
-
-#battery.critical:not(.charging){
-  color:alpha(@primary, 0.5);
-  animation-name:blink;
-  animation-duration:0.5s;
-  animation-timing-function:linear;
-  animation-iteration-count:infinite;
-  animation-direction:alternate;
-}
-
-/*===============================================================
-=> Network
-================================================================*/
-#network{
-  margin:2px 4px 2px 0px;
-  padding:0px 12px 0px 6px;
-  border-radius:0px 6px 6px 0px;
-  border-left:none;
-}
-
-/*===============================================================
-=> Tray
-================================================================*/
-#tray{
-  margin:3px 2px;
-  border-radius:6px;
-  padding:0px 4px;
-  background:alpha(@surface,0.5);
-  border:1px solid alpha(@border,0.33);
-}
-
-#tray>.passive{-gtk-icon-effect:dim;}
-#tray>.needs-attention{-gtk-icon-effect:highlight;}
-
-#tray menu{
-  border-radius:8px;
-  color:@text;
-  background-color:@surface_container;
-  padding:4px;
-}
-
-/*===============================================================
-=> Clock
-================================================================*/
-#clock{padding:0px 8px;}
-
-/*===============================================================
-=> Notifications
-================================================================*/
-#custom-notifications{
-  font-size:13px;
-  margin-right:0px;
-  border-radius:6px 0px 0px 6px;
-  border-right:none;
-  padding:0px 11px 0px 8px;
-}
-
-/*===============================================================
-=> Power menu
-================================================================*/
-#custom-power{
-  font-size:13px;
-  margin-right:0px;
-  margin-left:0px;
-  border-radius:0px 6px 6px 0px;
-  padding:0px 12px 0px 8px;
-}
-
-/*===============================================================
-=> Hide empty modules
-================================================================*/
+/* Hide empty modules */
 window#waybar.empty #window,
 #custom-updates.none,
 #taskbar.empty,
-#tray.empty,
-#custom-mediaplayer.empty{
-  border:0px;
-  background-color:transparent;
-  padding:0px;
-  margin:0px;
-}
-
-/*===============================================================
-=> MPRIS Media Control
-================================================================*/
-#mpris{
-  margin:2px 4px;
-  padding:0px 10px;
-  border-radius:6px;
-  background: @surface_container;
-  color:@text;
-  border:1px solid alpha(@border,0.33);
-  font-size:12px;
-  font-weight:bold;
-}
-
-/* state-based styling */
-#mpris.playing{
-  color:@text;
-}
-
-#mpris.paused{
-  color:alpha(@text,0.6);
-}
-
-#mpris.stopped{
-  color:alpha(@text,0.4);
-}
-
-/* optional: hover feedback */
-#mpris:hover{
-  color:@hover;
-}
-
-/*===============================================================
-=> Per-player styling (Spotify, VLC, etc.)
-================================================================*/
-
-/* Spotify */
-#mpris.spotify{
-  border:1px solid alpha(@primary,0.4);
-}
-
-#mpris.spotify.playing{
-  color:@primary;
-}
-
-/* VLC */
-#mpris.vlc{
-  border:1px solid alpha(@tertiary,0.4);
-}
-
-#mpris.vlc.playing{
-  color:@tertiary;
-}
-
-/* Firefox media sessions */
-#mpris.firefox{
-  border:1px solid alpha(@text,0.25);
-}
-
-/* fallback generic player styling */
-#mpris.default{
-  opacity:0.9;
+#tray.empty {
+  border: 0px;
+  background-color: transparent;
+  padding: 0px;
+  margin: 0px;
+  min-width: 0px;
 }

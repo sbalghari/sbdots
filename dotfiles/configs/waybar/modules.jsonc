@@ -97,12 +97,13 @@
 
   // Workspaces
   "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "active": "",
+      "default": ""
+    },
     "all-outputs": true,
     "active-only": false,
-    "on-click": "activate",
-    "format": "{icon}",
-    "on-scroll-up": "hyprctl dispatch workspace e+1",
-    "on-scroll-down": "hyprctl dispatch workspace e-1",
     "persistent-workspaces": {
       "*": 3
     }
@@ -259,21 +260,5 @@
     "format": "",
     "on-click": "wlogout",
     "tooltip-format": "Power Menu"
-  },
-
-  // System info drawer
-  "group/sysinfo": {
-    "orientation": "horizontal",
-    "drawer": {
-      "transition-duration": 300,
-      "transition-left-to-right": true,
-      "click-to-reveal": true
-    },
-    "modules": [
-      "custom/sysinfo",
-      "cpu",
-      "memory",
-      "temperature"
-    ]
   }
 }

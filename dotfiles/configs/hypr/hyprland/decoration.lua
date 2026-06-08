@@ -2,12 +2,11 @@ local colors = require("colors")
 
 hl.config({
     decoration = {
-        rounding = 8,
-        active_opacity = 0.96,
+        rounding = 10,
+        active_opacity = 0.90,
         inactive_opacity = 0.82,
-        fullscreen_opacity = 0.98,
+        fullscreen_opacity = 0.94,
         dim_inactive = false,
-        dim_strength = 0.1,
         blur = {
             enabled = true,
             new_optimizations = true,
