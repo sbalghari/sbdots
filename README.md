@@ -1,7 +1,7 @@
 <div align="center">
   <img src="assets/sbdots.svg" alt="SBDots Logo" width="200"/>
   <h1>SBDots</h1>
-  <p>A Modern, Feature-Rich, and Polished Hyprland Setup</p>
+  <p>An opinionated, modern, and feature-rich desktop setup for <a href="https://github.com/hyprwm/Hyprland">Hyprland</a> written primarily in Python.</p>
 </div>
 
 <div align="center">
@@ -18,22 +18,17 @@
     <img src="https://img.shields.io/github/license/sbalghari/sbdots?style=for-the-badge&labelColor=313244&color=74c7ec" alt="License">
   </a>
 </div>
-
 <br>
-
-Welcome to SBDots, an opinionated, modern and feature-rich desktop setup for [Hyprland](https://github.com/hyprwm/Hyprland) written primarily in Python.
-
-It’s not a full desktop environment, but it provides the essentials you actually use: status bar, app launcher, notifications, and few other core desktop utilities.
-
-The goal is a clean, usable Hyprland setup that stays simple, structured, and easy to maintain.
 
 ## Installation
 
 > [!NOTE]
->  As of now, **SBDots** is supported and tested for **Arch Linux** only; Arch-based distributions may work, they are not tested.
+> **SBDots** is supported and tested for **Arch Linux** only; Arch-based distributions may work, they are not tested.
 
 > [!WARNING]
-> This will be released on AUR, but for now, you could use the **install.sh** but it isn't fully tested, so use it at your own risk.
+> Further Development is stopped at the moment.
+>
+> You could use the **install.sh** but it isn't fully tested, so use it at your own risk.
 
 ## Contributing
 
