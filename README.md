@@ -30,14 +30,6 @@
 >
 > You could use the **install.sh** but it isn't fully tested, so use it at your own risk.
 
-## Contributing
-
-Contributions are always welcome!
-
-See [CONTRIBUTING.md](https://github.com/sbalghari/sbdots/blob/main/CONTRIBUTING.md) for ways to get started.
-
-If you encounter any issues or have ideas for improvements, please feel free to open an issue or submit a pull request.
-
 ## License
 
 This project is licensed under the GPL-3.0 license. For more details, please refer to the [LICENSE](https://github.com/sbalghari/sbdots/blob/main/LICENSE) file.
