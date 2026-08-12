@@ -1,3 +1,7 @@
+> [!WARNING]
+> Further Development is stopped at the moment.
+> Not Compatible with Hyprland 0.55.x and above.
+
 <div align="center">
   <img src="assets/sbdots.svg" alt="SBDots Logo" width="200"/>
   <h1>SBDots</h1>
@@ -24,9 +28,6 @@
 
 > [!NOTE]
 > **SBDots** is supported and tested for **Arch Linux** only; Arch-based distributions may work, they are not tested.
-
-> [!WARNING]
-> Further Development is stopped at the moment.
 >
 > You could use the **install.sh** but it isn't fully tested, so use it at your own risk.
 
